@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">QLTVKotlin</string>
+    <string name="doc_gia">Độc Giả</string>
+    <string name="sach">Sách</string>
+    <string name="account">Tài Khoản</string>
+    <string name="muon_thue">Mượn Thuê</string>
+    <string name="title_sach">Tất Cả Sách</string>
+    <string name="hint_seach_sach">Tìm Sách</string>
+    <string name="title_docgia">Tất Cả Độc Giả</string>
+    <string name="hint_seach_docgia">Tìm Độc Giả</string>
+</resources>
