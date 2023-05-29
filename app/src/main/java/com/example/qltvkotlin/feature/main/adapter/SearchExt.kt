@@ -1,30 +1,23 @@
 package com.example.qltvkotlin.feature.main.adapter
 
 import androidx.lifecycle.MutableLiveData
-
+import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.model.IStringSearch
+import com.example.qltvkotlin.domain.model.IsDocGiaSearch
 import com.example.qltvkotlin.domain.model.IsSachSearch
-import com.example.qltvkotlin.feature.presentation.extension.pairLookupOf
 
-class SearchExt() {
-    var list:List<Any> = emptyList()
-    var mListOriginal = MutableLiveData<List<Any>>()
-    private var stringSearch: IStringSearch = TODO()
-
+class SearchExt {
+    val thuVienDataRepo = ThuVienDataRepo.thuVienDataRepo
+    var listSearch = MutableLiveData<List<Any>>()
 
     fun search(it: IStringSearch) {
-        setListOriginal(it)
-        stringSearch = it
-        doSearch()
-    }
-
-    private fun setListOriginal(it: IStringSearch) {
-        when(it){
-            is IsSachSearch ->
+        when (it) {
+            is IsSachSearch -> listSearch.postValue(thuVienDataRepo.searchSach(it.mValueSach))
+            is IsDocGiaSearch -> listSearch.postValue(thuVienDataRepo.searchDocGia(it.mValueDocGia))
         }
-
     }
+ companion object{
+     val searchExt = SearchExt()
+ }
 
-    private fun doSearch() {
-    }
 }

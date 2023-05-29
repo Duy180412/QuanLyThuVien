@@ -32,7 +32,6 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachViewHolder>()
         this.mList = mList
         notifyDataSetChanged()
     }
-
 }
 
 class SachViewHolder(

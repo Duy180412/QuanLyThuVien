@@ -1,6 +1,5 @@
 package com.example.qltvkotlin.domain.model
 
-import com.example.qltvkotlin.domain.model.IStringSearch
 
 interface ISach
 
@@ -12,9 +11,10 @@ interface ISachItem {
     val conLai: String
 }
 
+interface ImageSach : IImage
 
 
 interface IsSachSearch : IStringSearch {
-    val mValueSach: String
+    var mValueSach: String
 }
 

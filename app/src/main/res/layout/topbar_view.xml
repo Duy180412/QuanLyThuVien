@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="#F89191"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_back"
+        android:layout_gravity="center_vertical"
+        app:tint="@color/white"
+        tools:tint="@color/black"/>
+
+    <TextView
+        android:id="@+id/title_top"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:layout_weight="1"
+        android:text="Tên Fragment"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="start|center" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_edit"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_edit_save"
+        android:layout_gravity="center_vertical"
+        app:tint="@color/white"
+        tools:tint="@color/black"/>
+
+</LinearLayout>

@@ -27,7 +27,6 @@ class StartActivity : BaseActivity(R.layout.activity_start) {
 
 
     class VM(val checkLogin: CheckLogin = CheckLogin()) : ViewModel() {
-
         val main = MutableLiveData<Routing>()
         val login = MutableLiveData<Routing>()
         fun start() {

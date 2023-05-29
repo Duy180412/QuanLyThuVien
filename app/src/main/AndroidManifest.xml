@@ -17,6 +17,9 @@
             android:name=".feature.login.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".feature.main.mainnavigato.MainNavigationActivity"
+            android:exported="false" />
+        <activity
             android:name=".feature.main.MainActivity"
             android:exported="false" />
         <activity
