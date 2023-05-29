@@ -9,15 +9,9 @@ import androidx.viewbinding.ViewBinding
 interface State {
     fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding
 }
-
-interface ActionBarState
 interface ActionBarStateOwnr {
     val actionBarExt: ActionBarExt
 }
-
-interface IsActionBarNavigator : ActionBarState
-interface IsActionBarView : ActionBarState
-
 
 class ActionBarExt(
     private val frameLayout: FrameLayout,

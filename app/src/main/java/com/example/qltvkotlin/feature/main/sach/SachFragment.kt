@@ -31,10 +31,6 @@ class SachFragment : BaseFragment(R.layout.fragment_sach) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val apdater = SachApdater(binding.rycView)
-        val actionBar = ActionBarTitleAndSearchSate(this::class)
-        actionBar.search.observe(viewLifecycleOwner) {
-            viewmodel.search(it)
-        }
         viewmodel.search.observe(viewLifecycleOwner) {
             apdater.setList(it as List<ISachItem>)
         }
