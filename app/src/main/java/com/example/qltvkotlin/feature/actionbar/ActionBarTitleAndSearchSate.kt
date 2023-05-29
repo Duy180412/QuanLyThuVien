@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.TopbarSearchBinding
+import com.example.qltvkotlin.databinding.TopbarTitleAccountBinding
 import com.example.qltvkotlin.databinding.TopbarTitleSearchBinding
 import com.example.qltvkotlin.domain.model.IStringSearch
 import com.example.qltvkotlin.domain.model.IsDocGiaSearch
@@ -26,17 +27,22 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
             R.string.title_docgia,
             R.string.hint_seach_docgia
         ),
-        R.string.account to ActionBarNavigator(R.string.title_sach, R.string.hint_seach_sach),
+        R.string.account to ActionBarNavigator(R.string.account, 0),
         R.string.muon_thue to ActionBarNavigator(R.string.title_sach, R.string.hint_seach_sach)
     )
 
     init {
         actionBarNavigator = routing.requireValueOf(itemId)
-        val tieuDe = ActionBarTitleAndSearchButtonState()
-        val timKiem = ActionBarInputSearchState()
-        tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
-        timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
-        actionBarExt.setState(tieuDe)
+        if (itemId != R.string.account) {
+            val tieuDe = ActionBarTitleAndSearchButtonState()
+            val timKiem = ActionBarInputSearchState()
+            tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
+            timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
+            actionBarExt.setState(tieuDe)
+        } else{
+            val account = ActionBarTileAccount()
+            actionBarExt.setState(account)
+        }
     }
 
     private fun getTypeSearch(it: String, clazz: KClass<out Fragment>): IStringSearch? {
@@ -83,6 +89,21 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
                 return this
             }
         }
+    }
+
+    inner class ActionBarTileAccount : State {
+        private val title = actionBarNavigator.title
+        lateinit var clickLogout: () -> Unit
+        override fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding {
+            TopbarTitleAccountBinding.inflate(inflater, parent, false).apply {
+                this.tenFragment.setText(title)
+                this.btnLogout.onClick {
+                    clickLogout()
+                }
+                return this
+            }
+        }
+
     }
 }
 

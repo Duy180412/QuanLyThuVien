@@ -25,6 +25,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), StackNavigatorOwner,
         stackNavigator = StackNavigator(supportFragmentManager, binding.contentview.id)
         if (savedInstanceState == null) {
             stackNavigator.navigateTo(tabAdapter.selectedItemId)
+            actionBarMain = ActionBarTitleAndSearchSate(tabAdapter.selectedItemId, actionBarExt)
         }
 
         tabAdapter.setOnItemSelectedListener { itemId ->
