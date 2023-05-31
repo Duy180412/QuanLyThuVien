@@ -5,6 +5,7 @@ interface Signal {
     fun emit()
 
     interface Closable : AutoCloseable {
+
         val bags: List<AutoCloseable>
 
         fun Signal.bind(subscription: () -> Unit) {
@@ -29,6 +30,7 @@ interface Signal {
                 list.remove(subcription)
             }
         }
+
 
         override fun emit() {
             list.forEach { it() }

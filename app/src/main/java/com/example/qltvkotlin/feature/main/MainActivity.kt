@@ -23,10 +23,9 @@ class MainActivity : BaseActivity(R.layout.activity_main), StackNavigatorOwner,
         val tabAdapter = BottomNavigatorMenuMain(binding.containerMainNavigation)
         actionBarExt = ActionBarExt(binding.containertopbar, this)
         stackNavigator = StackNavigator(supportFragmentManager, binding.contentview.id)
-        if (savedInstanceState == null) {
-            stackNavigator.navigateTo(tabAdapter.selectedItemId)
-            actionBarMain = ActionBarTitleAndSearchSate(tabAdapter.selectedItemId, actionBarExt)
-        }
+        stackNavigator.navigateTo(tabAdapter.selectedItemId)
+        actionBarMain = ActionBarTitleAndSearchSate(tabAdapter.selectedItemId, actionBarExt)
+
 
         tabAdapter.setOnItemSelectedListener { itemId ->
             val idFragmentLast = stackNavigator.getIdLastFragment()

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.viewbinding.ViewBinding
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.TopbarSearchBinding
@@ -21,12 +22,10 @@ import kotlin.reflect.KClass
 
 class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
     private var actionBarNavigator: ActionBarNavigator
+    var search = MutableLiveData<IStringSearch>()
     private val routing = pairLookupOf(
         R.string.sach to ActionBarNavigator(R.string.title_sach, R.string.hint_seach_sach),
-        R.string.doc_gia to ActionBarNavigator(
-            R.string.title_docgia,
-            R.string.hint_seach_docgia
-        ),
+        R.string.doc_gia to ActionBarNavigator(R.string.title_docgia, R.string.hint_seach_docgia),
         R.string.account to ActionBarNavigator(R.string.account, 0),
         R.string.muon_thue to ActionBarNavigator(R.string.title_sach, R.string.hint_seach_sach)
     )
@@ -38,6 +37,7 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
             val timKiem = ActionBarInputSearchState()
             tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
             timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
+            timKiem.onSearchListener = {search.postValue(getTypeSearch(it,itemId))}
             actionBarExt.setState(tieuDe)
         } else{
             val account = ActionBarTileAccount()
@@ -45,18 +45,18 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
         }
     }
 
-    private fun getTypeSearch(it: String, clazz: KClass<out Fragment>): IStringSearch? {
-        if (clazz == SachFragment::class) return object : IsSachSearch {
+    private fun getTypeSearch(it: String, clazz:Int): IStringSearch? {
+        if (clazz == R.string.sach ) return object : IsSachSearch {
             override var mValueSach: String = it
 
         }
-        if (clazz == DocGiaFragment::class) return object : IsDocGiaSearch {
+        if (clazz == R.string.doc_gia) return object : IsDocGiaSearch {
             override var mValueDocGia: String = it
         }
         return null
     }
 
-    inner class ActionBarInputSearchState : State {
+    private inner class ActionBarInputSearchState : State {
         private val hint = actionBarNavigator.hint
         lateinit var exitSearch: () -> Unit
         lateinit var onSearchListener: (String) -> Unit
@@ -79,7 +79,7 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
         }
     }
 
-    inner class ActionBarTitleAndSearchButtonState : State {
+    private inner class ActionBarTitleAndSearchButtonState : State {
         private val title = actionBarNavigator.title
         lateinit var clickSearch: () -> Unit
         override fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding {
@@ -91,7 +91,7 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
         }
     }
 
-    inner class ActionBarTileAccount : State {
+   private inner class ActionBarTileAccount : State {
         private val title = actionBarNavigator.title
         lateinit var clickLogout: () -> Unit
         override fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding {
@@ -103,9 +103,7 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
                 return this
             }
         }
-
     }
 }
 
 class ActionBarNavigator(val title: Int, val hint: Int)
-class ActionBarView(val title: Int)

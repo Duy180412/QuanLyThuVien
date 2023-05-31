@@ -5,6 +5,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.domain.model.Updatable
+import com.google.android.material.textfield.TextInputEditText
 
 fun View.onClick(callback: View.OnClickListener?) {
     val clickTime = 300
@@ -24,6 +25,14 @@ fun EditText.bindTo(function: () -> CharSequence?) {
         field.update(it.toString())
     }
 }
+fun TextInputEditText.bindTo(function: () -> CharSequence?) {
+    addTextChangedListener {
+        val field = function() as? Updatable ?: return@addTextChangedListener
+        it ?: return@addTextChangedListener
+        field.update(it.toString())
+    }
+}
+
 fun show(view: View, mValue: Boolean) {
     var isShow = if (mValue) View.VISIBLE else View.GONE
     if (view.visibility == isShow) return;

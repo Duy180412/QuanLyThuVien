@@ -7,7 +7,8 @@ interface Updatable {
 interface Validable {
     fun validate(): Boolean
 }
-interface Consumers<T> {
-    fun accpet(t: T)
+interface GetError {
+    fun getError():String
 }
+
 

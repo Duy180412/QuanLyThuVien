@@ -12,6 +12,7 @@ class LoginRepo(
         val isValid = arrayOf(value.id, value.password).all {
             it.cast<Validable>()?.validate() ?: true
         }
+
         if (!isValid) return false
         userLocalSource.setValue()
         return true

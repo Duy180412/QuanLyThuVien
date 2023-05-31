@@ -13,14 +13,13 @@ import com.example.qltvkotlin.databinding.FragmentSachBinding
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.domain.model.IStringSearch
 import com.example.qltvkotlin.domain.model.IsSachSearch
-import com.example.qltvkotlin.feature.actionbar.ActionBarExt
-import com.example.qltvkotlin.feature.actionbar.ActionBarTitleAndSearchSate
+import com.example.qltvkotlin.feature.main.MainActivity
 import com.example.qltvkotlin.feature.main.adapter.SachApdater
 import com.example.qltvkotlin.feature.main.adapter.SearchExt
+import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.router.Router
 import com.example.qltvkotlin.feature.presentation.router.Routes
-
 
 
 @Suppress("UNCHECKED_CAST")
@@ -31,8 +30,13 @@ class SachFragment : BaseFragment(R.layout.fragment_sach) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val apdater = SachApdater(binding.rycView)
+        val activity = requireActivity() as MainActivity
+        activity.actionBarMain.search.observe(viewLifecycleOwner) {
+            viewmodel.search(it)
+        }
         viewmodel.search.observe(viewLifecycleOwner) {
-            apdater.setList(it as List<ISachItem>)
+           val list = it.cast<List<ISachItem>>()!!
+            apdater.setList(list)
         }
         binding.btnAdd.onClick {
             Router.open(this, Routes.AddSach())
