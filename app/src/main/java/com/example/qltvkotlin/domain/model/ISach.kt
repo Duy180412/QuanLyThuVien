@@ -1,25 +1,41 @@
 package com.example.qltvkotlin.domain.model
 
+import com.example.qltvkotlin.datasource.bo.SachEdit
+
 
 interface ISach
 
 interface ISachItem {
-    val imgSach: String
+    val imgSach: Images
     val tenSach: String
     val tenTacGia: String
     val tong: String
     val conLai: String
 }
-interface ISachEdit{
-    val maSach:CharSequence
-    val imageSach:IImage
-    val tenSach:CharSequence
-    var loaiSach:String
-    var tenTacGia:String
-    var nhaXuatBan:String
-    var namXuatBan:String
-    var tongSach:String
-    var choThue:String
+interface ISachChange : ISach
+
+interface ISachReadOnly {
+    val maSach: String
+    val imageSach: Images
+    val tenSach: String
+    val loaiSach: String
+    val tenTacGia: String
+    val nhaXuatBan: String
+    val namXuatBan: String
+    val tongSach: String
+    val choThue: String
+}
+interface ISachEditable {
+    val iSachRead:ISachReadOnly
+    var maSach: Chars
+    var imageSach: Images
+    var tenSach: Chars
+    var loaiSach: Chars
+    var tenTacGia: Chars
+    var nhaXuatBan: Chars
+    var namXuatBan: Chars
+    var tongSach: Chars
+    var choThue: Chars
 }
 
 interface ImageSach : IImage

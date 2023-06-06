@@ -1,9 +1,11 @@
 package com.example.qltvkotlin.feature.presentation.extension
 
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import com.example.qltvkotlin.R
+import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.Updatable
 import com.google.android.material.textfield.TextInputEditText
 
@@ -19,13 +21,6 @@ fun View.onClick(callback: View.OnClickListener?) {
     }
 }
 fun EditText.bindTo(function: () -> CharSequence?) {
-    addTextChangedListener {
-        val field = function() as? Updatable ?: return@addTextChangedListener
-        it ?: return@addTextChangedListener
-        field.update(it.toString())
-    }
-}
-fun TextInputEditText.bindTo(function: () -> CharSequence?) {
     addTextChangedListener {
         val field = function() as? Updatable ?: return@addTextChangedListener
         it ?: return@addTextChangedListener

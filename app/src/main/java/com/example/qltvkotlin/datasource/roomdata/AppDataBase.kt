@@ -1,6 +1,7 @@
 package com.example.qltvkotlin.datasource.roomdata
 
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
@@ -20,7 +21,7 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
          var thuVienData: AppDataBase? = null
 
-        fun init(context: Context) {
+        fun init(context: Application) {
             thuVienData = databaseBuilder(
                 context,
                 AppDataBase::class.java, "data"

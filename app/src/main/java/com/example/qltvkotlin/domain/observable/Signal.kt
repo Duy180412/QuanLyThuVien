@@ -1,5 +1,8 @@
 package com.example.qltvkotlin.domain.observable
 
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+
 interface Signal {
     fun subscribe(subcription: () -> Unit): AutoCloseable
     fun emit()
@@ -37,4 +40,16 @@ interface Signal {
         }
 
     }
+}
+
+interface IDestroyObsever : DefaultLifecycleObserver {
+    override fun onDestroy(owner: LifecycleOwner) {
+        owner.lifecycle.removeObserver(this)
+        try {
+            onDestroyed()
+        } catch (ignored: Exception) {
+        }
+    }
+    @Throws(Exception::class)
+    fun onDestroyed()
 }

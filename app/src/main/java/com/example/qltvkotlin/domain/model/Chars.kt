@@ -1,10 +1,14 @@
 package com.example.qltvkotlin.domain.model
 
+import android.util.Log
 import com.example.qltvkotlin.domain.observable.Signal
 
 open class Chars(private var chars: String) : CharSequence, Updatable, HasIsValid, Validable, GetError, Signal by Signal.MultipleSubscription() {
-    override val length = chars.length
-    private lateinit var error: String
+
+    private var error: String = ""
+    override val length: Int
+        get() = chars.length
+
     override fun get(index: Int): Char {
         return chars[index]
     }
@@ -15,15 +19,19 @@ open class Chars(private var chars: String) : CharSequence, Updatable, HasIsVali
 
     override fun update(value: Any?) {
         this.chars = value?.toString().orEmpty()
+        emit()
     }
 
-    override val isValid= this.chars.isNotBlank()
+    override val isValid: Boolean
+        get() = this.chars.isNotBlank()
+
+
     override fun getError() = error
 
     override fun validate(): Boolean {
         val mValue = this.isValid
-        if(!mValue) error = "Không Để Trống"
-        return mValue.also { emit() }
+        if(!mValue) error = "Không Để Trống" else ""
+        return mValue
     }
 
     override fun toString(): String {

@@ -14,11 +14,10 @@ import com.example.qltvkotlin.feature.helper.StackNavigatorOwner
 import com.example.qltvkotlin.feature.presentation.router.FragmentRouting
 import com.example.qltvkotlin.feature.presentation.router.Routing
 
-class MainNavigationActivity : BaseActivity(R.layout.activity_navigation), StackNavigatorOwner,
-    ActionBarStateOwnr {
+class MainNavigationActivity : BaseActivity(R.layout.activity_navigation),StackNavigatorOwner, ActionBarStateOwnr {
     override lateinit var actionBarExt: ActionBarExt
     override lateinit var stackNavigator: StackNavigator
-    private lateinit var actionBarView:ActionBarViewState
+    lateinit var actionBarView:ActionBarViewState
     private val binding by viewBinding { ActivityNavigationBinding.bind(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +26,13 @@ class MainNavigationActivity : BaseActivity(R.layout.activity_navigation), Stack
         actionBarExt = ActionBarExt(binding.containertopbar, this)
 
 
-        if (arguments is Routing && arguments is FragmentRouting && savedInstanceState == null) {
+        if (arguments is Routing && arguments is FragmentRouting) {
             stackNavigator.navigateTo(arguments.clazzFragment, arguments.toBundle())
-            actionBarView = ActionBarViewState(arguments.clazzFragment,this, actionBarExt)
+            actionBarView = ActionBarViewState(arguments.clazzFragment, actionBarExt)
+
         }
+
     }
-
-
-
-
 }
 
 

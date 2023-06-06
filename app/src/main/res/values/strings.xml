@@ -9,6 +9,7 @@
     <string name="hint_seach_sach">Tìm Sách</string>
     <string name="title_docgia">Tất Cả Độc Giả</string>
     <string name="title_them_sach">Thêm Sách Mới</string>
+    <string name="title_info_sach">Thông Tin Sách</string>
     <string name="hint_seach_docgia">Tìm Độc Giả</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -22,7 +22,6 @@ import com.example.qltvkotlin.feature.presentation.router.Router
 import com.example.qltvkotlin.feature.presentation.router.Routes
 
 
-@Suppress("UNCHECKED_CAST")
 class SachFragment : BaseFragment(R.layout.fragment_sach) {
     private val binding by viewBinding { FragmentSachBinding.bind(this) }
     private val viewmodel by viewModel<VM>()
