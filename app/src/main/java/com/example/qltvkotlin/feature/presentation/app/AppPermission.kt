@@ -8,7 +8,7 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.qltvkotlin.widget.view.diaLogNotification
+import com.example.qltvkotlin.widget.view.DialogFactory
 
 interface AppPermissionOwer {
     val appPermission: AppPermission
@@ -23,7 +23,7 @@ interface AppPermissionOwer {
 
 class AppPermission(private val context: Context) {
     private val call = context as ActivityResultCaller
-
+    private val dialogFactory = DialogFactory(context)
     companion object {
         val PERMISSION_CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     }
@@ -31,14 +31,14 @@ class AppPermission(private val context: Context) {
     fun checkPermissonCamera(onClick: View.OnClickListener): View.OnClickListener {
         val requests = PermissionRequests {
             if (it) onClick.onClick(null)
-            else diaLogNotification(context,"Không có quyền")
+            else dialogFactory.notification( "Không có quyền")
         }
         return View.OnClickListener { requests.checkPermission() }
     }
 
 
     inner class PermissionRequests(
-       private val function: (Boolean) -> Unit
+        private val function: (Boolean) -> Unit
     ) : View.OnClickListener {
         private val mLauncher =
             call.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -57,7 +57,7 @@ class AppPermission(private val context: Context) {
             val boolean = PERMISSION_CAMERA.all {
                 ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
             }
-            if(boolean)function.invoke(true)
+            if (boolean) function.invoke(true)
             else onClick(null)
 
         }

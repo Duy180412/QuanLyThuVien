@@ -1,36 +1,61 @@
 package com.example.qltvkotlin.datasource.bo
 
 import com.example.qltvkotlin.domain.model.Chars
+import com.example.qltvkotlin.domain.model.DataTime
 import com.example.qltvkotlin.domain.model.HasChange
+import com.example.qltvkotlin.domain.model.IBookBackUp
+import com.example.qltvkotlin.domain.model.IBookGet
 import com.example.qltvkotlin.domain.model.ISach
-import com.example.qltvkotlin.domain.model.ISachEditable
-import com.example.qltvkotlin.domain.model.ISachReadOnly
+import com.example.qltvkotlin.domain.model.IBookSet
+import com.example.qltvkotlin.domain.model.IDocGia
+import com.example.qltvkotlin.domain.model.IDocGiaBackUp
+import com.example.qltvkotlin.domain.model.IDocGiaGet
+import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.Images
+import com.example.qltvkotlin.domain.model.PhoneNumberChar
 
 
-class SachEdit(iSachReadOnly: ISachReadOnly) : ISach, ISachEditable, HasChange {
-    override val iSachRead: ISachReadOnly = iSachReadOnly
-    override var maSach: Chars = Chars(iSachReadOnly.maSach)
-    override var imageSach: Images = iSachReadOnly.imageSach
-    override var tenSach: Chars = Chars(iSachReadOnly.tenSach)
-    override var loaiSach: Chars = Chars(iSachReadOnly.loaiSach)
-    override var tenTacGia: Chars = Chars(iSachReadOnly.tenTacGia)
-    override var nhaXuatBan: Chars = Chars(iSachReadOnly.nhaXuatBan)
-    override var namXuatBan: Chars = Chars(iSachReadOnly.namXuatBan)
-    override var tongSach: Chars = Chars(iSachReadOnly.tongSach)
-    override var choThue: Chars = Chars(iSachReadOnly.choThue)
+class BookEditable(private val iBookGet: IBookGet) : ISach, IBookSet, IBookBackUp,
+    HasChange {
+    override val bookRead = iBookGet
+    override var maSach = Chars(iBookGet.maSach)
+    override var imageSach = Images(iBookGet.imageSach)
+    override var tenSach = Chars(iBookGet.tenSach)
+    override var loaiSach = Chars(iBookGet.loaiSach)
+    override var tenTacGia = Chars(iBookGet.tenTacGia)
+    override var nhaXuatBan = Chars(iBookGet.nhaXuatBan)
+    override var namXuatBan = Chars(iBookGet.namXuatBan)
+    override var tongSach = Chars(iBookGet.tongSach)
+    override var choThue = Chars(iBookGet.choThue)
 
     override fun hasChange(): Boolean {
-        return iSachRead.maSach != maSach.toString() ||
-                iSachRead.tenSach != tenSach.toString() ||
-                iSachRead.loaiSach != loaiSach.toString() ||
-                iSachRead.tenTacGia != tenTacGia.toString() ||
-                iSachRead.nhaXuatBan != nhaXuatBan.toString() ||
-                iSachRead.namXuatBan != namXuatBan.toString() ||
-                iSachRead.tongSach != tongSach.toString()||
+        return iBookGet.maSach != maSach.toString() ||
+                iBookGet.tenSach != tenSach.toString() ||
+                iBookGet.loaiSach != loaiSach.toString() || iBookGet.tenTacGia != tenTacGia.toString() || iBookGet.nhaXuatBan != nhaXuatBan.toString() || iBookGet.namXuatBan != namXuatBan.toString() || iBookGet.tongSach != tongSach.toString() ||
                 this.imageSach.validate()
+    }
+
+}
 
 
+class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
+    IDocGiaBackUp,
+    HasChange {
+    override val docGiaRead = iDocGia
+    override var cmnd = Chars(iDocGia.cmnd)
+    override var images=  Images(iDocGia.images)
+    override var tenDocGia = Chars(iDocGia.tenDocGia)
+    override var ngayHetHan = DataTime(iDocGia.ngayHetHan)
+    override var sdt = PhoneNumberChar(iDocGia.sdt)
+    override var soLuongMuon = Chars(iDocGia.soLuongMuon)
+
+
+    override fun hasChange(): Boolean {
+        return iDocGia.cmnd != cmnd.toString() ||
+                iDocGia.tenDocGia != tenDocGia.toString() ||
+                iDocGia.ngayHetHan != ngayHetHan.toString() ||
+                iDocGia.sdt != sdt.toString() || iDocGia.soLuongMuon != soLuongMuon.toString() ||
+                this.images.validate()
     }
 
 }

@@ -2,8 +2,8 @@ package com.example.qltvkotlin
 
 import android.app.Application
 import com.example.qltvkotlin.datasource.roomdata.AppDataBase
-import com.example.qltvkotlin.feature.helper.AppFileManager
-import com.example.qltvkotlin.feature.presentation.app.AppPermission
+import com.example.qltvkotlin.feature.presentation.app.AppFileManager
+
 
 class MainApplication : Application() {
     override fun onCreate() {

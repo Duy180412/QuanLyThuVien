@@ -1,61 +1,66 @@
 package com.example.qltvkotlin.datasource.roomdata
+
+
 import com.example.qltvkotlin.data.model.DocGiaDTO
 import com.example.qltvkotlin.data.model.SachDTO
-import com.example.qltvkotlin.domain.model.IDocGiaItem
-import com.example.qltvkotlin.domain.model.ISachItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class ThuVienDataRepo {
-    private var listSach: List<SachDTO> = emptyList()
-    private var listDocGia: List<DocGiaDTO> = emptyList()
+    private val thuVienData = AppDataBase.getInstance()
 
-    fun searchSach(mKey: String): List<ISachItem> {
-        val keySearch = mKey.lowercase().trim()
-        val list = listSach.run {
-            if (keySearch.isNotBlank()) filter {
-                it.tenSach.lowercase().contains(keySearch)
-            } else this
-        }.map { creatSachItem(it) }
-        return list
+    suspend fun getAllBook(): List<SachDTO> {
+        return thuVienData.getAllSach()
+    }
+    suspend fun getAllDocGia(): List<DocGiaDTO> {
+        return thuVienData.getAllDocGia()
     }
 
-    fun searchDocGia(mKey: String): List<IDocGiaItem> {
-        val keySearch = mKey.lowercase().trim()
-        val list = listDocGia.run {
-            if (keySearch.isNotBlank()) filter {
-                it.tenDocGia.lowercase().contains(keySearch)
-            } else this
-        }.map { creatDocGiaItem(it) }
-        return list
+    suspend fun addBook(sachDto: SachDTO): Boolean {
+        val addResult = thuVienData.addSach(sachDto)
+        return addResult > 0
     }
 
-    private fun creatDocGiaItem(it: DocGiaDTO): IDocGiaItem {
-        return object : IDocGiaItem {
-            override val cmnd = it.cmnd
-            override val tenDocGia = it.tenDocGia
-            override val sdt = it.sdt
-            override val ngayHetHan = it.ngayHetHan
-            override val soLuongMuon = it.soLuongMuon
+    suspend fun updateBook(sachDto: SachDTO): Boolean {
+        val result = withContext(Dispatchers.IO) {
+            thuVienData.updateSach(sachDto)
         }
+        return result > 0
     }
 
-    private fun creatSachItem(sach: SachDTO): ISachItem {
-        return object : ISachItem {
-            override val imgSach = sach.imageSach
-            override val tenSach = sach.tenSach
-            override val tenTacGia = sach.tenTacGia
-            override val tong = sach.tongSach
-            override val conLai =
-                (Integer.parseInt(sach.tongSach) - Integer.parseInt(sach.choThue)).toString()
-        }
-    }
-    companion object{
-        val thuVienDataRepo = ThuVienDataRepo()
+    suspend fun deleteBook(id: String): Boolean {
+        val result = thuVienData.deleteSach(id)
+        return result > 0
     }
 
-    init {
-        val sach = SachDTO("222","","Đây Là Tên Sách","","","","","12","2")
-        val sach2 = SachDTO("223","","Không","","","","","12","2")
-        listSach = arrayListOf(sach,sach2)
+    suspend fun checkSach(maCheck: String): Boolean {
+        return thuVienData.checkSachExists(maCheck)
+    }
+
+    suspend fun getSachById(maSach: String): SachDTO? {
+        return thuVienData.getSachById(maSach)
+    }
+
+    suspend fun delDocGiaByCmnd(cmnd: String): Boolean {
+        val result = thuVienData.deleteDocGia(cmnd)
+        return result > 0
+    }
+
+    suspend fun getDocGiaByCmnd(cmnd: String): DocGiaDTO? {
+        return thuVienData.getDocGiaByCmnd(cmnd)
+    }
+
+   suspend fun addDocGia(docGia: DocGiaDTO): Boolean {
+       val addResult = thuVienData.addDocGia(docGia)
+       return addResult > 0
+    }
+
+   suspend fun checkDocGia(cmnd: String): Boolean {
+       return thuVienData.checkDocGiaExists(cmnd)
+    }
+
+    companion object {
+        val instance = ThuVienDataRepo()
     }
 }

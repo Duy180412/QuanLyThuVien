@@ -8,9 +8,9 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.qltvkotlin.domain.model.IsImageUri
-import com.example.qltvkotlin.feature.helper.AppFileManager
+import com.example.qltvkotlin.feature.presentation.app.AppFileManager
 
-interface TakePhotoActionOwrn {
+interface TakePhotoActionOwner {
     val takePhotoAction: TakePhotoAction
         get() {
             return when (this) {

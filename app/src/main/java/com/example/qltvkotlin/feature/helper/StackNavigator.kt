@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.feature.main.account.AccountFragment
 import com.example.qltvkotlin.feature.main.docgia.DocGiaFragment
@@ -32,7 +33,7 @@ class StackNavigator(
         manager.beginTransaction().apply {
             val lastFragment = getLastFragment()
             if (lastFragment != null) detach(lastFragment)
-            add(frameLayoutId,clazz.java,arguments,createTag(clazz))
+            add(frameLayoutId, clazz.java, arguments, createTag(clazz))
         }.commit()
     }
 
@@ -42,7 +43,8 @@ class StackNavigator(
     }
 
     private fun getLastFragment(): Fragment? {
-        return manager.fragments.lastOrNull()
+        val list =  manager.fragments
+        return list.lastFragmnet2()
     }
 
     fun navigateTo(selectedItemId: Int) {
@@ -54,6 +56,39 @@ class StackNavigator(
         val fragment = getLastFragment()!!
         return routing.requireKeyOf(fragment::class)
     }
-
-
 }
+
+fun <T> List<T>.lastFragmnet(): T? {
+    if (isEmpty()) return null
+    val lastIndex = this.lastIndex
+    return when (this[lastIndex]) {
+        is SupportRequestManagerFragment -> this.getOrNull(lastIndex - 1)
+        else -> this.lastOrNull()
+    }
+}
+
+fun List<Fragment>.lastFragmnet2(): Fragment? {
+    val listFragment = listOf(
+        SachFragment::class,
+        AccountFragment::class,
+        DocGiaFragment::class,
+        MuonThueFragment::class
+    )
+    for (i in lastIndex downTo 0) {
+        val fragment = get(i)
+        if (listFragment.contains(fragment::class)) {
+            return fragment
+        }
+    }
+    return null
+//    var lastFragment: Fragment? = null
+//    if (this.isEmpty()) return lastFragment
+//    for (i in this.lastIndex downTo 0) {
+//        val fragmentClass = this[i]
+//        if (listFragment.any { it == fragmentClass }) {
+//            lastFragment = fragmentClass
+//        }
+//    }
+//    return lastFragment
+}
+

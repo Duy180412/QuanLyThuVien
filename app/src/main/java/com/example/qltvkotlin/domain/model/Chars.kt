@@ -5,7 +5,7 @@ import com.example.qltvkotlin.domain.observable.Signal
 
 open class Chars(private var chars: String) : CharSequence, Updatable, HasIsValid, Validable, GetError, Signal by Signal.MultipleSubscription() {
 
-    private var error: String = ""
+     var error: String = ""
     override val length: Int
         get() = chars.length
 
@@ -26,7 +26,7 @@ open class Chars(private var chars: String) : CharSequence, Updatable, HasIsVali
         get() = this.chars.isNotBlank()
 
 
-    override fun getError() = error
+    override fun getMess() = error
 
     override fun validate(): Boolean {
         val mValue = this.isValid

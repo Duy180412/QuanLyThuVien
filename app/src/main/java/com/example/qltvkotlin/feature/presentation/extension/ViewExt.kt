@@ -5,9 +5,8 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.Updatable
-import com.google.android.material.textfield.TextInputEditText
+
 
 fun View.onClick(callback: View.OnClickListener?) {
     val clickTime = 300
@@ -20,6 +19,7 @@ fun View.onClick(callback: View.OnClickListener?) {
         }
     }
 }
+
 fun EditText.bindTo(function: () -> CharSequence?) {
     addTextChangedListener {
         val field = function() as? Updatable ?: return@addTextChangedListener
@@ -29,7 +29,7 @@ fun EditText.bindTo(function: () -> CharSequence?) {
 }
 
 fun show(view: View, mValue: Boolean) {
-    var isShow = if (mValue) View.VISIBLE else View.GONE
+    val isShow = if (mValue) View.VISIBLE else View.GONE
     if (view.visibility == isShow) return;
     view.visibility = isShow
 }

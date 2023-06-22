@@ -7,7 +7,6 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemTabMainBinding
 import com.example.qltvkotlin.feature.presentation.extension.onClick
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BottomNavigatorMenuMain(private val viewGroup: LinearLayout) {
     private var mOnItemSelectedListener: (id: Int) -> Boolean = { false }

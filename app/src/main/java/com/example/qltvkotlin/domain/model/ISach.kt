@@ -1,47 +1,63 @@
 package com.example.qltvkotlin.domain.model
 
-import com.example.qltvkotlin.datasource.bo.SachEdit
-
-
 interface ISach
-
 interface ISachItem {
+    val maSach: String
     val imgSach: Images
     val tenSach: String
     val tenTacGia: String
     val tong: String
     val conLai: String
 }
-interface ISachChange : ISach
 
-interface ISachReadOnly {
-    val maSach: String
+interface IBookCreate : ISach {
+    val maSach: CharSequence
     val imageSach: Images
-    val tenSach: String
-    val loaiSach: String
-    val tenTacGia: String
-    val nhaXuatBan: String
-    val namXuatBan: String
-    val tongSach: String
-    val choThue: String
-}
-interface ISachEditable {
-    val iSachRead:ISachReadOnly
-    var maSach: Chars
-    var imageSach: Images
-    var tenSach: Chars
-    var loaiSach: Chars
-    var tenTacGia: Chars
-    var nhaXuatBan: Chars
-    var namXuatBan: Chars
-    var tongSach: Chars
-    var choThue: Chars
+    val tenSach: CharSequence
+    val loaiSach: CharSequence
+    val tenTacGia: CharSequence
+    val nhaXuatBan: CharSequence
+    val namXuatBan: CharSequence
+    val tongSach: CharSequence
+    val choThue: CharSequence
 }
 
-interface ImageSach : IImage
+interface IBookGet : IBookCreate, ISach {
+    override val maSach: String
+        get() = ""
+    override val imageSach: Images
+        get() = Images(object : IsImageEmpty {})
+    override val tenSach: String
+        get() = ""
+    override val loaiSach: String
+        get() = ""
 
-
-interface IsSachSearch : IStringSearch {
-    var mValueSach: String
+    override val tenTacGia: String
+        get() = ""
+    override val nhaXuatBan: String
+        get() = ""
+    override val namXuatBan: String
+        get() = ""
+    override val tongSach: String
+        get() = ""
+    override val choThue: String
+        get() = ""
 }
+
+interface IBookSet : IBookCreate, ISach {
+    override var maSach: Chars
+    override var imageSach: Images
+    override var tenSach: Chars
+    override var loaiSach: Chars
+    override var tenTacGia: Chars
+    override var nhaXuatBan: Chars
+    override var namXuatBan: Chars
+    override var tongSach: Chars
+    override var choThue: Chars
+}
+
+interface IBookBackUp : ISach {
+    val bookRead: IBookGet
+}
+
 

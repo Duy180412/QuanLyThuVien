@@ -6,28 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListRycviewBinding
+import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.feature.presentation.extension.checkStringNull
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
-class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachViewHolder>() {
-    private val mList = ArrayList<ISachItem>()
+class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.DocGiaViewHolder>() {
+    private val mList = ArrayList<IDocGiaItem>()
     lateinit var onClickItem: (String) -> Unit
     lateinit var onClickDel: (String) -> Unit
-    private var backUpItemList: BackUpItemList<ISachItem>? = null
+    private var backUpItemList: BackUpItemList<IDocGiaItem>? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SachViewHolder {
-        return SachViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocGiaViewHolder {
+        return DocGiaViewHolder(parent)
     }
 
     override fun getItemCount(): Int {
         return mList.size
     }
 
-    override fun onBindViewHolder(holder: SachViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DocGiaViewHolder, position: Int) {
         holder.bind(position)
-        holder.itemView.onClick { onClickItem(mList[position].maSach) }
+        holder.itemView.onClick { onClickItem(mList[position].cmnd) }
     }
 
     init {
@@ -44,25 +45,25 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(mList: List<ISachItem>) {
+    fun setList(mList: List<IDocGiaItem>) {
         this.mList.clear()
         this.mList.addAll(mList)
         notifyDataSetChanged()
     }
 
-    inner class SachViewHolder(
+    inner class DocGiaViewHolder(
         parent: ViewGroup,
         private val binding: ItemListRycviewBinding = parent.bindingOf(ItemListRycviewBinding::inflate),
     ) : ViewHolder(binding.root) {
         fun bind(position: Int) {
             val itemList = mList[position]
-            binding.imageview.setAvatar(itemList.imgSach.getImage())
-            binding.ten.text = itemList.tenSach.checkStringNull()
-            binding.tenTacGia.text = itemList.tenTacGia.checkStringNull()
-            binding.tongSach.text = itemList.tong.checkStringNull()
-            binding.conLai.text = itemList.conLai.checkStringNull()
+            binding.imageview.setAvatar(itemList.images.getImage())
+            binding.ten.text = itemList.tenDocGia.checkStringNull()
+            binding.tenTacGia.text = itemList.sdt.checkStringNull()
+            binding.tongSach.text = itemList.ngayHetHan.checkStringNull()
+            binding.conLai.text = itemList.soLuongMuon.checkStringNull()
             binding.btnDel.onClick {
-                onClickDel(itemList.maSach)
+                onClickDel(itemList.cmnd)
                 backUpItemList = BackUpItemList(position, mList[position])
                 mList.remove(itemList)
                 notifyItemRemoved(position)
@@ -73,5 +74,4 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
 
 }
 
-class BackUpItemList<T>(val position: Int, val itemList: T)
 

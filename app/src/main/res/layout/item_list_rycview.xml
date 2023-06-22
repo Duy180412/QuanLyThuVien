@@ -5,24 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.example.qltvkotlin.widget.ImageViewCustom
         android:id="@+id/imageview"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ten_sach"
+        android:id="@+id/ten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="18dp"
         android:text="Tên Sách"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/imageview"
@@ -32,34 +32,48 @@
         android:id="@+id/ten_tac_gia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:text="Tác Giả"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/imageview"
-        app:layout_constraintTop_toBottomOf="@+id/ten_sach" />
+        app:layout_constraintTop_toBottomOf="@+id/ten" />
 
     <TextView
         android:id="@+id/tong_sach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Tổng: 24"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_del"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/con_lai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Cho Thuê: 15"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_del"
         app:layout_constraintTop_toBottomOf="@+id/tong_sach" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_del"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+        tools:tint="@color/black" />
 </androidx.constraintlayout.widget.ConstraintLayout>

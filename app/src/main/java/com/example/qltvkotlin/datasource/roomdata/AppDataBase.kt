@@ -19,7 +19,7 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun ThuVienDao(): ThuVienDao
 
     companion object {
-         var thuVienData: AppDataBase? = null
+         private var thuVienData: AppDataBase? = null
 
         fun init(context: Application) {
             thuVienData = databaseBuilder(
@@ -33,6 +33,5 @@ abstract class AppDataBase : RoomDatabase() {
             return thuVienData!!.ThuVienDao()
         }
     }
-
 }
 
