@@ -47,7 +47,7 @@ class BottomNavigatorMenuMain(private val viewGroup: LinearLayout) {
         mOnItemSelectedListener = function
     }
 
-    inner class SimpleViewHolder(private val it: MenuItemView) : ViewHolder {
+    inner class SimpleViewHolder(it: MenuItemView) : ViewHolder {
         private val binding = viewGroup.bindingOf(ItemTabMainBinding::inflate)
         override val item = it
         override val view = binding.root

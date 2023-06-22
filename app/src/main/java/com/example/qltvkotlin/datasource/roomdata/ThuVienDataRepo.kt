@@ -13,6 +13,7 @@ class ThuVienDataRepo {
     suspend fun getAllBook(): List<SachDTO> {
         return thuVienData.getAllSach()
     }
+
     suspend fun getAllDocGia(): List<DocGiaDTO> {
         return thuVienData.getAllDocGia()
     }
@@ -23,9 +24,7 @@ class ThuVienDataRepo {
     }
 
     suspend fun updateBook(sachDto: SachDTO): Boolean {
-        val result = withContext(Dispatchers.IO) {
-            thuVienData.updateSach(sachDto)
-        }
+        val result = thuVienData.updateSach(sachDto)
         return result > 0
     }
 
@@ -51,13 +50,18 @@ class ThuVienDataRepo {
         return thuVienData.getDocGiaByCmnd(cmnd)
     }
 
-   suspend fun addDocGia(docGia: DocGiaDTO): Boolean {
-       val addResult = thuVienData.addDocGia(docGia)
-       return addResult > 0
+    suspend fun addDocGia(docGia: DocGiaDTO): Boolean {
+        val addResult = thuVienData.addDocGia(docGia)
+        return addResult > 0
     }
 
-   suspend fun checkDocGia(cmnd: String): Boolean {
-       return thuVienData.checkDocGiaExists(cmnd)
+    suspend fun checkDocGia(cmnd: String): Boolean {
+        return thuVienData.checkDocGiaExists(cmnd)
+    }
+
+    suspend fun updateDocGia(docGia: DocGiaDTO):Boolean {
+        val result = thuVienData.updateDocGia(docGia)
+        return result > 0
     }
 
     companion object {

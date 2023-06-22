@@ -6,6 +6,7 @@ import com.example.qltvkotlin.domain.model.IDocGia
 import com.example.qltvkotlin.domain.model.IDocGiaGet
 import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IDocGiaSet
+import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.createImagesFromUrl
 import com.example.qltvkotlin.feature.helper.Role
 
@@ -99,9 +100,15 @@ class DocGiaRepo {
         }
     }
 
-    fun update(docGiaEdit: IDocGiaSet) {
+   suspend fun update(docGiaEdit: IDocGiaSet) {
+        val urlImg = saveImage(docGiaEdit.cmnd.toString(),docGiaEdit.images.getImage())
+        val updateDocGia = createDocGiaDTO(docGiaEdit,urlImg)
+        thuVien.updateDocGia(updateDocGia)
 
+    }
 
+    private fun saveImage(nameImage: String, image: IImage): String {
+        return imagesRepo.saveImage(nameImage,image,Role.DocGia)
     }
 
 
