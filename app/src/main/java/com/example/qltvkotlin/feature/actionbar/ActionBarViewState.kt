@@ -9,6 +9,7 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.TopbarViewBinding
 import com.example.qltvkotlin.feature.main.docgia.add.AddDocGiaFragment
 import com.example.qltvkotlin.feature.main.docgia.info.InfoDocGiaFragment
+import com.example.qltvkotlin.feature.main.muonthue.add.AddMuonThueFragment
 import com.example.qltvkotlin.feature.main.sach.addsach.AddSachFragment
 import com.example.qltvkotlin.feature.main.sach.infosach.InfoSachFragment
 import com.example.qltvkotlin.feature.presentation.extension.onClick
@@ -27,7 +28,8 @@ class ActionBarViewState(
         AddSachFragment::class to ActionBarSate(R.string.title_them_sach, true),
         InfoSachFragment::class to ActionBarSate(R.string.title_info_sach),
         AddDocGiaFragment::class to ActionBarSate(R.string.title_them_docgia,true),
-        InfoDocGiaFragment::class to ActionBarSate(R.string.title_info_docgia)
+        InfoDocGiaFragment::class to ActionBarSate(R.string.title_info_docgia),
+        AddMuonThueFragment::class to ActionBarSate(R.string.title_them_muon,true)
 
     )
 
@@ -52,9 +54,6 @@ class ActionBarViewState(
         }
 
     }
-
-
-
 
 }
 

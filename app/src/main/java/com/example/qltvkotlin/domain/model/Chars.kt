@@ -1,6 +1,5 @@
 package com.example.qltvkotlin.domain.model
 
-import android.util.Log
 import com.example.qltvkotlin.domain.observable.Signal
 
 open class Chars(private var chars: String) : CharSequence, Updatable, HasIsValid, Validable, GetError, Signal by Signal.MultipleSubscription() {
@@ -28,6 +27,7 @@ open class Chars(private var chars: String) : CharSequence, Updatable, HasIsVali
 
     override fun getMess() = error
 
+    @Suppress("UNUSED_EXPRESSION")
     override fun validate(): Boolean {
         val mValue = this.isValid
         if(!mValue) error = "Không Để Trống" else ""

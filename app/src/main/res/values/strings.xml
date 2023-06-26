@@ -12,6 +12,7 @@
     <string name="title_info_sach">Thông Tin Sách</string>
     <string name="title_them_docgia">Thêm Độc Giả Mới</string>
     <string name="title_info_docgia">Thông Tin Độc Giả</string>
+    <string name="title_them_muon">Thêm Độc Giả Mượn Sách</string>
     <string name="hint_seach_docgia">Tìm Độc Giả</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

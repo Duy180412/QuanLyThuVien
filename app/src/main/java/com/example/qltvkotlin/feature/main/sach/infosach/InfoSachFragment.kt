@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.app.BaseFragment
+import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.databinding.FragmentInfoSachBinding
@@ -23,22 +23,18 @@ import com.example.qltvkotlin.domain.model.bindImageOwner
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
 import com.example.qltvkotlin.domain.repo.SachRepo
-import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
-import com.example.qltvkotlin.feature.helper.OnBackClick
 import com.example.qltvkotlin.feature.helper.lazyArgument
-import com.example.qltvkotlin.feature.main.mainnavigato.MainNavigationActivity
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.router.Routes
 
 
-class InfoSachFragment : BaseFragment(R.layout.fragment_info_sach), TakePhotoActionOwner {
+class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
     private val binding by viewBinding { FragmentInfoSachBinding.bind(this) }
     private val viewModel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoSach>()
 
-    private lateinit var mActivity: MainNavigationActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setSach(args.value?.id)
@@ -47,22 +43,19 @@ class InfoSachFragment : BaseFragment(R.layout.fragment_info_sach), TakePhotoAct
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mActivity = requireActivity() as MainNavigationActivity
-        onBackClick()
         takePhoto()
-        mActivity.actionBarView.onClickEditAndSave = { it -> xuLySuaLuu(it) }
         viewModel.book.observe(viewLifecycleOwner, this::bindView)
         viewModel.addSuccess.observe(viewLifecycleOwner) { toast.invoke(it) }
     }
 
-    private fun onBackClick() {
-        val onBackClick = OnBackClick(mActivity)
-        onBackClick.checkValueWhenClickBack(
-            funCheck = { viewModel.checkHasChange() },
-            funcRun = { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-        )
-        mActivity.actionBarView.onClickBack = { onBackClick.handleOnBackPressed() }
-        mActivity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackClick)
+
+
+    override fun getRun(): () -> Unit {
+        return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
+    }
+
+    override fun getCheck(): () -> Boolean {
+        return { viewModel.checkHasChange() }
     }
 
     private fun takePhoto() {
@@ -71,20 +64,19 @@ class InfoSachFragment : BaseFragment(R.layout.fragment_info_sach), TakePhotoAct
                 takePhotoAction.fromCamera { viewModel.setPhoto(it) })
         )
         binding.thuvien.onClick(takePhotoAction.fromLibrary { viewModel.setPhoto(it) })
-
     }
 
 
-    private fun xuLySuaLuu(button: View) {
+    override fun clickEditAndSave(it: View) {
         val iSach = viewModel.book.value
         if (iSach !is IBookSet) {
             viewModel.setSuaSach()
-            button.isSelected = true
+            it.isSelected = true
             return
         }
         if (!viewModel.checkHasChange()) {
             viewModel.tatSuaSach()
-            button.isSelected = false
+            it.isSelected = false
             return
         }
         if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
@@ -204,7 +196,5 @@ class InfoSachFragment : BaseFragment(R.layout.fragment_info_sach), TakePhotoAct
             val value = this.book.value.cast<IBookSet>()
             value?.imageSach?.update(it)
         }
-
     }
-
 }

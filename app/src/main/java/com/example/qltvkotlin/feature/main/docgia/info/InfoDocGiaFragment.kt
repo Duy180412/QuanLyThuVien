@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.app.BaseFragment
+import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.databinding.FragmentInfoDocGiaBinding
@@ -24,20 +24,17 @@ import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
 import com.example.qltvkotlin.domain.repo.DocGiaRepo
 import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
-import com.example.qltvkotlin.feature.helper.OnBackClick
 import com.example.qltvkotlin.feature.helper.lazyArgument
-import com.example.qltvkotlin.feature.main.mainnavigato.MainNavigationActivity
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.router.Routes
 import com.example.qltvkotlin.widget.view.DateOnClick
 
-class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePhotoActionOwner {
+class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia){
     private val binding by viewBinding { FragmentInfoDocGiaBinding.bind(this) }
     private val viewModel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoDocGia>()
-    private lateinit var mActivity: MainNavigationActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setDocGia(args.value?.id)
@@ -46,20 +43,17 @@ class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePho
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mActivity = requireActivity() as MainNavigationActivity
-        onBackClick()
         takePhoto()
-        mActivity.actionBarView.onClickEditAndSave = { it -> xuLySuaLuu(it) }
         viewModel.docGia.observe(viewLifecycleOwner, this::bindView)
         viewModel.addSuccess.observe(viewLifecycleOwner) { toast.invoke(it) }
     }
 
-    private fun onBackClick() {
-        val onBackClick = OnBackClick(mActivity)
-        onBackClick.checkValueWhenClickBack(funCheck = { viewModel.checkHasChange() },
-            funcRun = { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) })
-        mActivity.actionBarView.onClickBack = { onBackClick.handleOnBackPressed() }
-        mActivity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackClick)
+    override fun getRun(): () -> Unit {
+        return  { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
+    }
+
+    override fun getCheck(): () -> Boolean {
+        return { viewModel.checkHasChange() }
     }
 
     private fun takePhoto() {
@@ -69,17 +63,16 @@ class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePho
         binding.thuvien.onClick(takePhotoAction.fromLibrary { viewModel.setPhoto(it) })
     }
 
-
-    private fun xuLySuaLuu(button: View) {
+    override fun clickEditAndSave(it: View) {
         val iSach = viewModel.docGia.value
         if (iSach !is IDocGiaSet) {
             viewModel.setSuaDocGia()
-            button.isSelected = true
+            it.isSelected = true
             return
         }
         if (!viewModel.checkHasChange()) {
             viewModel.tatSuaDocGia()
-            button.isSelected = false
+            it.isSelected = false
             return
         }
         if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
@@ -110,16 +103,16 @@ class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePho
             }
         }
         binding.ngayhethanNhap.onClick(DateOnClick(value.ngayHetHan))
-        value.ngayHetHan.also { it->
+        value.ngayHetHan.also { it ->
             checkAndShowError(it, binding.ngayhethan)
-            bindCharOwner(this,it){
+            bindCharOwner(this, it) {
                 checkAndShowError(it, binding.ngayhethan)
             }
         }
-        value.sdt.also {it ->
-            checkAndShowError(it,binding.sdt)
-            bindCharOwner(this,it){
-                checkAndShowError(it,binding.sdt)
+        value.sdt.also { it ->
+            checkAndShowError(it, binding.sdt)
+            bindCharOwner(this, it) {
+                checkAndShowError(it, binding.sdt)
             }
         }
 
@@ -130,7 +123,7 @@ class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePho
         binding.tendocgiaNhap.bindTo { value?.tenDocGia }
         binding.ngayhethanNhap.bindTo { value?.ngayHetHan }
         binding.sdtNhap.bindTo { value?.sdt }
-        binding.soluongmuonNhap.bindTo { value?.soLuongMuon}
+        binding.soluongmuonNhap.bindTo { value?.soLuongMuon }
     }
 
     private fun setEditView(value: Boolean) {
@@ -187,7 +180,8 @@ class InfoDocGiaFragment : BaseFragment(R.layout.fragment_info_doc_gia), TakePho
             launch {
                 val docGiaEdit = docGia.value.cast<IDocGiaSet>()
                 docGiaEdit ?: throw Exception("Lỗi Hệ Thống")
-                check = checkConditionChar(docGiaEdit.tenDocGia,docGiaEdit.sdt,docGiaEdit.ngayHetHan)
+                check =
+                    checkConditionChar(docGiaEdit.tenDocGia, docGiaEdit.sdt, docGiaEdit.ngayHetHan)
             }
             return check
         }

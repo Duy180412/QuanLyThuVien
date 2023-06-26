@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.app.BaseFragment
+import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.databinding.FragmentAddDocGiaBinding
@@ -20,24 +20,19 @@ import com.example.qltvkotlin.domain.model.bindCharOwner
 import com.example.qltvkotlin.domain.model.bindImageOwner
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
-import com.example.qltvkotlin.feature.helper.OnBackClick
 import com.example.qltvkotlin.feature.main.help.AddNewDocGia
-import com.example.qltvkotlin.feature.main.mainnavigato.MainNavigationActivity
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.widget.view.DateOnClick
 
-class AddDocGiaFragment : BaseFragment(R.layout.fragment_add_doc_gia),
-    TakePhotoActionOwner {
+class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) {
 
     private val binding by viewBinding { FragmentAddDocGiaBinding.bind(this) }
     private val viewModel by viewModels<VM>()
-    private lateinit var mActivity: MainNavigationActivity
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mActivity = requireActivity() as MainNavigationActivity
-        val onBackClick = OnBackClick(mActivity)
         editTextOnChange()
         takePhoto()
         viewModel.newDocGia.observe(viewLifecycleOwner) {
@@ -47,14 +42,18 @@ class AddDocGiaFragment : BaseFragment(R.layout.fragment_add_doc_gia),
             dialogFactory.notification(it.message!!)
         }
         viewModel.addSuccess.observe(viewLifecycleOwner) { closeFragment(it) }
-        onBackClick.checkValueWhenClickBack(
-            funCheck = { viewModel.checkHasChange() },
-            funcRun = { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-        )
+    }
 
-        mActivity.actionBarView.onClickBack = { onBackClick.handleOnBackPressed() }
-        mActivity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackClick)
-        mActivity.actionBarView.onClickEditAndSave = { viewModel.saveDocGia() }
+    override fun clickEditAndSave(it: View) {
+        viewModel.saveDocGia()
+    }
+
+    override fun getRun(): () -> Unit {
+       return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
+    }
+
+    override fun getCheck(): () -> Boolean {
+        return { viewModel.checkHasChange() }
     }
 
     private fun closeFragment(it: String) {

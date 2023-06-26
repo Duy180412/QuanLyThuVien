@@ -7,6 +7,7 @@ import com.example.qltvkotlin.feature.login.LoginActivity
 import com.example.qltvkotlin.feature.main.MainActivity
 import com.example.qltvkotlin.feature.main.docgia.add.AddDocGiaFragment
 import com.example.qltvkotlin.feature.main.docgia.info.InfoDocGiaFragment
+import com.example.qltvkotlin.feature.main.muonthue.add.AddMuonThueFragment
 import com.example.qltvkotlin.feature.main.sach.addsach.AddSachFragment
 import com.example.qltvkotlin.feature.main.sach.infosach.InfoSachFragment
 import kotlinx.parcelize.Parcelize
@@ -49,6 +50,11 @@ object Routes {
     class InfoDocGia(val id: String) : FragmentRouting {
         override val clazzFragment: KClass<out Fragment>
             get() = InfoDocGiaFragment::class
+    }
+    @Parcelize
+    class AddMuon : FragmentRouting {
+        override val clazzFragment: KClass<out Fragment>
+            get() = AddMuonThueFragment::class
     }
 
 
