@@ -15,7 +15,6 @@ interface ActionBarStateOwnr {
 
 class ActionBarExt(
     private val frameLayout: FrameLayout,
-    private val context: Context
 ) {
 
     fun setState(state: State) {

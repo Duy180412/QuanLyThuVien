@@ -1,10 +1,12 @@
 package com.example.qltvkotlin.app
 
 
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -20,6 +22,14 @@ fun <T : ViewBinding> AppCompatActivity.viewBinding(function: View.() -> T) =
 fun <T : ViewBinding> ViewGroup.bindingOf(function: (LayoutInflater, ViewGroup, Boolean) -> T): T {
     return function(LayoutInflater.from(context), this, false)
 }
+inline fun <reified T : ViewBinding> DialogFragment.viewBinding(
+    crossinline bindingInflater: (LayoutInflater) -> T
+): Lazy<T?> {
+    return lazy(LazyThreadSafetyMode.NONE) {
+        bindingInflater.invoke(layoutInflater)
+    }
+}
+
 fun <T : ViewBinding> Fragment.viewBinding(function: View.() -> T): Lazy<T> = object :
     Lazy<T>,
     LifecycleEventObserver {

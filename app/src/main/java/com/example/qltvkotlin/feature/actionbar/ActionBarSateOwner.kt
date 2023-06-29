@@ -18,8 +18,8 @@ class ActionBarTitleAndSearchSate(itemId: Int, actionBarExt: ActionBarExt) {
     init {
         actionBarNavigator = routing.requireValueOf(itemId)
         if (itemId != R.string.account) {
-            val tieuDe = ActionBarTitleAndSearchButtonState(actionBarNavigator)
-            val timKiem = ActionBarInputSearchState(actionBarNavigator)
+            val tieuDe = ActionBarTitleAndSearchButtonState(actionBarNavigator.hint)
+            val timKiem = ActionBarInputSearchState(actionBarNavigator.hint)
             tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
             timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
             timKiem.onSearchListener = { search.postValue(it) }

@@ -21,7 +21,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), StackNavigatorOwner,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val tabAdapter = BottomNavigatorMenuMain(binding.containerMainNavigation)
-        actionBarExt = ActionBarExt(binding.containertopbar, this)
+        actionBarExt = ActionBarExt(binding.topbar.containertopbar)
         stackNavigator = StackNavigator(supportFragmentManager, binding.contentview.id)
         stackNavigator.navigateTo(tabAdapter.selectedItemId)
         actionBarMain = ActionBarTitleAndSearchSate(tabAdapter.selectedItemId, actionBarExt)

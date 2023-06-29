@@ -23,7 +23,7 @@ class MainNavigationActivity : BaseActivity(R.layout.activity_navigation),StackN
         super.onCreate(savedInstanceState)
         stackNavigator = StackNavigator(supportFragmentManager, R.id.contentview)
         val arguments = Arguments.getArgumentsFrom(intent?.extras) ?: return
-        actionBarExt = ActionBarExt(binding.containertopbar, this)
+        actionBarExt = ActionBarExt(binding.containertopbar)
 
 
         if (arguments is Routing && arguments is FragmentRouting) {

@@ -8,8 +8,7 @@ import com.example.qltvkotlin.databinding.TopbarSearchBinding
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.extension.show
 
-class ActionBarInputSearchState(actionBarNavigator: ActionBarNavigator) : State {
-    private val hint = actionBarNavigator.hint
+class ActionBarInputSearchState(private val hint: Int) : State {
     lateinit var exitSearch: () -> Unit
     lateinit var onSearchListener: (String) -> Unit
     override fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding {

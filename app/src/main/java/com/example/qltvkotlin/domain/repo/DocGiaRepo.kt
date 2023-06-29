@@ -9,6 +9,7 @@ import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.createImagesFromUrl
 import com.example.qltvkotlin.feature.helper.Role
+import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 
 
 class DocGiaRepo {
@@ -83,9 +84,9 @@ class DocGiaRepo {
     }
 
     suspend fun getDocGiaReadOnly(id: String?): IDocGia {
-        id ?: return object :IDocGiaGet{}
+        id ?: return object : IDocGiaGet {}
         val docGia = getDocGiaById(id)
-        return if (docGia == null) object :IDocGiaGet{}
+        return if (docGia == null) object : IDocGiaGet {}
         else createDocGiaOnly(docGia)
     }
 
@@ -100,15 +101,36 @@ class DocGiaRepo {
         }
     }
 
-   suspend fun update(docGiaEdit: IDocGiaSet) {
-        val urlImg = saveImage(docGiaEdit.cmnd.toString(),docGiaEdit.images.getImage())
-        val updateDocGia = createDocGiaDTO(docGiaEdit,urlImg)
+    suspend fun update(docGiaEdit: IDocGiaSet) {
+        val urlImg = saveImage(docGiaEdit.cmnd.toString(), docGiaEdit.images.getImage())
+        val updateDocGia = createDocGiaDTO(docGiaEdit, urlImg)
         thuVien.updateDocGia(updateDocGia)
 
     }
 
     private fun saveImage(nameImage: String, image: IImage): String {
-        return imagesRepo.saveImage(nameImage,image,Role.DocGia)
+        return imagesRepo.saveImage(nameImage, image, Role.DocGia)
+    }
+
+    suspend fun getListItemSpinner(mKey:String): List<IItemSpinner> {
+        val keySearch = mKey.lowercase().trim()
+        val list =
+            thuVien.getAllDocGia().run {
+                if (keySearch.isNotBlank()) filter {
+                    it.tenDocGia.lowercase().contains(keySearch)
+                } else this
+            }.map {
+                creatDocGiaItemSpinner(it)
+            }
+        return list
+    }
+
+    private fun creatDocGiaItemSpinner(it: DocGiaDTO): IItemSpinner {
+        return object : IItemSpinner {
+            override val key = it.cmnd
+            override val nameKey = it.tenDocGia
+            override val status = it.ngayHetHan
+        }
     }
 
 

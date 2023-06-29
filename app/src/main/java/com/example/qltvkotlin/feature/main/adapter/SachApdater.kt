@@ -70,7 +70,6 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
 
         }
     }
-
 }
 
 class BackUpItemList<T>(val position: Int, val itemList: T)

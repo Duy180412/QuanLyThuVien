@@ -1,5 +1,6 @@
 package com.example.qltvkotlin.domain.repo
 
+import com.example.qltvkotlin.data.model.DocGiaDTO
 import com.example.qltvkotlin.data.model.SachDTO
 import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.model.IBookGet
@@ -9,6 +10,7 @@ import com.example.qltvkotlin.domain.model.ISach
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.domain.model.createImagesFromUrl
 import com.example.qltvkotlin.feature.helper.Role
+import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 import com.example.qltvkotlin.feature.presentation.extension.checkIntValue
 
 
@@ -115,6 +117,26 @@ class SachRepo {
         val urlImg= saveImage(bookEdit.maSach.toString(),bookEdit.imageSach.getImage())
         val updateBook = createSachDTO(bookEdit,urlImg)
         thuVien.updateBook(updateBook)
+    }
+
+    suspend fun getListItemSpinner(mKey: String): List<IItemSpinner>? {
+        val keySearch = mKey.lowercase().trim()
+        val list =
+            thuVien.getAllBook().run {
+                if (keySearch.isNotBlank()) filter {
+                    it.tenSach.lowercase().contains(keySearch)
+                } else this
+            }.map {
+                creatSachItemSpinner(it)
+            }
+        return list
+    }
+    private fun creatSachItemSpinner(it: SachDTO): IItemSpinner {
+        return object : IItemSpinner {
+            override val key = it.maSach
+            override val nameKey = it.tenSach
+            override val status = (it.tongSach.toInt() - it.choThue.toInt()).toString()
+        }
     }
 
 
