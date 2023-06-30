@@ -10,7 +10,7 @@ import com.example.qltvkotlin.feature.presentation.extension.onClick
 class AdapterSpinnerCustom(rycView: RecyclerView) :
     RecyclerView.Adapter<AdapterSpinnerCustom.ItemSpinnerViewHolder>() {
     private val mList = ArrayList<IItemSpinner>()
-    lateinit var onClickItem: (String) -> Unit
+    lateinit var onClickItem: (IItemSpinner) -> Unit
 
 
     inner class ItemSpinnerViewHolder(
@@ -21,6 +21,10 @@ class AdapterSpinnerCustom(rycView: RecyclerView) :
             val itemList = mList[position]
             binding.name1.text = itemList.nameKey
             binding.name2.text = itemList.status
+            if (itemList.status.contains("Hết Hạn")) {
+                itemView.isEnabled = false
+                itemView.alpha = 0.5f
+            }
         }
 
     }
@@ -42,7 +46,7 @@ class AdapterSpinnerCustom(rycView: RecyclerView) :
 
     override fun onBindViewHolder(holder: ItemSpinnerViewHolder, position: Int) {
         holder.bind(position)
-        holder.itemView.onClick { onClickItem(mList[position].key) }
+        holder.itemView.onClick { onClickItem(mList[position]) }
     }
 
     init {

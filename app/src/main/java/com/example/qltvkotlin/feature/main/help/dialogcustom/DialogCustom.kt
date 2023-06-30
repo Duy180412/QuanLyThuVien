@@ -1,11 +1,14 @@
 package com.example.qltvkotlin.feature.main.help.dialogcustom
 
-import android.app.Dialog
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,11 +28,17 @@ import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 import com.example.qltvkotlin.feature.presentation.extension.pairLookupOf
 
 
-class DialogCustom(private val role: Role) : DialogFragment() {
+class DocGiaSelecDialog(activity: AppCompatActivity) :
+    DialogCustom(activity, Role.DocGia)
+
+abstract class DialogCustom(
+    private val activity: AppCompatActivity,
+    private val role: Role
+) : DialogFragment() {
     private var binding: DialogCustomBinding? = null
-    val viewmodel by viewModel<VM>()
-    private lateinit var actionBarExt: ActionBarExt
-    val routing = pairLookupOf(
+    private val viewmodel by viewModel<VM>()
+    private lateinit var onClickList: (IItemSpinner) -> Unit
+    private val routing = pairLookupOf(
         Role.DocGia to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia),
         Role.Sach to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia)
     )
@@ -39,19 +48,23 @@ class DialogCustom(private val role: Role) : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =  DialogCustomBinding.inflate(inflater,container,false)
+        binding = DialogCustomBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actionBarExt = ActionBarExt(binding!!.topbar.containertopbar)
+        val actionBarExt = ActionBarExt(binding!!.topbar.containertopbar)
         val adapter = AdapterSpinnerCustom(binding!!.rycView)
         val actionBarNavigator = routing.requireValueOf(role)
         val tieuDe = ActionBarTitleAndSearchButtonState(actionBarNavigator.title)
         val timKiem = ActionBarInputSearchState(actionBarNavigator.hint)
         viewmodel.list.observe(viewLifecycleOwner) {
             adapter.setList(it)
+        }
+        adapter.onClickItem = {
+            onClickList.invoke(it)
+            dismiss()
         }
         tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
         timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
@@ -62,11 +75,16 @@ class DialogCustom(private val role: Role) : DialogFragment() {
         actionBarExt.setState(tieuDe)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setCanceledOnTouchOutside(false)
-        return dialog
+    fun showDialog(function: (IItemSpinner) -> Unit) {
+        onClickList = function
+        this.show(activity.supportFragmentManager, "DialogCustom")
     }
+
+//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+//        val dialog = super.onCreateDialog(savedInstanceState)
+//        dialog.setCanceledOnTouchOutside(false)
+//        return dialog
+//    }
 
     override fun onResume() {
         viewmodel.startSearch(role)
@@ -86,7 +104,7 @@ class DialogCustom(private val role: Role) : DialogFragment() {
         private var keySearh = ""
         fun searh(it: String) {
             keySearh = it
-            Log.v("chaythu",it)
+            Log.v("chaythu", it)
             launch {
                 when (role) {
                     Role.DocGia -> list.postValue(docGiaRepo.getListItemSpinner(it))

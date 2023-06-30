@@ -11,6 +11,12 @@ interface IDocGiaItem {
     val soLuongMuon: String
 }
 
+interface IDocGiaInfo : IDocGia {
+    val cmnd: String
+    val tenDocGia: String
+    val trangThai: Boolean
+}
+
 interface IDocGiaCreate : IDocGia {
     val cmnd: CharSequence
     val images: Images

@@ -41,15 +41,14 @@ class DataTime(override var ngayThang: String) : Chars(ngayThang), GetDate, HasN
     override fun getDate(): Date? {
         return date
     }
-
-    private fun getDateNow(): Date {
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-        return calendar.time
+}
+ fun getDateNow(): Date {
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
+    return calendar.time
 }
 

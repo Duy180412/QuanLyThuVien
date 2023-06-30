@@ -59,7 +59,6 @@ class DocGiaFragment : BaseFragment(R.layout.fragment_doc_gia) {
         adapter.onClickDel = {
             viewmodel.delDocGia(it)
         }
-
     }
 
 

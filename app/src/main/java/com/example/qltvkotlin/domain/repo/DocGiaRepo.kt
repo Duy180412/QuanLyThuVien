@@ -8,8 +8,10 @@ import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.createImagesFromUrl
+import com.example.qltvkotlin.domain.model.getDateNow
 import com.example.qltvkotlin.feature.helper.Role
 import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
+import com.example.qltvkotlin.feature.presentation.extension.dateFromString
 
 
 class DocGiaRepo {
@@ -129,8 +131,15 @@ class DocGiaRepo {
         return object : IItemSpinner {
             override val key = it.cmnd
             override val nameKey = it.tenDocGia
-            override val status = it.ngayHetHan
+            override val status = checkThoiGianThe(it.ngayHetHan)
         }
+    }
+
+    private fun checkThoiGianThe(ngayHetHan: String): String {
+        val date = ngayHetHan.dateFromString()
+        date ?: return "Chưa Đăng Kí"
+        return if(date > getDateNow()) "Đã Đăng Kí"
+        else "Hết Hạn"
     }
 
 

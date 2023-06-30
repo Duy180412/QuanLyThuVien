@@ -1,5 +1,6 @@
 package com.example.qltvkotlin.datasource.bo
 
+import com.example.qltvkotlin.data.model.ThongTinThue
 import com.example.qltvkotlin.domain.model.Chars
 import com.example.qltvkotlin.domain.model.DataTime
 import com.example.qltvkotlin.domain.model.HasChange
@@ -10,7 +11,11 @@ import com.example.qltvkotlin.domain.model.IBookSet
 import com.example.qltvkotlin.domain.model.IDocGia
 import com.example.qltvkotlin.domain.model.IDocGiaBackUp
 import com.example.qltvkotlin.domain.model.IDocGiaGet
+import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IDocGiaSet
+import com.example.qltvkotlin.domain.model.IMuonSach
+import com.example.qltvkotlin.domain.model.IMuonSachGet
+import com.example.qltvkotlin.domain.model.IMuonSachSet
 import com.example.qltvkotlin.domain.model.Images
 import com.example.qltvkotlin.domain.model.PhoneNumberChar
 
@@ -57,5 +62,11 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
                 iDocGia.sdt != sdt.toString() || iDocGia.soLuongMuon != soLuongMuon.toString() ||
                 this.images.validate()
     }
+}
+class MuonSachEdittable(private val iMuonThue: IMuonSachGet):IMuonSach, IMuonSachSet {
+    override val docGia: IDocGiaItem
+        get() = TODO("Not yet implemented")
+    override val list: List<ThongTinThue>
+        get() = TODO("Not yet implemented")
 
 }
