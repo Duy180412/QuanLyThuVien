@@ -48,9 +48,6 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
         viewModel.saveDocGia()
     }
 
-    override fun getRun(): () -> Unit {
-       return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-    }
 
     override fun getCheck(): () -> Boolean {
         return { viewModel.checkHasChange() }

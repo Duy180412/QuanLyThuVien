@@ -49,11 +49,6 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
     }
 
 
-
-    override fun getRun(): () -> Unit {
-        return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-    }
-
     override fun getCheck(): () -> Boolean {
         return { viewModel.checkHasChange() }
     }

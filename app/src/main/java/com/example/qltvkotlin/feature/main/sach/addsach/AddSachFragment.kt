@@ -48,9 +48,6 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
         viewModel.saveSach()
     }
 
-    override fun getRun(): () -> Unit {
-        return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-    }
 
     override fun getCheck(): () -> Boolean {
         return  { viewModel.checkHasChange() }

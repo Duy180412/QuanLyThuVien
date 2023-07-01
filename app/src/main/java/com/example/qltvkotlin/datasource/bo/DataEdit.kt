@@ -11,9 +11,9 @@ import com.example.qltvkotlin.domain.model.IBookSet
 import com.example.qltvkotlin.domain.model.IDocGia
 import com.example.qltvkotlin.domain.model.IDocGiaBackUp
 import com.example.qltvkotlin.domain.model.IDocGiaGet
-import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.IMuonSach
+import com.example.qltvkotlin.domain.model.IMuonSachBackup
 import com.example.qltvkotlin.domain.model.IMuonSachGet
 import com.example.qltvkotlin.domain.model.IMuonSachSet
 import com.example.qltvkotlin.domain.model.Images
@@ -63,10 +63,20 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
                 this.images.validate()
     }
 }
-class MuonSachEdittable(private val iMuonThue: IMuonSachGet):IMuonSach, IMuonSachSet {
-    override val docGia: IDocGiaItem
-        get() = TODO("Not yet implemented")
-    override val list: List<ThongTinThue>
-        get() = TODO("Not yet implemented")
+class MuonSachEdittable(iMuonThue: IMuonSachGet):IMuonSach, IMuonSachSet, IMuonSachBackup {
+    override val backUp: IMuonSachGet = iMuonThue
+    override var maDocGia: Chars = Chars(iMuonThue.maDocGia)
+    override var list: MutableList<ThongTinThue> = checkHasValue(iMuonThue.list)
+
+    private fun checkHasValue(list: List<ThongTinThue>): MutableList<ThongTinThue> {
+        val mutableList = mutableListOf<ThongTinThue>()
+        return if (list.isEmpty()) {
+            mutableList.add(ThongTinThue("",0))
+            mutableList.add(ThongTinThue("",0))
+            mutableList
+        }else{
+            list.toMutableList()
+        }
+    }
 
 }

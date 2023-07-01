@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListMuonthueRycviewBinding
+import com.example.qltvkotlin.databinding.ItemlistAddmuonsachBinding
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
-class MuonSachApdater(rvList: RecyclerView) : RecyclerView.Adapter<MuonSachApdater.MuonSachViewHolder>() {
+class MuonSachApdater(rvList: RecyclerView) :
+    RecyclerView.Adapter<MuonSachApdater.MuonSachViewHolder>() {
     private val mList = ArrayList<IMuonSachItem>()
     lateinit var onClickItem: (String) -> Unit
     lateinit var onClickDel: (String) -> Unit
@@ -51,7 +53,9 @@ class MuonSachApdater(rvList: RecyclerView) : RecyclerView.Adapter<MuonSachApdat
 
     inner class MuonSachViewHolder(
         parent: ViewGroup,
-        private val binding: ItemListMuonthueRycviewBinding = parent.bindingOf(ItemListMuonthueRycviewBinding::inflate),
+        private val binding: ItemListMuonthueRycviewBinding = parent.bindingOf(
+            ItemListMuonthueRycviewBinding::inflate
+        )
     ) : ViewHolder(binding.root) {
         fun bind(position: Int) {
             val itemList = mList[position]
@@ -59,8 +63,10 @@ class MuonSachApdater(rvList: RecyclerView) : RecyclerView.Adapter<MuonSachApdat
             binding.trangThai.text = itemList.tinhTrangThue
             binding.slloaisach.text = itemList.tongLoaiSach
             binding.tongsosach.text = itemList.soLuongThue
-            }
         }
     }
+
+
+}
 
 

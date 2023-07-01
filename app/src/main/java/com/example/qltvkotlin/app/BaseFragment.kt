@@ -34,7 +34,7 @@ abstract class BaseFragmentNavigation(contentLayoutId: Int) : BaseFragment(conte
 
     abstract fun clickEditAndSave(it: View)
 
-    private fun onBackClickCustom(){
+    private fun onBackClickCustom() {
         onBackClick.checkValueWhenClickBack(
             funCheck = getCheck(),
             funRun = getRun()
@@ -43,7 +43,9 @@ abstract class BaseFragmentNavigation(contentLayoutId: Int) : BaseFragment(conte
         mActivity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackClick)
     }
 
-    abstract fun getRun(): () -> Unit
+    fun getRun(): () -> Unit {
+        return { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
+    }
 
     abstract fun getCheck(): () -> Boolean
 

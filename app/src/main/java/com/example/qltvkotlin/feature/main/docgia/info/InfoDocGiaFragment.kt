@@ -48,10 +48,6 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
         viewModel.addSuccess.observe(viewLifecycleOwner) { toast.invoke(it) }
     }
 
-    override fun getRun(): () -> Unit {
-        return  { dialogFactory.selectYesNo("Hủy Thêm", { mActivity.finish() }, {}) }
-    }
-
     override fun getCheck(): () -> Boolean {
         return { viewModel.checkHasChange() }
     }

@@ -11,9 +11,20 @@ interface IMuonSachItem : IMuonSach {
     val soLuongThue: String
 }
 
-interface IMuonSachSet:IMuonSachCreate
-interface IMuonSachGet:IMuonSachCreate
-interface IMuonSachCreate : IMuonSach{
-    val docGia:IDocGiaItem
-    val list:List<ThongTinThue>
+interface IMuonSachSet:IMuonSachCreate{
+    override var maDocGia:Chars
+    override var list:MutableList<ThongTinThue>
+}
+interface IMuonSachGet:IMuonSachCreate{
+    override val maDocGia:String
+        get() = ""
+    override val list:List<ThongTinThue>
+        get() = emptyList()
+}
+interface IMuonSachCreate : IMuonSach {
+    val maDocGia: CharSequence
+    val list: List<ThongTinThue>
+}
+interface IMuonSachBackup :IMuonSach{
+    val backUp:IMuonSachGet
 }

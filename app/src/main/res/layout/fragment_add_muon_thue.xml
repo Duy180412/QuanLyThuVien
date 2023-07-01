@@ -3,36 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".feature.main.muonthue.add.AddMuonThueFragment">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="Độc Giả: "/>
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/themdocgia"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:hint="Ấn Để Thêm Độc Giả"/>
-    </LinearLayout>
+            app:startIconDrawable="@drawable/ic_add"
+            android:layout_margin="10dp">
 
-
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/themdocgianhap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxEms="10"
+                android:singleLine="true"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:hint="Độc Giả Mượn Sách" />
+        </com.google.android.material.textfield.TextInputLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rycView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        tools:listitem="@layout/itemlist_addmuonsach"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
 </LinearLayout>
