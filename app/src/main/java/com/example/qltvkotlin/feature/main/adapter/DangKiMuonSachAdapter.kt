@@ -1,7 +1,6 @@
 package com.example.qltvkotlin.feature.main.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -10,10 +9,11 @@ import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemlastaddbookBinding
 import com.example.qltvkotlin.databinding.ItemlistAddmuonsachBinding
 import com.example.qltvkotlin.domain.model.IThongTinSachThueCreate
-import com.example.qltvkotlin.domain.model.IThongTinSachThueSet
+import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.bindCharOwner
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.observable.Signal
+import com.example.qltvkotlin.domain.observable.signalBags
 import com.example.qltvkotlin.feature.main.help.dialogcustom.SachSelecDialogOnwer
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
@@ -36,10 +36,16 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.cast<AutoCloseable>()?.close()
         when (holder) {
             is ItemAddMuonThueViewHodel -> holder.bind(position)
             is AddSachMuonViewHolder -> holder.bind()
         }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.cast<AutoCloseable>()?.close()
     }
 
     override fun getItemCount(): Int {
@@ -62,34 +68,32 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
     fun setList(list: List<IThongTinSachThueCreate>) {
         mList.clear()
         mList.addAll(list)
-        if (list.isEmpty() || list is MutableList) mList.add(
-            mList.size,
-            object : IThongTinSachThueSet {})
+        if (list.isEmpty() || list is MutableList) mList.add(mList.size, ThongTinSachThueSet())
         notifyDataSetChanged()
     }
 
     inner class ItemAddMuonThueViewHodel(
         val parent: ViewGroup,
         val binding: ItemlistAddmuonsachBinding = parent.bindingOf(ItemlistAddmuonsachBinding::inflate)
-    ) : ViewHolder(binding.root), SachSelecDialogOnwer {
+    ) : ViewHolder(binding.root), SachSelecDialogOnwer, Signal.Closable by signalBags() {
         private val owner = itemView.context as LifecycleOwner
         fun bind(position: Int) {
             val item = mList[position].cast<IThongTinSachThueCreate>()!!
             binding.themsachNhap.setText(item.tenSach.toString())
             binding.soluongNhap.setText(item.soLuong.toString())
-            val itemList = item.cast<IThongTinSachThueSet>()
-            itemList ?: return
+            val thongTinSachThue = item.cast<ThongTinSachThueSet>() ?: return
+
             binding.themsach.setStartIconOnClickListener {
                 sachDialog.showDialog {
-                    itemList.maSach.update(it.key)
-                    itemList.tenSach.update(it.nameKey)
+                    thongTinSachThue.maSach.update(it.key)
+                    thongTinSachThue.tenSach.update(it.nameKey)
                     val value2 = mList[0].tenSach
                     val value3 = mList[1].tenSach
-                    val value = itemList.tenSach
-                    itemList.soLuong.setMax(it.status)
+                    val value = thongTinSachThue.tenSach
+                    thongTinSachThue.soLuong.setMax(it.status)
                 }
             }
-            itemList.tenSach.also { it2 ->
+            thongTinSachThue.tenSach.also { it2 ->
                 val value2 = mList[0].tenSach
                 val value3 = mList[1].tenSach
                 val it = it2
@@ -98,7 +102,7 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
                     checkAndShowError(it, binding.themsach)
                 }
             }
-            itemList.soLuong.also { it ->
+            thongTinSachThue.soLuong.also { it ->
                 checkAndShowError(it, binding.soluong)
                 bindCharOwner(owner, it) {
                     checkAndShowError(it, binding.soluong)
@@ -107,6 +111,9 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
             binding.btnDel.onClick {
                 mList.removeAt(position)
                 notifyItemRemoved(position)
+            }
+            thongTinSachThue.tenSach.cast<Signal>()?.bind {
+                binding.themsachNhap.setText(thongTinSachThue.tenSach)
             }
         }
 
@@ -120,7 +127,7 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
     ) : ViewHolder(binding.root) {
         fun bind() {
             binding.addSach.onClick {
-                mList.add(mList.size - 1, object : IThongTinSachThueSet {})
+                mList.add(mList.size - 1, ThongTinSachThueSet())
                 notifyItemInserted(mList.size - 1)
                 val value2 = mList[0].tenSach
                 val value3 = mList[1].tenSach

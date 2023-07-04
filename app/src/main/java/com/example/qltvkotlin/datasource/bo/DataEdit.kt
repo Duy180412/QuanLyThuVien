@@ -16,7 +16,7 @@ import com.example.qltvkotlin.domain.model.IMuonSachBackup
 import com.example.qltvkotlin.domain.model.IMuonSachGet
 import com.example.qltvkotlin.domain.model.IMuonSachSet
 import com.example.qltvkotlin.domain.model.IThongTinSachThueGet
-import com.example.qltvkotlin.domain.model.IThongTinSachThueSet
+import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.Images
 import com.example.qltvkotlin.domain.model.Ints
 import com.example.qltvkotlin.domain.model.PhoneNumberChar
@@ -50,7 +50,7 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
     HasChange {
     override val docGiaRead = iDocGia
     override var cmnd = Chars(iDocGia.cmnd)
-    override var images=  Images(iDocGia.images)
+    override var images = Images(iDocGia.images)
     override var tenDocGia = Chars(iDocGia.tenDocGia)
     override var ngayHetHan = DataTime(iDocGia.ngayHetHan)
     override var sdt = PhoneNumberChar(iDocGia.sdt)
@@ -65,24 +65,25 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
                 this.images.validate()
     }
 }
-class MuonSachEdittable(iMuonThue: IMuonSachGet):IMuonSach, IMuonSachSet, IMuonSachBackup {
+
+class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuonSachBackup {
     override val backUp: IMuonSachGet = iMuonThue
     override var maDocGia: Chars = Chars(iMuonThue.maDocGia)
-    override var list: MutableList<IThongTinSachThueSet> = checkHasValue(iMuonThue.list)
+    override var list: MutableList<ThongTinSachThueSet> = checkHasValue(iMuonThue.list)
 
-    private fun checkHasValue(list: List<IThongTinSachThueGet>): MutableList<IThongTinSachThueSet> {
-        val mutableList: MutableList<IThongTinSachThueSet> = mutableListOf()
+    private fun checkHasValue(list: List<IThongTinSachThueGet>): MutableList<ThongTinSachThueSet> {
+        val mutableList: MutableList<ThongTinSachThueSet> = mutableListOf()
         for (item in list) {
             mutableList.add(createThongTinSachThueSet(item))
         }
         return mutableList
     }
 
-    private fun createThongTinSachThueSet(it: IThongTinSachThueGet): IThongTinSachThueSet {
-        return object :IThongTinSachThueSet{
+    private fun createThongTinSachThueSet(it: IThongTinSachThueGet): ThongTinSachThueSet {
+        return object : ThongTinSachThueSet() {
             override val maSach = Chars(it.maSach)
-            override val tenSach= Chars(it.tenSach)
-            override val soLuong= Ints(it.soLuong)
+            override val tenSach = Chars(it.tenSach)
+            override val soLuong = Ints(it.soLuong)
         }
     }
 }

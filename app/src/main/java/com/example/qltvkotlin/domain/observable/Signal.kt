@@ -50,6 +50,12 @@ interface IDestroyObsever : DefaultLifecycleObserver {
         } catch (ignored: Exception) {
         }
     }
+
     @Throws(Exception::class)
     fun onDestroyed()
+}
+
+
+fun signalBags(): Signal.Closable {
+    return Signal.Bags()
 }
