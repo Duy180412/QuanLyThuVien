@@ -1,6 +1,5 @@
 package com.example.qltvkotlin.datasource.bo
 
-import com.example.qltvkotlin.data.model.ThongTinThue
 import com.example.qltvkotlin.domain.model.Chars
 import com.example.qltvkotlin.domain.model.DataTime
 import com.example.qltvkotlin.domain.model.HasChange
@@ -16,7 +15,10 @@ import com.example.qltvkotlin.domain.model.IMuonSach
 import com.example.qltvkotlin.domain.model.IMuonSachBackup
 import com.example.qltvkotlin.domain.model.IMuonSachGet
 import com.example.qltvkotlin.domain.model.IMuonSachSet
+import com.example.qltvkotlin.domain.model.IThongTinSachThueGet
+import com.example.qltvkotlin.domain.model.IThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.Images
+import com.example.qltvkotlin.domain.model.Ints
 import com.example.qltvkotlin.domain.model.PhoneNumberChar
 
 
@@ -66,17 +68,21 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
 class MuonSachEdittable(iMuonThue: IMuonSachGet):IMuonSach, IMuonSachSet, IMuonSachBackup {
     override val backUp: IMuonSachGet = iMuonThue
     override var maDocGia: Chars = Chars(iMuonThue.maDocGia)
-    override var list: MutableList<ThongTinThue> = checkHasValue(iMuonThue.list)
+    override var list: MutableList<IThongTinSachThueSet> = checkHasValue(iMuonThue.list)
 
-    private fun checkHasValue(list: List<ThongTinThue>): MutableList<ThongTinThue> {
-        val mutableList = mutableListOf<ThongTinThue>()
-        return if (list.isEmpty()) {
-            mutableList.add(ThongTinThue("",0))
-            mutableList.add(ThongTinThue("",0))
-            mutableList
-        }else{
-            list.toMutableList()
+    private fun checkHasValue(list: List<IThongTinSachThueGet>): MutableList<IThongTinSachThueSet> {
+        val mutableList: MutableList<IThongTinSachThueSet> = mutableListOf()
+        for (item in list) {
+            mutableList.add(createThongTinSachThueSet(item))
         }
+        return mutableList
     }
 
+    private fun createThongTinSachThueSet(it: IThongTinSachThueGet): IThongTinSachThueSet {
+        return object :IThongTinSachThueSet{
+            override val maSach = Chars(it.maSach)
+            override val tenSach= Chars(it.tenSach)
+            override val soLuong= Ints(it.soLuong)
+        }
+    }
 }

@@ -1,11 +1,14 @@
 package com.example.qltvkotlin.domain.model
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.example.qltvkotlin.domain.observable.IDestroyObsever
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.google.android.material.textfield.TextInputLayout
+import java.lang.ref.WeakReference
 
 
 fun bindCharOwner(ownr: LifecycleOwner, it: CharSequence, mValue: (CharSequence) -> Unit) {
@@ -13,9 +16,20 @@ fun bindCharOwner(ownr: LifecycleOwner, it: CharSequence, mValue: (CharSequence)
     val checkOwnr = if (ownr is Fragment) ownr.viewLifecycleOwner else ownr
     checkOwnr.lifecycle.addObserver(object : IDestroyObsever {
         override fun onDestroyed() {
+            Log.v("chaythu", "Đóng")
             closeable!!.close()
         }
     })
+}
+fun bindCharOwnerViewHodel(ownr: LifecycleOwner, it: CharSequence, mValue: (CharSequence) -> Unit) {
+    val closeable = it.cast<Signal>()?.subscribe { mValue.invoke(it) }
+    val checkOwnr = WeakReference(ownr)
+    checkOwnr.get()?.lifecycle?.addObserver(object :IDestroyObsever{
+        override fun onDestroyed() {
+            closeable!!.close()
+        }
+    })
+
 }
 
 fun bindImageOwner(ownr: LifecycleOwner, it: IImage, mValue: (IImage) -> Unit) {
@@ -48,10 +62,12 @@ fun checkConditionChar(vararg it: CharSequence): Boolean {
 infix fun Boolean.checkValueThrowError(message: String) {
     if (this) throw IllegalArgumentException(message)
 }
-interface  MessageShowOwner{
-    val message:MessageShow
+
+interface MessageShowOwner {
+    val message: MessageShow
         get() = MessageShow()
 }
+
 class MessageShow {
     val errorSystem = " Lỗi hệ thống"
     val charsEmpty = " Không thể để trống các mục bắt buộc"

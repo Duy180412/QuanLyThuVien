@@ -2,17 +2,15 @@ package com.example.qltvkotlin.feature.main.help.dialogcustom
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewModel
@@ -28,29 +26,34 @@ import com.example.qltvkotlin.feature.helper.spinner.AdapterSpinnerCustom
 import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 import com.example.qltvkotlin.feature.presentation.extension.pairLookupOf
 
-interface DocGiaSelecDialogOnwer{
-    val docGiaDialog:DocGiaSelecDialog
+interface DocGiaSelecDialogOnwer {
+    val docGiaDialog: DocGiaSelecDialog
         get() {
-           return when (this){
-                is Activity ->  DocGiaSelecDialog(this as AppCompatActivity)
-               is Fragment -> DocGiaSelecDialog(requireActivity() as AppCompatActivity)
-               else -> error("Not Sp")
+            return when (this) {
+                is Fragment -> DocGiaSelecDialog(requireActivity() as AppCompatActivity)
+                is Activity -> DocGiaSelecDialog(this as AppCompatActivity)
+                else -> error("notSp")
             }
         }
 }
-interface SachSelecDialogOnwer{
-    val sachDialog:SachSelecDialog
+
+interface SachSelecDialogOnwer {
+    val sachDialog: SachSelecDialog
         get() {
-            return when (this){
-                is Activity ->  SachSelecDialog(this as AppCompatActivity)
+            return when (this) {
                 is Fragment -> SachSelecDialog(requireActivity() as AppCompatActivity)
-                else -> error("Not Sp")
+                is Activity -> SachSelecDialog(this as AppCompatActivity)
+                is ViewHolder -> SachSelecDialog(itemView.context as AppCompatActivity)
+                else -> error("notSp")
             }
         }
 }
+
 class DocGiaSelecDialog(activity: AppCompatActivity) :
     DialogCustom(activity, Role.DocGia)
-class SachSelecDialog(activity: AppCompatActivity): DialogCustom(activity,Role.Sach)
+
+class SachSelecDialog(activity: AppCompatActivity) :
+    DialogCustom(activity, Role.Sach)
 
 abstract class DialogCustom(
     private val activity: AppCompatActivity,
@@ -125,7 +128,6 @@ abstract class DialogCustom(
         private var keySearh = ""
         fun searh(it: String) {
             keySearh = it
-            Log.v("chaythu", it)
             launch {
                 when (role) {
                     Role.DocGia -> list.postValue(docGiaRepo.getListItemSpinner(it))

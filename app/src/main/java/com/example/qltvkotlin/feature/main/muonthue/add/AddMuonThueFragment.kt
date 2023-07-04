@@ -17,27 +17,23 @@ import com.example.qltvkotlin.domain.model.IMuonSachSet
 import com.example.qltvkotlin.domain.model.bindCharOwner
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
+import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.feature.main.adapter.DangKiMuonSachAdapter
 import com.example.qltvkotlin.feature.main.help.dialogcustom.DocGiaSelecDialogOnwer
-import com.example.qltvkotlin.feature.main.help.dialogcustom.SachSelecDialogOnwer
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.show
 
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue),
-    DocGiaSelecDialogOnwer,SachSelecDialogOnwer {
+    DocGiaSelecDialogOnwer {
     private val binding by viewBinding { FragmentAddMuonThueBinding.bind(this) }
     private val viewmodel by viewModel<VM>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindEditTextOnChange()
         val adapter = DangKiMuonSachAdapter(binding.rycView)
-        adapter.openDialog = {sachDialog.showDialog {
-
-        }}
         binding.themdocgia.setStartIconOnClickListener {
             docGiaDialog.showDialog {
                 binding.themdocgianhap.setText(it.nameKey)
@@ -45,19 +41,14 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
             }
         }
         viewmodel.newMuonThue.observe(viewLifecycleOwner) {
-            val value = it.cast<IMuonSachSet>()!!.list
-            adapter.setList(value)
-            bindWhenOnChange(it)
+            val value = it.cast<IMuonSachSet>()!!
+            adapter.setList(value.list)
+            bindWhenOnChange(value)
         }
     }
 
-    private fun bindEditTextOnChange() {
-        val value = viewmodel.newMuonThue.value.cast<IMuonSachSet>()!!
-        binding.themdocgianhap.bindTo { value.maDocGia }
-    }
 
-    private fun bindWhenOnChange(it: IMuonSach) {
-        val value = it.cast<IMuonSachSet>()!!
+    private fun bindWhenOnChange(value: IMuonSachSet) {
         value.maDocGia.also { it2 ->
             checkAndShowError(it2, binding.themdocgia)
             bindCharOwner(this, it2) {

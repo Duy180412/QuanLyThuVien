@@ -21,7 +21,7 @@ class AdapterSpinnerCustom(rycView: RecyclerView) :
             val itemList = mList[position]
             binding.name1.text = itemList.nameKey
             binding.name2.text = itemList.status
-            if (itemList.status.contains("Hết Hạn")) {
+            if (itemList.status.contains("Hết Hạn")||itemList.status.contains("Đã Chọn")) {
                 itemView.isEnabled = false
                 itemView.alpha = 0.5f
             }

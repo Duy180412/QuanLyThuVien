@@ -1,7 +1,5 @@
 package com.example.qltvkotlin.domain.model
 
-import com.example.qltvkotlin.data.model.ThongTinThue
-
 interface IMuonSach
 interface IMuonSachItem : IMuonSach {
     val maDocGia: String
@@ -11,19 +9,37 @@ interface IMuonSachItem : IMuonSach {
     val soLuongThue: String
 }
 
+interface  IThongTinSachThueGet :IThongTinSachThueCreate{
+    override val maSach:String
+    override val tenSach:String
+    override val soLuong:String
+}
+interface IThongTinSachThueCreate{
+    val maSach:CharSequence
+    val tenSach:CharSequence
+    val soLuong:CharSequence
+}
+interface IThongTinSachThueSet:IThongTinSachThueCreate{
+    override val maSach:Chars
+        get() = Chars("")
+    override val tenSach: Chars
+        get()= Chars("")
+    override val soLuong:Ints
+        get() = Ints("0")
+}
 interface IMuonSachSet:IMuonSachCreate{
     override var maDocGia:Chars
-    override var list:MutableList<ThongTinThue>
+    override var list:MutableList<IThongTinSachThueSet>
 }
 interface IMuonSachGet:IMuonSachCreate{
     override val maDocGia:String
         get() = ""
-    override val list:List<ThongTinThue>
+    override val list: List<IThongTinSachThueGet>
         get() = emptyList()
 }
 interface IMuonSachCreate : IMuonSach {
     val maDocGia: CharSequence
-    val list: List<ThongTinThue>
+    val list: List<IThongTinSachThueCreate>
 }
 interface IMuonSachBackup :IMuonSach{
     val backUp:IMuonSachGet
