@@ -3,6 +3,7 @@ package com.example.qltvkotlin
 import android.app.Application
 import com.example.qltvkotlin.datasource.SharedPreferencesExt
 import com.example.qltvkotlin.datasource.roomdata.AppDataBase
+import com.example.qltvkotlin.feature.main.muonthue.add.DialogProvider
 import com.example.qltvkotlin.feature.presentation.app.AppFileManager
 
 
@@ -12,5 +13,6 @@ class MainApplication : Application() {
         AppDataBase.init(this)
         AppFileManager.init(this)
         SharedPreferencesExt.instance.init(this)
+        DialogProvider.shared = DialogProvider(this)
     }
 }

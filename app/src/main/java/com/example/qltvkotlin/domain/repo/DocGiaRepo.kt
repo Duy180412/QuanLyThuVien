@@ -144,6 +144,6 @@ class DocGiaRepo {
 
 
     companion object {
-        val docGiaRepo = DocGiaRepo()
+        val shared = DocGiaRepo()
     }
 }

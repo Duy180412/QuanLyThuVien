@@ -121,8 +121,8 @@ abstract class DialogCustom(
     }
 
     class VM : ViewModel() {
-        private val sachRepo = SachRepo.sachRepo
-        private val docGiaRepo = DocGiaRepo.docGiaRepo
+        private val sachRepo = SachRepo.shared
+        private val docGiaRepo = DocGiaRepo.shared
         var list = MutableLiveData<List<IItemSpinner>>()
         var role = Role.None
         private var keySearh = ""

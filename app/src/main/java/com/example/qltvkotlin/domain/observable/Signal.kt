@@ -59,3 +59,7 @@ interface IDestroyObsever : DefaultLifecycleObserver {
 fun signalBags(): Signal.Closable {
     return Signal.Bags()
 }
+
+fun signal(): Signal {
+    return Signal.MultipleSubscription()
+}

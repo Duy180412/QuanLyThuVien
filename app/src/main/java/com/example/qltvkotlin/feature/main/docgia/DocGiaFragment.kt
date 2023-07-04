@@ -69,7 +69,7 @@ class DocGiaFragment : BaseFragment(R.layout.fragment_doc_gia) {
     }
 
     class VM : ViewModel() {
-        private val docGiaRepo = DocGiaRepo.docGiaRepo
+        private val docGiaRepo = DocGiaRepo.shared
         var result = MutableLiveData<Results<String>>()
         var search = MutableLiveData<List<IDocGiaItem>>()
         private var searchType:String = ""

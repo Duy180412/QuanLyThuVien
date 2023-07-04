@@ -20,6 +20,8 @@ import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.Images
 import com.example.qltvkotlin.domain.model.Ints
 import com.example.qltvkotlin.domain.model.PhoneNumberChar
+import com.example.qltvkotlin.domain.observable.Signal
+import com.example.qltvkotlin.domain.observable.signal
 
 
 class BookEditable(private val iBookGet: IBookGet) : ISach, IBookSet, IBookBackUp,
@@ -72,9 +74,24 @@ class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuo
     override var list: MutableList<ThongTinSachThueSet> = checkHasValue(iMuonThue.list)
 
     private fun checkHasValue(list: List<IThongTinSachThueGet>): MutableList<ThongTinSachThueSet> {
-        val mutableList: MutableList<ThongTinSachThueSet> = mutableListOf()
+        val instance = mutableListOf<ThongTinSachThueSet>()
+        val mutableList: MutableList<ThongTinSachThueSet> =
+            object : MutableList<ThongTinSachThueSet> by instance,
+                Signal by signal() {
+
+                override fun removeAt(index: Int): ThongTinSachThueSet {
+                    return instance.removeAt(index).also { emit() }
+                }
+
+                override fun add(element: ThongTinSachThueSet): Boolean {
+                    return instance.add(element).also { emit() }
+                }
+            }
         for (item in list) {
             mutableList.add(createThongTinSachThueSet(item))
+        }
+        if (mutableList.isEmpty()) {
+            mutableList.add(ThongTinSachThueSet())
         }
         return mutableList
     }

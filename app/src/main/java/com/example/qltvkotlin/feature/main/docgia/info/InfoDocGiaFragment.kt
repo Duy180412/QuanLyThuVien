@@ -23,7 +23,6 @@ import com.example.qltvkotlin.domain.model.bindImageOwner
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
 import com.example.qltvkotlin.domain.repo.DocGiaRepo
-import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
 import com.example.qltvkotlin.feature.helper.lazyArgument
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
@@ -140,7 +139,7 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
 
 
     class VM : ViewModel() {
-        private val docGiaRepo = DocGiaRepo.docGiaRepo
+        private val docGiaRepo = DocGiaRepo.shared
         val docGia = MutableLiveData<IDocGia>()
         val error = MutableLiveData<Throwable>()
         val addSuccess = MutableLiveData<String>()

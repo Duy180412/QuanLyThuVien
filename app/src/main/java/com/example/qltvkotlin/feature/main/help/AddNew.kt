@@ -1,8 +1,6 @@
 package com.example.qltvkotlin.feature.main.help
 
-import com.example.qltvkotlin.domain.model.IBookGet
 import com.example.qltvkotlin.domain.model.IBookSet
-import com.example.qltvkotlin.domain.model.IDocGiaGet
 import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.MessageShowOwner
 import com.example.qltvkotlin.domain.model.checkConditionChar
@@ -12,7 +10,7 @@ import com.example.qltvkotlin.domain.repo.SachRepo
 
 
 class AddNewSach(val value: IBookSet) : MessageShowOwner {
-    private val sachRepo = SachRepo.sachRepo
+    private val sachRepo = SachRepo.shared
     suspend operator fun invoke() {
         val checkNull = checkConditionChar(value.tenSach, value.maSach)
         !checkNull checkValueThrowError message.charsEmpty
@@ -25,7 +23,7 @@ class AddNewSach(val value: IBookSet) : MessageShowOwner {
 
 
 class AddNewDocGia(val value: IDocGiaSet) : MessageShowOwner {
-    private val docGiaRepo = DocGiaRepo.docGiaRepo
+    private val docGiaRepo = DocGiaRepo.shared
     suspend operator fun invoke() {
         val checkNull = checkConditionChar(value.cmnd, value.tenDocGia,value.sdt,value.ngayHetHan)
         !checkNull checkValueThrowError message.charsEmpty

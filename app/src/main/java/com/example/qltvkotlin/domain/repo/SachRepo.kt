@@ -1,6 +1,5 @@
 package com.example.qltvkotlin.domain.repo
 
-import com.example.qltvkotlin.data.model.DocGiaDTO
 import com.example.qltvkotlin.data.model.SachDTO
 import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.model.IBookGet
@@ -119,8 +118,8 @@ class SachRepo {
         thuVien.updateBook(updateBook)
     }
 
-    suspend fun getListItemSpinner(mKey: String): List<IItemSpinner>? {
-        val keySearch = mKey.lowercase().trim()
+    suspend fun getListItemSpinner(key: String): List<IItemSpinner>? {
+        val keySearch = key.lowercase().trim()
         val list =
             thuVien.getAllBook().run {
                 if (keySearch.isNotBlank()) filter {
@@ -141,6 +140,6 @@ class SachRepo {
 
 
     companion object {
-        val sachRepo = SachRepo()
+        val shared = SachRepo()
     }
 }

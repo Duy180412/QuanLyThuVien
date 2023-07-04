@@ -137,7 +137,7 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
 
 
     class VM : ViewModel() {
-        private val sachRepo = SachRepo.sachRepo
+        private val sachRepo = SachRepo.shared
         val book = MutableLiveData<ISach>()
         val error = MutableLiveData<Throwable>()
         val addSuccess = MutableLiveData<String>()

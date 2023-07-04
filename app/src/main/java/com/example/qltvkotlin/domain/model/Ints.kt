@@ -1,7 +1,5 @@
 package com.example.qltvkotlin.domain.model
 
-import android.util.Log
-
 class Ints(private var soLuong: String) : Chars(soLuong) {
     private var max: Int? = null
 

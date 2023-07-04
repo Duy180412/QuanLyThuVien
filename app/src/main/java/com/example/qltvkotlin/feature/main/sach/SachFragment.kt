@@ -72,7 +72,7 @@ class SachFragment : BaseFragment(R.layout.fragment_sach) {
     }
 
     class VM : ViewModel() {
-        private val sachRepo = SachRepo.sachRepo
+        private val sachRepo = SachRepo.shared
         var result = MutableLiveData<Results<String>>()
         var search = MutableLiveData<List<ISachItem>>()
         private var searchType: String = ""
