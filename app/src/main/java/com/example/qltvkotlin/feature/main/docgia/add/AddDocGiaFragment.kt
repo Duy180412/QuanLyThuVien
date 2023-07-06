@@ -16,10 +16,8 @@ import com.example.qltvkotlin.domain.model.IDocGia
 import com.example.qltvkotlin.domain.model.IDocGiaGet
 import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.IsImageUri
-import com.example.qltvkotlin.domain.model.bindCharOwner
-import com.example.qltvkotlin.domain.model.bindImageOwner
+import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
-import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
 import com.example.qltvkotlin.feature.main.help.AddNewDocGia
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
@@ -84,31 +82,31 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
         binding.avatar.setAvatar(docGia.images)
         docGia.cmnd.also { it ->
             checkAndShowError(it, binding.cmnd)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.cmnd)
             }
         }
         docGia.tenDocGia.also { it ->
             checkAndShowError(it, binding.tendocgia)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.tendocgia)
             }
         }
 
         docGia.ngayHetHan.also { it->
             checkAndShowError(it, binding.ngayhethan)
-            bindCharOwner(this,it){
+            bindOnChange(this,it){
                 checkAndShowError(it, binding.ngayhethan)
             }
         }
         docGia.sdt.also {it ->
             checkAndShowError(it,binding.sdt)
-            bindCharOwner(this,it){
+            bindOnChange(this,it){
                 checkAndShowError(it,binding.sdt)
             }
         }
         docGia.images.also { it ->
-            bindImageOwner(this, it) {
+            bindOnChange(this, it) {
                 binding.avatar.setAvatar(it)
             }
         }

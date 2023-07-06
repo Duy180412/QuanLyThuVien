@@ -12,6 +12,7 @@ import com.example.qltvkotlin.app.viewModel
 import com.example.qltvkotlin.databinding.FragmentMuonthueViewBinding
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.domain.repo.MuonThueRepo
+import com.example.qltvkotlin.feature.helper.Results
 import com.example.qltvkotlin.feature.helper.Role
 import com.example.qltvkotlin.feature.main.MainActivity
 import com.example.qltvkotlin.feature.main.adapter.MuonSachApdater
@@ -44,6 +45,9 @@ abstract class MuonThueFragmentView : BaseFragment(R.layout.fragment_muonthue_vi
         activity.actionBarMain.search.observe(viewLifecycleOwner) {
             viewmodel.search(it)
         }
+        adapter.onClickDel = {
+            viewmodel.del(it)
+        }
 
         viewmodel.search.observe(viewLifecycleOwner) {
             adapter.setList(it)
@@ -57,9 +61,10 @@ abstract class MuonThueFragmentView : BaseFragment(R.layout.fragment_muonthue_vi
     }
 
     class VM : ViewModel() {
-        val muonThueRepo = MuonThueRepo.muonThueRepo
+        private val muonThueRepo = MuonThueRepo.shared
         var error = MutableLiveData<Throwable>()
         var search = MutableLiveData<List<IMuonSachItem>>()
+        var result = MutableLiveData<Results<String>>()
         var loaiShare: Role = Role.DangThue
         private var searchType: String = ""
         fun search(it: String) {
@@ -70,6 +75,14 @@ abstract class MuonThueFragmentView : BaseFragment(R.layout.fragment_muonthue_vi
         }
 
         fun startSearch() = search(searchType)
+        fun del(cmnd: String) {
+            result.value = Results.Loading("Đang Xóa Mã Độc Giả $cmnd")
+            launch {
+                val boolean = muonThueRepo.del(cmnd)
+                if (boolean) result.postValue(Results.Success("Xóa $cmnd Thành Công", cmnd))
+                else result.postValue(Results.Error("Mã Đọc Giả $cmnd Xóa Không Thành Công"))
+            }
+        }
 
     }
 

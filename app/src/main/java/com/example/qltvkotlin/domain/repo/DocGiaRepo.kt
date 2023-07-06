@@ -142,6 +142,12 @@ class DocGiaRepo {
         else "Hết Hạn"
     }
 
+    suspend fun updateSoLuongThueCuaDocGia(cmnd: String, tongSachThue: Int) {
+        val docGia = thuVien.getDocGiaByCmnd(cmnd) ?: return
+        docGia.soLuongMuon = tongSachThue.toString()
+        thuVien.updateDocGia(docGia)
+    }
+
 
     companion object {
         val shared = DocGiaRepo()

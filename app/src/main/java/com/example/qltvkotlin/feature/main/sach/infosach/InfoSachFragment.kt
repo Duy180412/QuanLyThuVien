@@ -18,8 +18,7 @@ import com.example.qltvkotlin.domain.model.IBookGet
 import com.example.qltvkotlin.domain.model.IBookSet
 import com.example.qltvkotlin.domain.model.ISach
 import com.example.qltvkotlin.domain.model.IsImageUri
-import com.example.qltvkotlin.domain.model.bindCharOwner
-import com.example.qltvkotlin.domain.model.bindImageOwner
+import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
 import com.example.qltvkotlin.domain.repo.SachRepo
@@ -92,12 +91,12 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
         value ?: return
         value.tenSach.also { it ->
             checkAndShowError(it, binding.tensach)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.tensach)
             }
         }
         value.imageSach.also { it ->
-            bindImageOwner(this, it) {
+            bindOnChange(this, it) {
                 binding.avatar.setAvatar(it)
             }
         }

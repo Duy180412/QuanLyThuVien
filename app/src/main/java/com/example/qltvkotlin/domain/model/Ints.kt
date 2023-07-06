@@ -10,6 +10,7 @@ class Ints(private var soLuong: String) : Chars(soLuong) {
 
     fun setMax(status: String) {
         this.max = status.toIntOrNull()
+        emit()
     }
 
     override fun validate(): Boolean {

@@ -1,7 +1,6 @@
 package com.example.qltvkotlin.feature.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.domain.observable.Signal

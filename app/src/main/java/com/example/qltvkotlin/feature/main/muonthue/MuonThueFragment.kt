@@ -19,7 +19,6 @@ class MuonThueFragment : BaseFragment(R.layout.fragment_muon_thue) {
         adapter.setupWith(binding.tab)
         binding.btnAdd.onClick{
             Router.open(this,Routes.AddMuon())
-            requireActivity().finish()
         }
     }
 }

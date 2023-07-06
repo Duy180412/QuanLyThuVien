@@ -18,8 +18,7 @@ import com.example.qltvkotlin.domain.model.IDocGiaCreate
 import com.example.qltvkotlin.domain.model.IDocGiaGet
 import com.example.qltvkotlin.domain.model.IDocGiaSet
 import com.example.qltvkotlin.domain.model.IsImageUri
-import com.example.qltvkotlin.domain.model.bindCharOwner
-import com.example.qltvkotlin.domain.model.bindImageOwner
+import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
 import com.example.qltvkotlin.domain.repo.DocGiaRepo
@@ -88,25 +87,25 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
         value ?: return
         value.tenDocGia.also { it ->
             checkAndShowError(it, binding.tendocgia)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.tendocgia)
             }
         }
         value.images.also { it ->
-            bindImageOwner(this, it) {
+            bindOnChange(this, it) {
                 binding.avatar.setAvatar(it)
             }
         }
         binding.ngayhethanNhap.onClick(DateOnClick(value.ngayHetHan))
         value.ngayHetHan.also { it ->
             checkAndShowError(it, binding.ngayhethan)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.ngayhethan)
             }
         }
         value.sdt.also { it ->
             checkAndShowError(it, binding.sdt)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.sdt)
             }
         }

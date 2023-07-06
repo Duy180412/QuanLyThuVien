@@ -1,6 +1,7 @@
 package com.example.qltvkotlin.domain.repo
 
 import com.example.qltvkotlin.data.model.SachDTO
+import com.example.qltvkotlin.data.model.ThongTinThue
 import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.model.IBookGet
 import com.example.qltvkotlin.domain.model.IBookSet
@@ -135,6 +136,14 @@ class SachRepo {
             override val key = it.maSach
             override val nameKey = it.tenSach
             override val status = (it.tongSach.toInt() - it.choThue.toInt()).toString()
+        }
+    }
+
+    suspend fun updateSoLuongThueCuaSach(list: List<ThongTinThue>) {
+        list.forEach {
+            val sach = thuVien.getSachById(it.maSach) ?: return@forEach
+            sach.choThue = (sach.choThue.toInt() + it.soLuongMuon).toString()
+            thuVien.updateBook(sach)
         }
     }
 

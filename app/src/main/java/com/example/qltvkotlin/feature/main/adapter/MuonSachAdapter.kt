@@ -63,6 +63,11 @@ class MuonSachApdater(rvList: RecyclerView) :
             binding.trangThai.text = itemList.tinhTrangThue
             binding.slloaisach.text = itemList.tongLoaiSach
             binding.tongsosach.text = itemList.soLuongThue
+            binding.btnDel.onClick{
+                onClickDel(itemList.maDocGia)
+                mList.remove(itemList)
+                notifyItemRemoved(position)
+            }
         }
     }
 

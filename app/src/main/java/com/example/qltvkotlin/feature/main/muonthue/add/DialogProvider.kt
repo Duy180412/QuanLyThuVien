@@ -21,7 +21,6 @@ class DialogProvider(private val application: Application) :
 
     suspend fun chonSach(): IItemSpinner? {
         val activity = currentActivity as? AppCompatActivity ?: return null
-
         return suspendCoroutine { con ->
             SachSelecDialog(activity).apply {
                 dialog?.setOnCancelListener {

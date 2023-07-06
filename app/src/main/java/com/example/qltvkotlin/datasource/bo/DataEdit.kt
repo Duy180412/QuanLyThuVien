@@ -21,7 +21,6 @@ import com.example.qltvkotlin.domain.model.Images
 import com.example.qltvkotlin.domain.model.Ints
 import com.example.qltvkotlin.domain.model.PhoneNumberChar
 import com.example.qltvkotlin.domain.observable.Signal
-import com.example.qltvkotlin.domain.observable.signal
 
 
 class BookEditable(private val iBookGet: IBookGet) : ISach, IBookSet, IBookBackUp,
@@ -68,16 +67,19 @@ class DocGiaEditable(private val iDocGia: IDocGiaGet) : IDocGia, IDocGiaSet,
     }
 }
 
-class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuonSachBackup {
+class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuonSachBackup,
+    HasChange {
     override val backUp: IMuonSachGet = iMuonThue
+    override val tenDocGia: Chars = Chars(iMuonThue.tenDocGia)
     override var maDocGia: Chars = Chars(iMuonThue.maDocGia)
     override var list: MutableList<ThongTinSachThueSet> = checkHasValue(iMuonThue.list)
 
     private fun checkHasValue(list: List<IThongTinSachThueGet>): MutableList<ThongTinSachThueSet> {
         val instance = mutableListOf<ThongTinSachThueSet>()
+
         val mutableList: MutableList<ThongTinSachThueSet> =
             object : MutableList<ThongTinSachThueSet> by instance,
-                Signal by signal() {
+                Signal by Signal.MultipleSubscription() {
 
                 override fun removeAt(index: Int): ThongTinSachThueSet {
                     return instance.removeAt(index).also { emit() }
@@ -90,9 +92,7 @@ class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuo
         for (item in list) {
             mutableList.add(createThongTinSachThueSet(item))
         }
-        if (mutableList.isEmpty()) {
-            mutableList.add(ThongTinSachThueSet())
-        }
+        mutableList.add(ThongTinSachThueSet())
         return mutableList
     }
 
@@ -102,5 +102,9 @@ class MuonSachEdittable(iMuonThue: IMuonSachGet) : IMuonSach, IMuonSachSet, IMuo
             override val tenSach = Chars(it.tenSach)
             override val soLuong = Ints(it.soLuong)
         }
+    }
+
+    override fun hasChange(): Boolean {
+        return tenDocGia.toString() != backUp.tenDocGia || list.size - 1 != backUp.list.size
     }
 }

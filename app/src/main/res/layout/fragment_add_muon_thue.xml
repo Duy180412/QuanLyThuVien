@@ -36,6 +36,7 @@
         android:layout_weight="1"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
+        android:visibility="gone"
         tools:listitem="@layout/itemlist_addmuonsach"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 

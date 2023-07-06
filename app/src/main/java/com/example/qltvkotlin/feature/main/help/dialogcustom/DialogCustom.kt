@@ -26,29 +26,6 @@ import com.example.qltvkotlin.feature.helper.spinner.AdapterSpinnerCustom
 import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 import com.example.qltvkotlin.feature.presentation.extension.pairLookupOf
 
-interface DocGiaSelecDialogOnwer {
-    val docGiaDialog: DocGiaSelecDialog
-        get() {
-            return when (this) {
-                is Fragment -> DocGiaSelecDialog(requireActivity() as AppCompatActivity)
-                is Activity -> DocGiaSelecDialog(this as AppCompatActivity)
-                else -> error("notSp")
-            }
-        }
-}
-
-interface SachSelecDialogOnwer {
-    val sachDialog: SachSelecDialog
-        get() {
-            return when (this) {
-                is Fragment -> SachSelecDialog(requireActivity() as AppCompatActivity)
-                is Activity -> SachSelecDialog(this as AppCompatActivity)
-                is ViewHolder -> SachSelecDialog(itemView.context as AppCompatActivity)
-                else -> error("notSp")
-            }
-        }
-}
-
 class DocGiaSelecDialog(activity: AppCompatActivity) :
     DialogCustom(activity, Role.DocGia)
 

@@ -9,39 +9,43 @@ interface IMuonSachItem : IMuonSach {
     val soLuongThue: String
 }
 
-interface IThongTinSachThueGet : IThongTinSachThueCreate {
+interface IThongTinSachThueGet : IThongTinSachThueGeneral {
     override val maSach: String
     override val tenSach: String
     override val soLuong: String
 }
 
-interface IThongTinSachThueCreate {
+interface IThongTinSachThueGeneral {
     val maSach: CharSequence
     val tenSach: CharSequence
     val soLuong: CharSequence
 }
 
-open class ThongTinSachThueSet : IThongTinSachThueCreate {
+open class ThongTinSachThueSet : IThongTinSachThueGeneral {
     override val maSach: Chars = Chars("")
     override val tenSach: Chars = Chars("")
     override val soLuong: Ints = Ints("0")
 }
 
-interface IMuonSachSet : IMuonSachCreate {
+interface IMuonSachSet : IMuonSachGeneral {
     override var maDocGia: Chars
+    override val tenDocGia: Chars
     override var list: MutableList<ThongTinSachThueSet>
 }
 
-interface IMuonSachGet : IMuonSachCreate {
+interface IMuonSachGet : IMuonSachGeneral {
     override val maDocGia: String
+        get() = ""
+    override val tenDocGia: String
         get() = ""
     override val list: List<IThongTinSachThueGet>
         get() = emptyList()
 }
 
-interface IMuonSachCreate : IMuonSach {
+interface IMuonSachGeneral : IMuonSach {
     val maDocGia: CharSequence
-    val list: List<IThongTinSachThueCreate>
+    val tenDocGia:CharSequence
+    val list: List<IThongTinSachThueGeneral>
 }
 
 interface IMuonSachBackup : IMuonSach {

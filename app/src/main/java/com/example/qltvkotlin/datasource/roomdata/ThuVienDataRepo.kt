@@ -2,9 +2,8 @@ package com.example.qltvkotlin.datasource.roomdata
 
 
 import com.example.qltvkotlin.data.model.DocGiaDTO
+import com.example.qltvkotlin.data.model.MuonThue
 import com.example.qltvkotlin.data.model.SachDTO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class ThuVienDataRepo {
@@ -61,6 +60,24 @@ class ThuVienDataRepo {
 
     suspend fun updateDocGia(docGia: DocGiaDTO):Boolean {
         val result = thuVienData.updateDocGia(docGia)
+        return result > 0
+    }
+
+    suspend fun checkDocGiaMuon(cmnd: String): Boolean {
+        return thuVienData.checkDocGiaMuonExist(cmnd)
+    }
+
+    suspend fun addMuonThue(newMuonThue: MuonThue): Boolean {
+        val addResult = thuVienData.addMuonThue(newMuonThue)
+        return addResult > 0
+    }
+
+    suspend fun getAllMuonSach(): List<MuonThue>{
+       return thuVienData.getAllMuonSach()
+    }
+
+    suspend fun delMuonThuByCmnd(cmnd: String): Boolean {
+        val result = thuVienData.deleteMuonSach(cmnd)
         return result > 0
     }
 

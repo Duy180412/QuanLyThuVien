@@ -16,10 +16,8 @@ import com.example.qltvkotlin.domain.model.IBookGet
 import com.example.qltvkotlin.domain.model.IBookSet
 import com.example.qltvkotlin.domain.model.ISach
 import com.example.qltvkotlin.domain.model.IsImageUri
-import com.example.qltvkotlin.domain.model.bindCharOwner
-import com.example.qltvkotlin.domain.model.bindImageOwner
+import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
-import com.example.qltvkotlin.feature.action.TakePhotoActionOwner
 import com.example.qltvkotlin.feature.main.help.AddNewSach
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
@@ -85,18 +83,18 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
         binding.avatar.setAvatar(sach.imageSach)
         sach.maSach.also { it ->
             checkAndShowError(it, binding.masach)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.masach)
             }
         }
         sach.tenSach.also { it ->
             checkAndShowError(it, binding.tensach)
-            bindCharOwner(this, it) {
+            bindOnChange(this, it) {
                 checkAndShowError(it, binding.tensach)
             }
         }
         sach.imageSach.also { it ->
-            bindImageOwner(this, it) {
+            bindOnChange(this, it) {
                 binding.avatar.setAvatar(it)
             }
         }
