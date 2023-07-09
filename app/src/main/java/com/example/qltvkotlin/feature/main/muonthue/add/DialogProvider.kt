@@ -1,12 +1,15 @@
 package com.example.qltvkotlin.feature.main.muonthue.add
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
 import com.example.qltvkotlin.feature.main.help.dialogcustom.DocGiaSelecDialog
 import com.example.qltvkotlin.feature.main.help.dialogcustom.SachSelecDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -17,6 +20,44 @@ class DialogProvider(private val application: Application) :
 
     init {
         application.registerActivityLifecycleCallbacks(this)
+    }
+    fun selectYesNo(
+        text: String,
+        onAccept: () -> Unit,
+        onCancel: () -> Unit
+    ): AlertDialog {
+        val diaLog = AlertDialog.Builder(application)
+        diaLog.setMessage(text)
+        diaLog.setPositiveButton("Yes") { d, _ ->
+            onAccept.invoke()
+            d.dismiss()
+        }
+        diaLog.setNegativeButton("No") { d, _ ->
+            onCancel.invoke()
+            d.dismiss()
+
+        }
+        return diaLog.show()
+    }
+
+    fun notification(
+        text: String,
+    ): AlertDialog {
+        val diaLog = AlertDialog.Builder(application)
+        diaLog.setTitle("Error")
+        diaLog.setMessage(text)
+        diaLog.setPositiveButton("Ok") { d, _ ->
+            d.dismiss()
+        }
+        return diaLog.show()
+    }
+
+    fun bottomUndo(view: View, it: String, function: () -> Unit) {
+        val snackbar = Snackbar.make(view, it, Snackbar.LENGTH_LONG)
+        snackbar.setAction("Undo") {
+            function.invoke()
+        }
+        return snackbar.show()
     }
 
     suspend fun chonSach(): IItemSpinner? {

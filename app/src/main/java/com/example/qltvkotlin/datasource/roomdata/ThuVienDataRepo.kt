@@ -17,7 +17,7 @@ class ThuVienDataRepo {
         return thuVienData.getAllDocGia()
     }
 
-    suspend fun addBook(sachDto: SachDTO): Boolean {
+    suspend fun addSach(sachDto: SachDTO): Boolean {
         val addResult = thuVienData.addSach(sachDto)
         return addResult > 0
     }
@@ -27,12 +27,12 @@ class ThuVienDataRepo {
         return result > 0
     }
 
-    suspend fun deleteBook(id: String): Boolean {
+    suspend fun delSachById(id: String): Boolean {
         val result = thuVienData.deleteSach(id)
         return result > 0
     }
 
-    suspend fun checkSach(maCheck: String): Boolean {
+    suspend fun checkSachExist(maCheck: String): Boolean {
         return thuVienData.checkSachExists(maCheck)
     }
 
@@ -63,7 +63,7 @@ class ThuVienDataRepo {
         return result > 0
     }
 
-    suspend fun checkDocGiaMuon(cmnd: String): Boolean {
+    suspend fun checkDocGiaMuonExistByCmnd(cmnd: String): Boolean {
         return thuVienData.checkDocGiaMuonExist(cmnd)
     }
 
@@ -80,6 +80,11 @@ class ThuVienDataRepo {
         val result = thuVienData.deleteMuonSach(cmnd)
         return result > 0
     }
+
+    suspend fun layMuonSachByCmnd(cmnd: String): MuonThue? {
+        return  thuVienData.getMuonThueByCmnd(cmnd)
+    }
+
 
     companion object {
         val instance = ThuVienDataRepo()

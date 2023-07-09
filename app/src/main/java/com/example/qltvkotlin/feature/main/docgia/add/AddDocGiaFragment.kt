@@ -37,7 +37,7 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
             bindWhenOnChange(it.cast<IDocGiaSet>()!!)
         }
         viewModel.error.observe(viewLifecycleOwner) {
-            dialogFactory.notification(it.message!!)
+            dialog.notification(it.message!!)
         }
         viewModel.addSuccess.observe(viewLifecycleOwner) { closeFragment(it) }
     }

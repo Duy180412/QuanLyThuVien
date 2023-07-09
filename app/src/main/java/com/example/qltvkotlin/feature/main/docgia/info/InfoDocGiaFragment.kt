@@ -70,7 +70,7 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
             return
         }
         if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
-            dialogFactory.selectYesNo("Sửa Sách ?",
+            dialog.selectYesNo("Sửa Sách ?",
                 { viewModel.update() },
                 { viewModel.tatSuaDocGia() })
         }

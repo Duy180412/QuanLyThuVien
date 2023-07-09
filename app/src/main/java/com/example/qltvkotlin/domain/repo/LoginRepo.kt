@@ -13,8 +13,7 @@ class LoginRepo {
             it.cast<Validable>()?.validate() ?: true
         }
         if (!isValid) return false
-        val boolean = shared.checkLogin(value)
-        return true
+        return shared.checkLogin(value)
     }
 }
 

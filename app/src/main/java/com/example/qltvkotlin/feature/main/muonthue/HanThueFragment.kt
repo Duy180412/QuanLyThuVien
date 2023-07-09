@@ -46,7 +46,6 @@ abstract class MuonThueFragmentView : BaseFragment(R.layout.fragment_muonthue_vi
             viewmodel.search(it)
         }
         adapter.onClickDel = {
-            viewmodel.del(it)
         }
 
         viewmodel.search.observe(viewLifecycleOwner) {

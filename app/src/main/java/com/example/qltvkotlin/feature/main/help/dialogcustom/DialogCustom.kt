@@ -1,16 +1,13 @@
 package com.example.qltvkotlin.feature.main.help.dialogcustom
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewModel
@@ -41,7 +38,7 @@ abstract class DialogCustom(
     private lateinit var onClickList: (IItemSpinner) -> Unit
     private val routing = pairLookupOf(
         Role.DocGia to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia),
-        Role.Sach to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia)
+        Role.Sach to ActionBarNavigator(R.string.title_them_sach, R.string.hint_seach_sach)
     )
 
     override fun onCreateView(

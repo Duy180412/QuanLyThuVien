@@ -16,55 +16,45 @@ class MuonThueRepo {
     private val thuVien = ThuVienDataRepo.instance
     private val sachRepo = SachRepo.shared
     private val docGiaRepo = DocGiaRepo.shared
-    private var listDemo = mutableListOf<IMuonSachItem>()
 
 
     suspend fun search(mKey: String, loaiSearch: Role): List<IMuonSachItem> {
-        listDemo = getAllMuonThue()
-        val keySearch = mKey.lowercase().trim()
-        val filteredList = listDemo.filter { item ->
+        val key = mKey.lowercase().trim()
+        val filteredList = getAllMuonSach().filter { item ->
             when {
-                keySearch.isNotBlank() && loaiSearch == Role.DangThue && item.tenDocGia.lowercase()
-                    .contains(keySearch) -> item.tinhTrangThue.contains("Đang Thuê")
+                loaiSearch == Role.DangThue && (key.isBlank() || item.tenDocGia.lowercase()
+                    .contains(key)) -> item.tinhTrangThue.contains("Đang Thuê")
 
-                keySearch.isBlank() && loaiSearch == Role.DangThue -> item.tinhTrangThue.contains("Đang Thuê")
-                keySearch.isNotBlank() && loaiSearch == Role.HetHan && item.tenDocGia.lowercase()
-                    .contains(keySearch) -> item.tinhTrangThue.contains("Hết Hạn")
-
-                else -> keySearch.isBlank() && loaiSearch == Role.HetHan && item.tinhTrangThue.contains(
-                    "Hết Hạn"
-                )
+                loaiSearch == Role.HetHan && (key.isBlank() || item.tenDocGia.lowercase()
+                    .contains(key)) -> item.tinhTrangThue.contains("Hết Hạn")
+                else -> false
             }
         }
         return filteredList
     }
 
-    private suspend fun getAllMuonThue(): MutableList<IMuonSachItem> {
+    private suspend fun getAllMuonSach(): MutableList<IMuonSachItem> {
         val list = thuVien.getAllMuonSach()
         val filteredList = mutableListOf<IMuonSachItem>()
-
         for (item in list) {
-            val docGia = thuVien.getDocGiaByCmnd(item.cmndDocGia) ?: continue
+            val docGia = docGiaRepo.getInfoFullDocGiaDto(item.cmndDocGia) ?: continue
             val hanMuon = docGia.ngayHetHan.dateFromString() ?: continue
             val listSach = item.danhSachMuon
-            val itemList = createItemListThongTinThue(docGia, hanMuon,listSach)
+            val itemList = createItemListThongTinMuon(docGia, hanMuon, listSach)
             filteredList.add(itemList)
         }
-
         return filteredList
     }
 
-    private fun createItemListThongTinThue(
+    private fun createItemListThongTinMuon(
         docGia: DocGiaDTO,
         hanMuon: Date,
         danhSachMuon: List<ThongTinThue>
     ): IMuonSachItem {
-        val boolean = hanMuon > getDateNow()
-        return if (boolean) {
+        return if (hanMuon > getDateNow())
             creatItemList(docGia, danhSachMuon, "Đang Thuê")
-        } else {
+        else
             creatItemList(docGia, danhSachMuon, "Hết Hạn")
-        }
     }
 
     private fun creatItemList(
@@ -81,22 +71,15 @@ class MuonThueRepo {
         }
     }
 
-    suspend fun checkMuonThue(cmnd: String): Boolean {
-        return thuVien.checkDocGiaMuon(cmnd)
+    suspend fun checkMuonSach(cmnd: String): Boolean {
+        return thuVien.checkDocGiaMuonExistByCmnd(cmnd)
     }
 
     suspend fun save(value: IMuonSachSet) {
         val list = value.list.map { createThongTinThue(it) }
-        val sublist = list.subList(0,list.size-1)
-        val newMuonThue = MuonThue(value.maDocGia.toString(),sublist)
-        val boolean = thuVien.addMuonThue(newMuonThue)
-        if (boolean) {
-            sachRepo.updateSoLuongThueCuaSach(sublist)
-            docGiaRepo.updateSoLuongThueCuaDocGia(
-                value.maDocGia.toString(),
-                sublist.sumOf { it.soLuongMuon })
-        }
-
+        val sublist = list.subList(0, list.size - 1)
+        val newMuonThue = MuonThue(value.maDocGia.toString(), sublist)
+        thuVien.addMuonThue(newMuonThue)
     }
 
     private fun createThongTinThue(it: ThongTinSachThueSet): ThongTinThue {

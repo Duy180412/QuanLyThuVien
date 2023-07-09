@@ -37,7 +37,7 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
             bindWhenOnChange(it.cast<IBookSet>()!!)
         }
         viewModel.error.observe(viewLifecycleOwner) {
-            dialogFactory.notification(it.message!!)
+            dialog.notification(it.message!!)
         }
         viewModel.addSuccess.observe(viewLifecycleOwner) { closeFragment(it) }
     }

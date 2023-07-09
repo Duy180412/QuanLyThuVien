@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
@@ -22,16 +21,15 @@ import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.model.checkConditionChar
-import com.example.qltvkotlin.feature.main.adapter.Command
+import com.example.qltvkotlin.feature.main.help.Command
 import com.example.qltvkotlin.feature.main.adapter.DangKiMuonSachAdapter
-import com.example.qltvkotlin.feature.main.adapter.ThemDocGiaCmd
-import com.example.qltvkotlin.feature.main.adapter.ThemSachCmd
-import com.example.qltvkotlin.feature.main.adapter.ThemThemSachRongCmd
-import com.example.qltvkotlin.feature.main.adapter.XoaSachCmd
+import com.example.qltvkotlin.feature.main.help.ThemDocGiaCmd
+import com.example.qltvkotlin.feature.main.help.ThemSachCmd
+import com.example.qltvkotlin.feature.main.help.ThemThemSachRongCmd
+import com.example.qltvkotlin.feature.main.help.XoaSachCmd
 import com.example.qltvkotlin.feature.main.help.AddNewMuonSach
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.show
-import kotlinx.coroutines.launch
 
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {

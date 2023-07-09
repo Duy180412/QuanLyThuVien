@@ -17,7 +17,7 @@ class AddNewMuonSach(val value: IMuonSachSet) : MessageShowOwner {
         val listCheck = value.list.flatMap { listOf(it.maSach, it.soLuong) }.toTypedArray()
         val checkError = checkConditionChar(value.maDocGia, *listCheck) || checkListNull
         !checkError checkValueThrowError message.charsEmpty
-        val checkExist = instance.checkMuonThue(value.maDocGia.toString())
+        val checkExist = instance.checkMuonSach(value.maDocGia.toString())
         checkExist checkValueThrowError value.tenDocGia.toString() + message.isExist
         instance.save(value)
     }

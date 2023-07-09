@@ -13,6 +13,11 @@ import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.observable.Signal
+import com.example.qltvkotlin.feature.main.help.Command
+import com.example.qltvkotlin.feature.main.help.HasCommandCallback
+import com.example.qltvkotlin.feature.main.help.ThemSachCmd
+import com.example.qltvkotlin.feature.main.help.ThemThemSachRongCmd
+import com.example.qltvkotlin.feature.main.help.XoaSachCmd
 import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick

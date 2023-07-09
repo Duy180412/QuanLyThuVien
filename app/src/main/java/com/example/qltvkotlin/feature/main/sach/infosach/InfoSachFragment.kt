@@ -74,7 +74,7 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
             return
         }
         if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
-            dialogFactory.selectYesNo("Sửa Sách ?",
+            dialog.selectYesNo("Sửa Sách ?",
                 { viewModel.update() },
                 { viewModel.tatSuaSach() })
         }

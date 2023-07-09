@@ -39,16 +39,29 @@ class DocGiaRepo {
                     it.tenDocGia.lowercase().contains(keySearch)
                 } else this
             }.map {
-                creatDocGiaItem(it)
+                creatDocGiaItem(getInfoFullDocGiaDto(it.cmnd)!!)
             }
         return list
     }
 
-    suspend fun delDocGia(id: String): Boolean {
-        val docGiaDel = getDocGiaById(id)
-        docGiaDel ?: return false
-        backUp = docGiaDel
-        return thuVien.delDocGiaByCmnd(id)
+    suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
+        val docGia = thuVien.getDocGiaByCmnd(cmnd)?: return null
+        val muonSach = thuVien.layMuonSachByCmnd(cmnd)
+        muonSach?.let {
+            docGia.soLuongMuon = muonSach.danhSachMuon.sumOf { it.soLuongMuon }.toString()
+        }
+        return docGia
+    }
+
+    suspend fun delDocGia(cmnd: String): Boolean {
+        return getDocGiaById(cmnd)?.let {
+            if (thuVien.checkDocGiaMuonExistByCmnd(cmnd)) {
+                false
+            } else {
+                backUp = it
+                thuVien.delDocGiaByCmnd(cmnd)
+            }
+        } ?: return false
     }
 
     private suspend fun getDocGiaById(id: String): DocGiaDTO? {
@@ -56,12 +69,13 @@ class DocGiaRepo {
     }
 
     suspend fun repoDocGia(cmnd: String): Boolean {
-        val docGia = backUp ?: return false
-        if (docGia.cmnd == cmnd) {
-            return thuVien.addDocGia(docGia)
-        }
-        return false
+        return backUp?.let {
+            if (it.cmnd == cmnd) {
+                thuVien.addDocGia(it)
+            } else false
+        } ?: false
     }
+
 
     suspend fun checkDocGia(cmnd: String): Boolean {
         return thuVien.checkDocGia(cmnd)
@@ -85,11 +99,10 @@ class DocGiaRepo {
         )
     }
 
-    suspend fun getDocGiaReadOnly(id: String?): IDocGia {
-        id ?: return object : IDocGiaGet {}
-        val docGia = getDocGiaById(id)
-        return if (docGia == null) object : IDocGiaGet {}
-        else createDocGiaOnly(docGia)
+    suspend fun getDocGiaReadOnly(cmnd: String?): IDocGia {
+        cmnd ?: return object : IDocGiaGet {}
+        val docGia = getInfoFullDocGiaDto(cmnd)?: return object : IDocGiaGet {}
+        return createDocGiaOnly(docGia)
     }
 
     private fun createDocGiaOnly(docGia: DocGiaDTO): IDocGia {
@@ -114,7 +127,7 @@ class DocGiaRepo {
         return imagesRepo.saveImage(nameImage, image, Role.DocGia)
     }
 
-    suspend fun getListItemSpinner(mKey:String): List<IItemSpinner> {
+    suspend fun getListItemSpinner(mKey: String): List<IItemSpinner> {
         val keySearch = mKey.lowercase().trim()
         val list =
             thuVien.getAllDocGia().run {
@@ -138,15 +151,10 @@ class DocGiaRepo {
     private fun checkThoiGianThe(ngayHetHan: String): String {
         val date = ngayHetHan.dateFromString()
         date ?: return "Chưa Đăng Kí"
-        return if(date > getDateNow()) "Đã Đăng Kí"
+        return if (date > getDateNow()) "Đã Đăng Kí"
         else "Hết Hạn"
     }
 
-    suspend fun updateSoLuongThueCuaDocGia(cmnd: String, tongSachThue: Int) {
-        val docGia = thuVien.getDocGiaByCmnd(cmnd) ?: return
-        docGia.soLuongMuon = tongSachThue.toString()
-        thuVien.updateDocGia(docGia)
-    }
 
 
     companion object {

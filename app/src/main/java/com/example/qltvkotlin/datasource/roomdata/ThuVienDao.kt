@@ -52,10 +52,15 @@ interface ThuVienDao {
 
     @Insert
     suspend fun addMuonThue(newMuonThue: MuonThue): Long
+
     @Query("SELECT * From muonthue")
     suspend fun getAllMuonSach(): List<MuonThue>
+
     @Query("DELETE FROM muonthue WHERE cmndDocGia=:cmnd")
     suspend fun deleteMuonSach(cmnd: String): Int
+
+    @Query("SELECT * FROM muonthue WHERE cmndDocGia = :cmnd")
+    suspend fun getMuonThueByCmnd(cmnd: String): MuonThue?
 
 
 }
