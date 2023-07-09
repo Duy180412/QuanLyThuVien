@@ -61,14 +61,10 @@ abstract class FragmentRecyclerView(contentLayoutId: Int) : BaseFragmentMain(con
     abstract class FragmentViewVM : ViewModel() {
         var result = MutableLiveData<Results<String>>()
         var searchType = ""
-
-
         abstract fun search(it: String)
-
         fun restoreSearch() {
             search(searchType)
         }
-
         fun khoiPhuc(id: String) {
             result.value = Results.Loading()
             launch {
@@ -79,7 +75,6 @@ abstract class FragmentRecyclerView(contentLayoutId: Int) : BaseFragmentMain(con
                 } else result.postValue(Results.Error())
             }
         }
-
         fun xoa(id: String) {
             result.value = Results.Loading()
             launch {
@@ -93,7 +88,6 @@ abstract class FragmentRecyclerView(contentLayoutId: Int) : BaseFragmentMain(con
 
         abstract suspend fun repo(id: String): Boolean
         abstract suspend fun del(id: String): Boolean
-
 
     }
 }

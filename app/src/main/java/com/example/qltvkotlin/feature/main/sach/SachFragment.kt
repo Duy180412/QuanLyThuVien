@@ -5,23 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.FragmentRecyclerView
-import com.example.qltvkotlin.app.getViewModel
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.app.viewModel
-
 import com.example.qltvkotlin.databinding.FragmentSachBinding
-import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.domain.repo.SachRepo
-import com.example.qltvkotlin.feature.helper.Results
-import com.example.qltvkotlin.feature.main.MainActivity
 import com.example.qltvkotlin.feature.main.adapter.SachApdater
-import com.example.qltvkotlin.feature.main.docgia.DocGiaFragment
 import com.example.qltvkotlin.feature.main.help.Command
 import com.example.qltvkotlin.feature.main.help.OnClickDel
 import com.example.qltvkotlin.feature.main.help.OnClickItem
@@ -34,7 +26,6 @@ import com.example.qltvkotlin.feature.presentation.router.Routes
 class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
     private val binding by viewBinding { FragmentSachBinding.bind(this) }
     private val viewmodel by viewModel<VM>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +53,7 @@ class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
     private fun actionCommand(it: Command) {
         when (it) {
             is OnClickItem -> Router.open(this, Routes.InfoSach(it.key))
-            is OnClickDel -> viewmodel.xoa(it.key)
+            is OnClickDel -> dialog.selectYesNo("Trả Toàn Bộ Sách",{viewmodel.xoa(it.key)},{})
             else -> return
         }
     }
@@ -86,6 +77,5 @@ class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
             return sachRepo.delSach(id)
         }
     }
-
 }
 

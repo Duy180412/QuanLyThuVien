@@ -7,15 +7,12 @@ import com.example.qltvkotlin.app.BaseActivity
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.databinding.ActivityMainBinding
 import com.example.qltvkotlin.feature.actionbar.ActionBarExt
-import com.example.qltvkotlin.feature.actionbar.ActionBarStateOwnr
 import com.example.qltvkotlin.feature.actionbar.ActionBarTitleAndSearchSate
 import com.example.qltvkotlin.feature.helper.StackNavigator
-import com.example.qltvkotlin.feature.helper.StackNavigatorOwner
 
-class MainActivity : BaseActivity(R.layout.activity_main), StackNavigatorOwner,
-    ActionBarStateOwnr {
-    override lateinit var actionBarExt: ActionBarExt
-    override lateinit var stackNavigator: StackNavigator
+class MainActivity : BaseActivity(R.layout.activity_main) {
+    lateinit var actionBarExt: ActionBarExt
+    lateinit var stackNavigator: StackNavigator
     lateinit var actionBarMain: ActionBarTitleAndSearchSate
     private val binding by viewBinding { ActivityMainBinding.bind(this) }
     override fun onCreate(savedInstanceState: Bundle?) {

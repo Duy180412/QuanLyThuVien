@@ -6,18 +6,16 @@ import com.example.qltvkotlin.app.BaseActivity
 import com.example.qltvkotlin.app.viewBinding
 import com.example.qltvkotlin.databinding.ActivityNavigationBinding
 import com.example.qltvkotlin.feature.actionbar.ActionBarExt
-import com.example.qltvkotlin.feature.actionbar.ActionBarStateOwnr
 import com.example.qltvkotlin.feature.actionbar.ActionBarViewState
 import com.example.qltvkotlin.feature.helper.Arguments
 import com.example.qltvkotlin.feature.helper.StackNavigator
-import com.example.qltvkotlin.feature.helper.StackNavigatorOwner
 import com.example.qltvkotlin.feature.presentation.router.FragmentRouting
 import com.example.qltvkotlin.feature.presentation.router.Routing
 
-class MainNavigationActivity : BaseActivity(R.layout.activity_navigation),StackNavigatorOwner, ActionBarStateOwnr {
-    override lateinit var actionBarExt: ActionBarExt
-    override lateinit var stackNavigator: StackNavigator
-    lateinit var actionBarView:ActionBarViewState
+class MainNavigationActivity : BaseActivity(R.layout.activity_navigation) {
+    private lateinit var actionBarExt: ActionBarExt
+    private lateinit var stackNavigator: StackNavigator
+    lateinit var actionBarView: ActionBarViewState
     private val binding by viewBinding { ActivityNavigationBinding.bind(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

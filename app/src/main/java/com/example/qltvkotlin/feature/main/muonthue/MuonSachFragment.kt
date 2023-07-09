@@ -11,7 +11,7 @@ import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.router.Router
 import com.example.qltvkotlin.feature.presentation.router.Routes
 
-class MuonThueFragment : BaseFragment(R.layout.fragment_muon_thue) {
+class MuonSachFragment : BaseFragment(R.layout.fragment_muon_thue) {
     private val binding by viewBinding { FragmentMuonThueBinding.bind(this) }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

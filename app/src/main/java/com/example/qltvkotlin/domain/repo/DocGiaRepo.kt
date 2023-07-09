@@ -46,7 +46,7 @@ class DocGiaRepo {
 
     suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
         val docGia = thuVien.getDocGiaByCmnd(cmnd)?: return null
-        val muonSach = thuVien.layMuonSachByCmnd(cmnd)
+        val muonSach = thuVien.getMuonSachByCmnd(cmnd)
         muonSach?.let {
             docGia.soLuongMuon = muonSach.danhSachMuon.sumOf { it.soLuongMuon }.toString()
         }

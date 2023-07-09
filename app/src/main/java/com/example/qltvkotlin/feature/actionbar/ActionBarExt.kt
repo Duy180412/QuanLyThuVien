@@ -9,9 +9,6 @@ import androidx.viewbinding.ViewBinding
 interface State {
     fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding
 }
-interface ActionBarStateOwnr {
-    val actionBarExt: ActionBarExt
-}
 
 class ActionBarExt(
     private val frameLayout: FrameLayout,

@@ -67,7 +67,7 @@ class ThuVienDataRepo {
         return thuVienData.checkDocGiaMuonExist(cmnd)
     }
 
-    suspend fun addMuonThue(newMuonThue: MuonThue): Boolean {
+    suspend fun addMuonSach(newMuonThue: MuonThue): Boolean {
         val addResult = thuVienData.addMuonThue(newMuonThue)
         return addResult > 0
     }
@@ -81,9 +81,10 @@ class ThuVienDataRepo {
         return result > 0
     }
 
-    suspend fun layMuonSachByCmnd(cmnd: String): MuonThue? {
+    suspend fun getMuonSachByCmnd(cmnd: String): MuonThue? {
         return  thuVienData.getMuonThueByCmnd(cmnd)
     }
+
 
 
     companion object {
