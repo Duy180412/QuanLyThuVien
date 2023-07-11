@@ -20,22 +20,22 @@
         android:id="@+id/trangThai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Tên Độc Giả"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/tenDocGia"
+        app:layout_constraintEnd_toStartOf="@+id/btn_del"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tongsosach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Tên Độc Giả"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/slloaisach"
+        app:layout_constraintEnd_toStartOf="@+id/btn_del"
         app:layout_constraintTop_toBottomOf="@+id/trangThai" />
 
     <TextView

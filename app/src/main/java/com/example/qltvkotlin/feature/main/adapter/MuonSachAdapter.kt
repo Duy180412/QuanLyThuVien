@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListMuonthueRycviewBinding
 import com.example.qltvkotlin.domain.model.IMuonSachItem
+import com.example.qltvkotlin.feature.presentation.extension.checkStringNull
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
 class MuonSachApdater(rvList: RecyclerView) :
@@ -26,11 +28,12 @@ class MuonSachApdater(rvList: RecyclerView) :
 
     override fun onBindViewHolder(holder: MuonSachViewHolder, position: Int) {
         holder.bind(position)
-        holder.itemView.onClick { onClickItem(mList[position].maDocGia) }
+//        holder.itemView.onClick { onClickItem(mList[position].maDocGia) }
     }
 
     init {
         rvList.adapter = this
+        rvList.addItemDecoration(CustomViewItemList.item)
     }
 
 
@@ -48,12 +51,14 @@ class MuonSachApdater(rvList: RecyclerView) :
             ItemListMuonthueRycviewBinding::inflate
         )
     ) : ViewHolder(binding.root) {
+        private val resources = itemView.resources
         fun bind(position: Int) {
+
             val itemList = mList[position]
-            binding.tenDocGia.text = itemList.tenDocGia
+            binding.tenDocGia.text = resources.getString(R.string.view_ten_docgia,itemList.tenDocGia.checkStringNull() )
             binding.trangThai.text = itemList.tinhTrangThue
-            binding.slloaisach.text = itemList.tongLoaiSach
-            binding.tongsosach.text = itemList.soLuongThue
+            binding.slloaisach.text = resources.getString(R.string.view_tong_loai,itemList.tongLoaiSach.checkStringNull() )
+            binding.tongsosach.text = resources.getString(R.string.view_tong_muon,itemList.soLuongThue.checkStringNull() )
             binding.btnDel.onClick{
                 onClickDel(itemList.maDocGia)
             }

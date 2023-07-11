@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListRycviewBinding
 import com.example.qltvkotlin.domain.model.IDocGiaItem
@@ -14,7 +15,6 @@ class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.D
     private val mList = ArrayList<IDocGiaItem>()
     lateinit var onClickItem: (String) -> Unit
     lateinit var onClickDel: (String) -> Unit
-    private var backUpItemList: BackUpItemList<IDocGiaItem>? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocGiaViewHolder {
@@ -32,6 +32,7 @@ class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.D
 
     init {
         rvList.adapter = this
+        rvList.addItemDecoration(CustomViewItemList.item)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,18 +46,16 @@ class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.D
         parent: ViewGroup,
         private val binding: ItemListRycviewBinding = parent.bindingOf(ItemListRycviewBinding::inflate),
     ) : ViewHolder(binding.root) {
+        private val resources = itemView.resources
         fun bind(position: Int) {
             val itemList = mList[position]
             binding.imageview.setAvatar(itemList.images.getImage())
-            binding.ten.text = itemList.tenDocGia.checkStringNull()
-            binding.tenTacGia.text = itemList.sdt.checkStringNull()
-            binding.tongSach.text = itemList.ngayHetHan.checkStringNull()
-            binding.conLai.text = itemList.soLuongMuon.checkStringNull()
+            binding.ten.text = resources.getString(R.string.view_ten_docgia,itemList.tenDocGia.checkStringNull() )
+            binding.tenTacGia.text =  resources.getString(R.string.view_sdt,itemList.sdt.checkStringNull() )
+            binding.tongSach.text = resources.getString(R.string.view_han_dangki,itemList.ngayHetHan.checkStringNull() )
+            binding.choThue.text = resources.getString(R.string.view_dangthue,itemList.soLuongMuon.checkStringNull() )
             binding.btnDel.onClick {
                 onClickDel(itemList.cmnd)
-                backUpItemList = BackUpItemList(position, mList[position])
-                mList.remove(itemList)
-                notifyItemRemoved(position)
             }
 
         }

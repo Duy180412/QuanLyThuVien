@@ -2,9 +2,11 @@ package com.example.qltvkotlin.feature.helper.spinner
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListSpinnerBinding
+import com.example.qltvkotlin.feature.main.adapter.CustomViewItemList
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
 class AdapterSpinnerCustom(rycView: RecyclerView) :
@@ -51,5 +53,6 @@ class AdapterSpinnerCustom(rycView: RecyclerView) :
 
     init {
         rycView.adapter = this
+        rycView.addItemDecoration(CustomViewItemList.item)
     }
 }

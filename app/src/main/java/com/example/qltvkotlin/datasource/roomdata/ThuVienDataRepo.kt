@@ -76,7 +76,7 @@ class ThuVienDataRepo {
        return thuVienData.getAllMuonSach()
     }
 
-    suspend fun delMuonThuByCmnd(cmnd: String): Boolean {
+    suspend fun delMuonSachByCmnr(cmnd: String): Boolean {
         val result = thuVienData.deleteMuonSach(cmnd)
         return result > 0
     }

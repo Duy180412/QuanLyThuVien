@@ -17,13 +17,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/ten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="18dp"
-        android:text="Tên Sách"
+        android:layout_marginTop="16dp"
+        android:text="Ví Dụ Tên Sách"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/imageview"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,10 +32,11 @@
         android:id="@+id/ten_tac_gia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:text="Tác Giả"
+        android:layout_marginBottom="8dp"
+        android:text="Ví dụ tên tác giả"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageview"
         app:layout_constraintTop_toBottomOf="@+id/ten" />
 
@@ -44,20 +45,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Tổng: 24"
+        android:layout_marginEnd="8dp"
+        android:text="24"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/btn_del"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/con_lai"
+        android:id="@+id/cho_thue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Cho Thuê: 15"
+        android:text="15"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_del"
@@ -65,10 +66,9 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_del"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"
         android:background="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"

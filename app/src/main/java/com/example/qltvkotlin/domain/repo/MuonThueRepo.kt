@@ -24,8 +24,10 @@ class MuonThueRepo {
             when {
                 loaiSearch == Role.DangThue && (key.isBlank() || item.tenDocGia.lowercase()
                     .contains(key)) -> item.tinhTrangThue.contains("Đang Thuê")
+
                 loaiSearch == Role.HetHan && (key.isBlank() || item.tenDocGia.lowercase()
                     .contains(key)) -> item.tinhTrangThue.contains("Hết Hạn")
+
                 else -> false
             }
         }
@@ -88,7 +90,7 @@ class MuonThueRepo {
     suspend fun del(cmnd: String): Boolean {
         return thuVien.getMuonSachByCmnd(cmnd)?.let {
             backup = it
-            thuVien.delSachById(cmnd)
+            thuVien.delMuonSachByCmnr(cmnd)
         } ?: false
     }
 
