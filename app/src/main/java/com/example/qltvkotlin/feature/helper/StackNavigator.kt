@@ -3,7 +3,6 @@ package com.example.qltvkotlin.feature.helper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.feature.main.account.AccountFragment
 import com.example.qltvkotlin.feature.main.docgia.DocGiaFragment
@@ -39,7 +38,7 @@ class StackNavigator(
 
     private fun getLastFragment(): Fragment? {
         val list =  manager.fragments
-        return list.lastFragmnet2()
+        return list.lastFragmnet()
     }
 
     fun navigateTo(selectedItemId: Int) {
@@ -53,16 +52,7 @@ class StackNavigator(
     }
 }
 
-fun <T> List<T>.lastFragmnet(): T? {
-    if (isEmpty()) return null
-    val lastIndex = this.lastIndex
-    return when (this[lastIndex]) {
-        is SupportRequestManagerFragment -> this.getOrNull(lastIndex - 1)
-        else -> this.lastOrNull()
-    }
-}
-
-fun List<Fragment>.lastFragmnet2(): Fragment? {
+fun List<Fragment>.lastFragmnet(): Fragment? {
     val listFragment = listOf(
         SachFragment::class,
         AccountFragment::class,
@@ -76,14 +66,5 @@ fun List<Fragment>.lastFragmnet2(): Fragment? {
         }
     }
     return null
-//    var lastFragment: Fragment? = null
-//    if (this.isEmpty()) return lastFragment
-//    for (i in this.lastIndex downTo 0) {
-//        val fragmentClass = this[i]
-//        if (listFragment.any { it == fragmentClass }) {
-//            lastFragment = fragmentClass
-//        }
-//    }
-//    return lastFragment
 }
 

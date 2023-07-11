@@ -1,8 +1,7 @@
 package com.example.qltvkotlin.app
 
 
-import android.app.Dialog
-import android.util.Log
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import com.example.qltvkotlin.feature.presentation.extension.cast
 
 fun <T : ViewBinding> AppCompatActivity.viewBinding(function: View.() -> T) =
     lazy(LazyThreadSafetyMode.NONE) {
@@ -30,6 +30,11 @@ inline fun <reified T : ViewBinding> DialogFragment.viewBinding(
         bindingInflater.invoke(layoutInflater)
     }
 }
+inline fun <reified T : Activity> Fragment.getActivtyBase(): Lazy<T> =
+    lazy(LazyThreadSafetyMode.NONE) {
+        requireActivity().cast<T>()
+            ?: throw ClassCastException(" this Fragment ${this::class.java.simpleName} can't be cast to Activty ${T::class.java.simpleName}")
+    }
 
 fun <T : ViewBinding> Fragment.viewBinding(function: View.() -> T): Lazy<T> = object :
     Lazy<T>,

@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class DialogProvider(private val application: Application) :
+class DialogProvider(application: Application) :
     Application.ActivityLifecycleCallbacks {
     private val mActivities = arrayListOf<Activity>()
     private val currentActivity get() = mActivities.lastOrNull()?.takeIf { !it.isFinishing }
@@ -26,7 +26,7 @@ class DialogProvider(private val application: Application) :
         onAccept: () -> Unit,
         onCancel: () -> Unit
     ): AlertDialog {
-        val diaLog = AlertDialog.Builder(application)
+        val diaLog = AlertDialog.Builder(currentActivity)
         diaLog.setMessage(text)
         diaLog.setPositiveButton("Yes") { d, _ ->
             onAccept.invoke()
@@ -43,7 +43,7 @@ class DialogProvider(private val application: Application) :
     fun notification(
         text: String,
     ): AlertDialog {
-        val diaLog = AlertDialog.Builder(application)
+        val diaLog = AlertDialog.Builder(currentActivity)
         diaLog.setTitle("Error")
         diaLog.setMessage(text)
         diaLog.setPositiveButton("Ok") { d, _ ->

@@ -3,12 +3,11 @@ package com.example.qltvkotlin.feature.main.muonthue.add
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
-import com.example.qltvkotlin.app.viewModel
+import com.example.qltvkotlin.app.viewmodel
 import com.example.qltvkotlin.databinding.FragmentAddMuonThueBinding
 import com.example.qltvkotlin.datasource.bo.MuonSachEdittable
 import com.example.qltvkotlin.domain.model.HasChange
@@ -34,7 +33,7 @@ import com.example.qltvkotlin.feature.presentation.extension.show
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {
     private val binding by viewBinding { FragmentAddMuonThueBinding.bind(this) }
-    private val viewmodel by viewModel<VM>()
+    override val viewmodel by viewmodel<VM>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,11 +49,6 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
             val value = it.cast<IMuonSachGeneral>()!!
             adapter.setList(value.list)
             bindWhenOnChange(value)
-        }
-        viewmodel.thongBao.observe(viewLifecycleOwner) { toast.invoke(it) }
-        viewmodel.success.observe(viewLifecycleOwner) {
-            toast.invoke(it)
-            mActivity.finish()
         }
     }
 
@@ -83,11 +77,9 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
         return { viewmodel.checkHasChange() }
     }
 
-    class VM : ViewModel() {
+    class VM : BaseViewModel() {
         var newMuonSach = MutableLiveData<IMuonSach>()
         private val dialogProvider = DialogProvider.shared
-        val thongBao = MutableLiveData<String>()
-        val success = MutableLiveData<String>()
 
         init {
             newMuonSach.value = MuonSachEdittable(object : IMuonSachGet {})
@@ -150,7 +142,7 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
             launch {
                 val addNew = AddNewMuonSach(newMuonSach)
                 addNew()
-                success.postValue("Thêm Mượn Sách")
+                successAndFinish.postValue("Thêm Mượn Sách")
             }
         }
     }

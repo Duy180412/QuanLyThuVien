@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.launch
-import com.example.qltvkotlin.app.viewModel
+import com.example.qltvkotlin.app.viewmodel
 import com.example.qltvkotlin.databinding.DialogCustomBinding
 import com.example.qltvkotlin.domain.repo.DocGiaRepo
 import com.example.qltvkotlin.domain.repo.SachRepo
@@ -30,11 +30,11 @@ class SachSelecDialog(activity: AppCompatActivity) :
     DialogCustom(activity, Role.Sach)
 
 abstract class DialogCustom(
-    private val activity: AppCompatActivity,
+    private val mActivity: AppCompatActivity,
     private val role: Role
 ) : DialogFragment() {
     private var binding: DialogCustomBinding? = null
-    private val viewmodel by viewModel<VM>()
+    private val viewmodel by viewmodel<VM>()
     private lateinit var onClickList: (IItemSpinner) -> Unit
     private val routing = pairLookupOf(
         Role.DocGia to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia),
@@ -75,7 +75,7 @@ abstract class DialogCustom(
 
     fun showDialog(function: (IItemSpinner) -> Unit) {
         onClickList = function
-        this.show(activity.supportFragmentManager, "DialogCustom")
+        this.show(mActivity.supportFragmentManager, "DialogCustom")
     }
 
 //    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

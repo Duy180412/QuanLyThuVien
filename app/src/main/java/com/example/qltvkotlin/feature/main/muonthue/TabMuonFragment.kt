@@ -1,15 +1,13 @@
 package com.example.qltvkotlin.feature.main.muonthue
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.FragmentRecyclerView
 import com.example.qltvkotlin.app.launch
 import com.example.qltvkotlin.app.viewBinding
-import com.example.qltvkotlin.app.viewModel
+import com.example.qltvkotlin.app.viewmodel
 import com.example.qltvkotlin.databinding.FragmentMuonthueViewBinding
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.domain.repo.MuonThueRepo
@@ -34,22 +32,13 @@ class HetHanFragment : FragmentViewMuonSach() {
 
 abstract class FragmentViewMuonSach : FragmentRecyclerView(R.layout.fragment_muonthue_view) {
     private val binding by viewBinding { FragmentMuonthueViewBinding.bind(this) }
-    val viewmodel by viewModel<VM>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewmodelMain = viewmodel
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    override val viewmodel by viewmodel<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = MuonSachApdater(binding.rycView)
         adapter.onClickDel = {
-            viewmodel.xoa(it)
+            dialog.selectYesNo("Trả Toàn Bộ Sách",{viewmodel.xoa(it)},{})
         }
 
         viewmodel.search.observe(viewLifecycleOwner) {

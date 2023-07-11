@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
@@ -31,52 +30,51 @@ import com.example.qltvkotlin.feature.presentation.router.Routes
 
 class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
     private val binding by viewBinding { FragmentInfoSachBinding.bind(this) }
-    private val viewModel by viewModels<VM>()
+    override val viewmodel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoSach>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.setSach(args.value?.id)
+        viewmodel.setSach(args.value?.id)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         takePhoto()
-        viewModel.book.observe(viewLifecycleOwner, this::bindView)
-        viewModel.addSuccess.observe(viewLifecycleOwner) { toast.invoke(it) }
+        viewmodel.book.observe(viewLifecycleOwner, this::bindView)
     }
 
 
     override fun getCheck(): () -> Boolean {
-        return { viewModel.checkHasChange() }
+        return { viewmodel.checkHasChange() }
     }
 
     private fun takePhoto() {
         binding.camera.onClick(
             appPermission.checkPermissonCamera(
-                takePhotoAction.fromCamera { viewModel.setPhoto(it) })
+                takePhotoAction.fromCamera { viewmodel.setPhoto(it) })
         )
-        binding.thuvien.onClick(takePhotoAction.fromLibrary { viewModel.setPhoto(it) })
+        binding.thuvien.onClick(takePhotoAction.fromLibrary { viewmodel.setPhoto(it) })
     }
 
 
     override fun clickEditAndSave(it: View) {
-        val iSach = viewModel.book.value
+        val iSach = viewmodel.book.value
         if (iSach !is IBookSet) {
-            viewModel.setSuaSach()
+            viewmodel.setSuaSach()
             it.isSelected = true
             return
         }
-        if (!viewModel.checkHasChange()) {
-            viewModel.tatSuaSach()
+        if (!viewmodel.checkHasChange()) {
+            viewmodel.tatSuaSach()
             it.isSelected = false
             return
         }
-        if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
+        if (viewmodel.checkHasChange() || !viewmodel.checkValidator()) {
             dialog.selectYesNo("Sửa Sách ?",
-                { viewModel.update() },
-                { viewModel.tatSuaSach() })
+                { viewmodel.update() },
+                { viewmodel.tatSuaSach() })
         }
     }
 
@@ -135,13 +133,11 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
     }
 
 
-    class VM : ViewModel() {
+    class VM : BaseViewModel() {
         private val sachRepo = SachRepo.shared
         val book = MutableLiveData<ISach>()
-        val error = MutableLiveData<Throwable>()
-        val addSuccess = MutableLiveData<String>()
         fun setSach(id: String?) {
-            launch {
+            launch(error) {
                 book.postValue(sachRepo.getBookReadOnly(id))
             }
         }
@@ -178,10 +174,10 @@ class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
         }
 
         fun update() {
-            launch {
+            launch(error) {
                 val bookEdit = book.value.cast<IBookSet>() ?: return@launch
                 sachRepo.updateSach(bookEdit)
-                addSuccess.postValue("Đã Lưu Sửa")
+                thongBao.postValue("Đã Lưu Sửa")
                 setSach(bookEdit.maSach.toString())
             }
         }

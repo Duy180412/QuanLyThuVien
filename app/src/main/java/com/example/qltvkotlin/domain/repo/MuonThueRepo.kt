@@ -14,7 +14,6 @@ import java.util.Date
 
 class MuonThueRepo {
     private val thuVien = ThuVienDataRepo.instance
-    private val sachRepo = SachRepo.shared
     private val docGiaRepo = DocGiaRepo.shared
     private var backup: MuonThue? = null
 

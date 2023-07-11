@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
@@ -27,48 +26,40 @@ import com.example.qltvkotlin.widget.view.DateOnClick
 class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) {
 
     private val binding by viewBinding { FragmentAddDocGiaBinding.bind(this) }
-    private val viewModel by viewModels<VM>()
+    override val viewmodel by viewModels<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editTextOnChange()
         takePhoto()
-        viewModel.newDocGia.observe(viewLifecycleOwner) {
+        viewmodel.newDocGia.observe(viewLifecycleOwner) {
             bindWhenOnChange(it.cast<IDocGiaSet>()!!)
         }
-        viewModel.error.observe(viewLifecycleOwner) {
-            dialog.notification(it.message!!)
-        }
-        viewModel.addSuccess.observe(viewLifecycleOwner) { closeFragment(it) }
     }
 
+
     override fun clickEditAndSave(it: View) {
-        viewModel.saveDocGia()
+        viewmodel.saveDocGia()
     }
 
 
     override fun getCheck(): () -> Boolean {
-        return { viewModel.checkHasChange() }
-    }
-
-    private fun closeFragment(it: String) {
-        toast.invoke(it)
-        mActivity.finish()
+        return { viewmodel.checkHasChange() }
     }
 
 
     private fun takePhoto() {
         binding.camera.onClick(
             appPermission.checkPermissonCamera(
-                takePhotoAction.fromCamera { viewModel.setPhoto(it) })
+                takePhotoAction.fromCamera { viewmodel.setPhoto(it) })
         )
         binding.thuvien.onClick(takePhotoAction.fromLibrary {
-            viewModel.setPhoto(it)
+            viewmodel.setPhoto(it)
         })
     }
 
     private fun editTextOnChange() {
-        val value = viewModel.newDocGia.value.cast<IDocGiaSet>()!!
+        val value = viewmodel.newDocGia.value.cast<IDocGiaSet>()!!
         binding.cmndNhap.bindTo { value.cmnd }
         binding.tendocgiaNhap.bindTo { value.tenDocGia }
         binding.ngayhethanNhap.bindTo { value.ngayHetHan }
@@ -113,10 +104,8 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
 
 
     }
-    class VM : ViewModel() {
-        val error = MutableLiveData<Throwable>()
+    class VM : BaseViewModel() {
         var newDocGia = MutableLiveData<IDocGia>()
-        val addSuccess = MutableLiveData<String>()
         fun checkHasChange(): Boolean {
             return newDocGia.value.cast<HasChange>()?.hasChange()!!
         }
@@ -130,7 +119,7 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
             launch(error) {
                 val addNewDocGia = AddNewDocGia(value)
                 addNewDocGia()
-                addSuccess.postValue("Đã Lưu Đọc Giả Thành Công")
+                successAndFinish.postValue("Đã Lưu Đọc Giả Thành Công")
             }
         }
 

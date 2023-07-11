@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
@@ -29,50 +28,50 @@ import com.example.qltvkotlin.feature.presentation.extension.onClick
 import com.example.qltvkotlin.feature.presentation.router.Routes
 import com.example.qltvkotlin.widget.view.DateOnClick
 
-class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia){
+class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia) {
     private val binding by viewBinding { FragmentInfoDocGiaBinding.bind(this) }
-    private val viewModel by viewModels<VM>()
+    override val viewmodel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoDocGia>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.setDocGia(args.value?.id)
+        viewmodel.setDocGia(args.value?.id)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         takePhoto()
-        viewModel.docGia.observe(viewLifecycleOwner, this::bindView)
-        viewModel.addSuccess.observe(viewLifecycleOwner) { toast.invoke(it) }
+        viewmodel.docGia.observe(viewLifecycleOwner, this::bindView)
     }
 
+
     override fun getCheck(): () -> Boolean {
-        return { viewModel.checkHasChange() }
+        return { viewmodel.checkHasChange() }
     }
 
     private fun takePhoto() {
         binding.camera.onClick(
-            appPermission.checkPermissonCamera(takePhotoAction.fromCamera { viewModel.setPhoto(it) })
+            appPermission.checkPermissonCamera(takePhotoAction.fromCamera { viewmodel.setPhoto(it) })
         )
-        binding.thuvien.onClick(takePhotoAction.fromLibrary { viewModel.setPhoto(it) })
+        binding.thuvien.onClick(takePhotoAction.fromLibrary { viewmodel.setPhoto(it) })
     }
 
     override fun clickEditAndSave(it: View) {
-        val iSach = viewModel.docGia.value
+        val iSach = viewmodel.docGia.value
         if (iSach !is IDocGiaSet) {
-            viewModel.setSuaDocGia()
+            viewmodel.setSuaDocGia()
             it.isSelected = true
             return
         }
-        if (!viewModel.checkHasChange()) {
-            viewModel.tatSuaDocGia()
+        if (!viewmodel.checkHasChange()) {
+            viewmodel.tatSuaDocGia()
             it.isSelected = false
             return
         }
-        if (viewModel.checkHasChange() || !viewModel.checkValidator()) {
+        if (viewmodel.checkHasChange() || !viewmodel.checkValidator()) {
             dialog.selectYesNo("Sửa Sách ?",
-                { viewModel.update() },
-                { viewModel.tatSuaDocGia() })
+                { viewmodel.update() },
+                { viewmodel.tatSuaDocGia() })
         }
     }
 
@@ -137,13 +136,11 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
     }
 
 
-    class VM : ViewModel() {
+    class VM : BaseViewModel() {
         private val docGiaRepo = DocGiaRepo.shared
         val docGia = MutableLiveData<IDocGia>()
-        val error = MutableLiveData<Throwable>()
-        val addSuccess = MutableLiveData<String>()
         fun setDocGia(id: String?) {
-            launch {
+            launch(error) {
                 docGia.postValue(docGiaRepo.getDocGiaReadOnly(id))
             }
         }
@@ -162,7 +159,7 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
         }
 
         fun tatSuaDocGia() {
-            launch {
+            launch(error) {
                 val docGiaEdit = docGia.value.cast<IDocGiaBackUp>()
                 docGiaEdit ?: throw Exception("Lỗi Hệ Thống")
                 docGia.postValue(docGiaEdit.docGiaRead)
@@ -181,10 +178,10 @@ class InfoDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_info_doc_gia
         }
 
         fun update() {
-            launch {
+            launch(error) {
                 val docGiaEdit = docGia.value.cast<IDocGiaSet>() ?: return@launch
                 docGiaRepo.update(docGiaEdit)
-                addSuccess.postValue("Đã Lưu Sửa")
+                thongBao.postValue("Đã Lưu Sửa")
                 setDocGia(docGiaEdit.cmnd.toString())
             }
         }

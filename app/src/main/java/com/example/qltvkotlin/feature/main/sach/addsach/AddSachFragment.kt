@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.app.BaseFragmentNavigation
 import com.example.qltvkotlin.app.launch
@@ -27,48 +26,39 @@ import com.example.qltvkotlin.feature.presentation.extension.onClick
 class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
 
     private val binding by viewBinding { FragmentAddSachBinding.bind(this) }
-    private val viewModel by viewModels<VM>()
+    override val viewmodel by viewModels<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editTextOnChange()
         takePhoto()
-        viewModel.newBook.observe(viewLifecycleOwner) {
+        viewmodel.newBook.observe(viewLifecycleOwner) {
             bindWhenOnChange(it.cast<IBookSet>()!!)
         }
-        viewModel.error.observe(viewLifecycleOwner) {
-            dialog.notification(it.message!!)
-        }
-        viewModel.addSuccess.observe(viewLifecycleOwner) { closeFragment(it) }
     }
 
     override fun clickEditAndSave(it: View) {
-        viewModel.saveSach()
+        viewmodel.saveSach()
     }
 
 
     override fun getCheck(): () -> Boolean {
-        return  { viewModel.checkHasChange() }
-    }
-
-    private fun closeFragment(it: String) {
-        toast.invoke(it)
-        mActivity.finish()
+        return  { viewmodel.checkHasChange() }
     }
 
 
     private fun takePhoto() {
         binding.camera.onClick(
             appPermission.checkPermissonCamera(
-                takePhotoAction.fromCamera { viewModel.setPhoto(it) })
+                takePhotoAction.fromCamera { viewmodel.setPhoto(it) })
         )
         binding.thuvien.onClick(takePhotoAction.fromLibrary {
-            viewModel.setPhoto(it)
+            viewmodel.setPhoto(it)
         })
     }
 
     private fun editTextOnChange() {
-        val value = viewModel.newBook.value.cast<IBookSet>()!!
+        val value = viewmodel.newBook.value.cast<IBookSet>()!!
         binding.masachNhap.bindTo { value.maSach }
         binding.tensachNhap.bindTo { value.tenSach }
         binding.loaisachNhap.bindTo { value.loaiSach }
@@ -101,10 +91,8 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
 
     }
 
-    class VM : ViewModel() {
-        val error = MutableLiveData<Throwable>()
+    class VM : BaseViewModel() {
         var newBook = MutableLiveData<ISach>()
-        val addSuccess = MutableLiveData<String>()
         fun checkHasChange(): Boolean {
             return newBook.value.cast<HasChange>()?.hasChange()!!
         }
@@ -118,7 +106,7 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach){
             launch(error) {
                 val addNewSach = AddNewSach(value)
                 addNewSach()
-                addSuccess.postValue("Đã Lưu Sách Thành Công")
+                successAndFinish.postValue("Đã Lưu Sách Thành Công")
             }
         }
 
