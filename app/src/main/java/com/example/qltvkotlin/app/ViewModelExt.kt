@@ -17,12 +17,14 @@ inline fun <reified T : ViewModel> ViewModelStoreOwner.getViewModel(): T {
     return ViewModelProvider(this)[T::class.java]
 }
 
+
 inline fun <reified T : ViewModel> FragmentActivity.viewModel(): Lazy<T> =
-    lazy(LazyThreadSafetyMode.NONE) { getViewModel<T>() }
+    lazy(LazyThreadSafetyMode.NONE) { getViewModel() }
 
 
-inline fun <reified T : ViewModel> Fragment.viewModel(): Lazy<T> =
-    lazy(LazyThreadSafetyMode.NONE) { getViewModel<T>() }
+inline fun <reified T : ViewModel> Fragment.viewmodel(): Lazy<T> =
+    lazy(LazyThreadSafetyMode.NONE) { getViewModel() }
+
 @Suppress("unchecked_cast")
 fun ViewModel.launch(
     fail: LiveData<out Throwable>? = null,

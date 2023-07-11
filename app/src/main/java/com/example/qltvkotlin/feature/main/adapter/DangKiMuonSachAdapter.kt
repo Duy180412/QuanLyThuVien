@@ -8,20 +8,26 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemlastaddbookBinding
 import com.example.qltvkotlin.databinding.ItemlistAddmuonsachBinding
-import com.example.qltvkotlin.domain.model.IThongTinSachThueCreate
+import com.example.qltvkotlin.domain.model.IThongTinSachThueGeneral
 import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
-import com.example.qltvkotlin.domain.model.bindCharOwner
+import com.example.qltvkotlin.domain.model.bindOnChange
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.observable.Signal
-import com.example.qltvkotlin.domain.observable.signalBags
-import com.example.qltvkotlin.feature.main.help.dialogcustom.SachSelecDialogOnwer
+import com.example.qltvkotlin.feature.main.help.Command
+import com.example.qltvkotlin.feature.main.help.HasCommandCallback
+import com.example.qltvkotlin.feature.main.help.ThemSachCmd
+import com.example.qltvkotlin.feature.main.help.ThemThemSachRongCmd
+import com.example.qltvkotlin.feature.main.help.XoaSachCmd
+import com.example.qltvkotlin.feature.presentation.extension.bindTo
 import com.example.qltvkotlin.feature.presentation.extension.cast
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
 class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHolder>(),
     HasCommandCallback {
-    private var mList = emptyList<IThongTinSachThueCreate>()
+    private var listChangeClosable: AutoCloseable? = null
+    private var mList = emptyList<IThongTinSachThueGeneral>()
     override var onCommand: (Command) -> Unit = {}
+
 
     companion object {
         private const val VIEW_TYPE_NORMAL = 0
@@ -66,10 +72,10 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
         rycView.adapter = this
     }
 
-    private var listChangeClosable: AutoCloseable? = null
+
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<IThongTinSachThueCreate>) {
+    fun setList(list: List<IThongTinSachThueGeneral>) {
         mList = list
         listChangeClosable?.close()
         listChangeClosable = list.cast<Signal>()?.subscribe { notifyDataSetChanged() }
@@ -79,24 +85,25 @@ class DangKiMuonSachAdapter(rycView: RecyclerView) : RecyclerView.Adapter<ViewHo
     inner class ItemAddMuonThueViewHodel(
         val parent: ViewGroup,
         val binding: ItemlistAddmuonsachBinding = parent.bindingOf(ItemlistAddmuonsachBinding::inflate)
-    ) : ViewHolder(binding.root), SachSelecDialogOnwer, Signal.Closable by signalBags() {
+    ) : ViewHolder(binding.root), Signal.Closable by Signal.Bags() {
         private val owner = itemView.context as LifecycleOwner
         fun bind(position: Int) {
-            val item = mList[position].cast<IThongTinSachThueCreate>()!!
+            val item = mList[position].cast<IThongTinSachThueGeneral>()!!
             binding.themsachNhap.setText(item.tenSach.toString())
             binding.soluongNhap.setText(item.soLuong.toString())
             val thongTinSachThue = item.cast<ThongTinSachThueSet>() ?: return
-
+            binding.soluongNhap.bindTo { thongTinSachThue.soLuong }
             thongTinSachThue.tenSach.also { it2 ->
                 checkAndShowError(it2, binding.themsach)
-                bindCharOwner(owner, it2) {
+                bindOnChange(owner, it2) {
                     checkAndShowError(it, binding.themsach)
                 }
             }
 
+
             thongTinSachThue.soLuong.also { it ->
                 checkAndShowError(it, binding.soluong)
-                bindCharOwner(owner, it) {
+                bindOnChange(owner, it) {
                     checkAndShowError(it, binding.soluong)
                 }
             }

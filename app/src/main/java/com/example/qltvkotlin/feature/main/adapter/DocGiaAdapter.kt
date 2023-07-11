@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListRycviewBinding
 import com.example.qltvkotlin.domain.model.IDocGiaItem
-import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.feature.presentation.extension.checkStringNull
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
@@ -33,15 +32,6 @@ class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.D
 
     init {
         rvList.adapter = this
-    }
-
-    fun unDoItemList() {
-        if (backUpItemList == null) return
-        if (itemCount < backUpItemList!!.position) return
-        else {
-            mList.add(backUpItemList!!.position, backUpItemList!!.itemList)
-            notifyItemInserted(backUpItemList!!.position)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

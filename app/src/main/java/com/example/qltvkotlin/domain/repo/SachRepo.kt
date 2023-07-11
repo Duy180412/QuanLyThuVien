@@ -16,7 +16,7 @@ import com.example.qltvkotlin.feature.presentation.extension.checkIntValue
 class SachRepo {
     private val thuVien = ThuVienDataRepo.instance
     private val imagesRepo = ImagesRepo.imagesRepo
-    private var bookBackUp: SachDTO? = null
+    private var backup: SachDTO? = null
 
     suspend fun searchSach(mKey: String): List<ISachItem> {
         val keySearch = mKey.lowercase().trim()
@@ -26,9 +26,18 @@ class SachRepo {
                     it.tenSach.lowercase().contains(keySearch)
                 } else this
             }.map {
-                creatSachItem(it)
+                creatSachItem(getFullInfoSach(it))
             }
         return list
+    }
+
+    private suspend fun getFullInfoSach(sachDTO: SachDTO): SachDTO {
+        val allMuonSach = thuVien.getAllMuonSach()
+        val tong = allMuonSach.flatMap { docGia -> docGia.danhSachMuon }
+            .filter { sach -> sach.maSach == sachDTO.maSach }
+            .sumOf { sach -> sach.soLuongMuon }
+        sachDTO.choThue = tong.toString()
+        return sachDTO
     }
 
     private fun creatSachItem(sach: SachDTO): ISachItem {
@@ -44,18 +53,18 @@ class SachRepo {
     }
 
     suspend fun checkSach(maCheck: String): Boolean {
-        return thuVien.checkSach(maCheck)
+        return thuVien.checkSachExist(maCheck)
     }
 
 
     suspend fun save(value: IBookSet) {
         val urlImg = saveImage(value.maSach.toString(), value.imageSach.getImage())
         val sachDto = createSachDTO(value, urlImg)
-        thuVien.addBook(sachDto)
+        thuVien.addSach(sachDto)
     }
 
-    private fun saveImage(nameImage: String, iImage: IImage):String {
-       return imagesRepo.saveImage(nameImage, iImage, Role.Sach)
+    private fun saveImage(nameImage: String, iImage: IImage): String {
+        return imagesRepo.saveImage(nameImage, iImage, Role.Sach)
     }
 
     private fun createSachDTO(it: IBookSet, urlImg: String): SachDTO {
@@ -73,10 +82,11 @@ class SachRepo {
     }
 
     suspend fun getBookReadOnly(id: String?): ISach {
-        id ?: return object :IBookGet{}
+        id ?: return object : IBookGet {}
         val sach = getSachById(id)
-        return if (sach == null) object :IBookGet{}
-        else createBookOnly(sach)
+        sach ?: return object : IBookGet {}
+        val sachFull = getFullInfoSach(sach)
+        return createBookOnly(sachFull)
     }
 
     private suspend fun getSachById(id: String): SachDTO? {
@@ -98,27 +108,37 @@ class SachRepo {
     }
 
     suspend fun delSach(id: String): Boolean {
-        val bookDel = getSachById(id)
-        bookDel ?: return false
-        bookBackUp = bookDel
-        return thuVien.deleteBook(id)
+        return getSachById(id)?.let {
+            if (checkSachDaChoMuonExistById(id)) {
+                false
+            } else {
+                backup = it
+                thuVien.delSachById(id)
+            }
+        } ?: return false
     }
 
-    suspend fun repoSach(it: String): Boolean {
-        val book = bookBackUp ?: return false
-        if (book.maSach == it) {
-            return thuVien.addBook(book)
-        }
-        return false
+    private suspend fun checkSachDaChoMuonExistById(id: String): Boolean {
+        val allMuonSach = thuVien.getAllMuonSach()
+        return allMuonSach.flatMap { docGia -> docGia.danhSachMuon }
+            .any { sach -> sach.maSach == id }
+    }
+
+    suspend fun repoSach(id: String): Boolean {
+        return backup?.let {
+            if (it.maSach == id) {
+                thuVien.addSach(it)
+            } else false
+        } ?: false
     }
 
     suspend fun updateSach(bookEdit: IBookSet) {
-        val urlImg= saveImage(bookEdit.maSach.toString(),bookEdit.imageSach.getImage())
-        val updateBook = createSachDTO(bookEdit,urlImg)
+        val urlImg = saveImage(bookEdit.maSach.toString(), bookEdit.imageSach.getImage())
+        val updateBook = createSachDTO(bookEdit, urlImg)
         thuVien.updateBook(updateBook)
     }
 
-    suspend fun getListItemSpinner(key: String): List<IItemSpinner>? {
+    suspend fun getListItemSpinner(key: String): List<IItemSpinner> {
         val keySearch = key.lowercase().trim()
         val list =
             thuVien.getAllBook().run {
@@ -130,6 +150,7 @@ class SachRepo {
             }
         return list
     }
+
     private fun creatSachItemSpinner(it: SachDTO): IItemSpinner {
         return object : IItemSpinner {
             override val key = it.maSach

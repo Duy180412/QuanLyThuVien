@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListRycviewBinding
 import com.example.qltvkotlin.domain.model.ISachItem
+import com.example.qltvkotlin.feature.main.help.Command
+import com.example.qltvkotlin.feature.main.help.OnClickDel
+import com.example.qltvkotlin.feature.main.help.OnClickItem
 import com.example.qltvkotlin.feature.presentation.extension.checkStringNull
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
 class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachViewHolder>() {
     private val mList = ArrayList<ISachItem>()
-    lateinit var onClickItem: (String) -> Unit
-    lateinit var onClickDel: (String) -> Unit
-    private var backUpItemList: BackUpItemList<ISachItem>? = null
+    lateinit var onCommand: (Command) -> Unit
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SachViewHolder {
@@ -27,20 +28,10 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
 
     override fun onBindViewHolder(holder: SachViewHolder, position: Int) {
         holder.bind(position)
-        holder.itemView.onClick { onClickItem(mList[position].maSach) }
     }
 
     init {
         rvList.adapter = this
-    }
-
-    fun unDoItemList() {
-        if (backUpItemList == null) return
-        if (itemCount < backUpItemList!!.position) return
-        else {
-            mList.add(backUpItemList!!.position, backUpItemList!!.itemList)
-            notifyItemInserted(backUpItemList!!.position)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -62,11 +53,9 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
             binding.tongSach.text = itemList.tong.checkStringNull()
             binding.conLai.text = itemList.conLai.checkStringNull()
             binding.btnDel.onClick {
-                onClickDel(itemList.maSach)
-                backUpItemList = BackUpItemList(position, mList[position])
-                mList.remove(itemList)
-                notifyItemRemoved(position)
+                val boolean = onCommand(OnClickDel(itemList.maSach))
             }
+            itemView.onClick { onCommand(OnClickItem(itemList.maSach)) }
 
         }
     }

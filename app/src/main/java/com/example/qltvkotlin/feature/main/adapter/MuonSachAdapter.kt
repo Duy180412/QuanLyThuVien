@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.qltvkotlin.app.bindingOf
 import com.example.qltvkotlin.databinding.ItemListMuonthueRycviewBinding
-import com.example.qltvkotlin.databinding.ItemlistAddmuonsachBinding
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.feature.presentation.extension.onClick
 
@@ -15,7 +14,6 @@ class MuonSachApdater(rvList: RecyclerView) :
     private val mList = ArrayList<IMuonSachItem>()
     lateinit var onClickItem: (String) -> Unit
     lateinit var onClickDel: (String) -> Unit
-    private var backUpItemList: BackUpItemList<IMuonSachItem>? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MuonSachViewHolder {
@@ -35,14 +33,7 @@ class MuonSachApdater(rvList: RecyclerView) :
         rvList.adapter = this
     }
 
-    fun unDoItemList() {
-        if (backUpItemList == null) return
-        if (itemCount < backUpItemList!!.position) return
-        else {
-            mList.add(backUpItemList!!.position, backUpItemList!!.itemList)
-            notifyItemInserted(backUpItemList!!.position)
-        }
-    }
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun setList(mList: List<IMuonSachItem>) {
@@ -63,6 +54,9 @@ class MuonSachApdater(rvList: RecyclerView) :
             binding.trangThai.text = itemList.tinhTrangThue
             binding.slloaisach.text = itemList.tongLoaiSach
             binding.tongsosach.text = itemList.soLuongThue
+            binding.btnDel.onClick{
+                onClickDel(itemList.maDocGia)
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.qltvkotlin.data.model.DocGiaDTO
+import com.example.qltvkotlin.data.model.MuonThue
 import com.example.qltvkotlin.data.model.SachDTO
 
 @Dao
@@ -36,12 +37,30 @@ interface ThuVienDao {
 
     @Query("SELECT * FROM docgia WHERE cmnd = :cmnd")
     suspend fun getDocGiaByCmnd(cmnd: String): DocGiaDTO?
+
     @Insert
     suspend fun addDocGia(docGia: DocGiaDTO): Long
+
     @Query("SELECT EXISTS(SELECT 1 FROM docgia WHERE cmnd = :cmnd)")
     suspend fun checkDocGiaExists(cmnd: String): Boolean
+
     @Update
-    suspend fun updateDocGia(docGia: DocGiaDTO) :Int
+    suspend fun updateDocGia(docGia: DocGiaDTO): Int
+
+    @Query("SELECT EXISTS(SELECT 1 FROM muonthue WHERE cmndDocGia = :cmnd)")
+    suspend fun checkDocGiaMuonExist(cmnd: String): Boolean
+
+    @Insert
+    suspend fun addMuonThue(newMuonThue: MuonThue): Long
+
+    @Query("SELECT * From muonthue")
+    suspend fun getAllMuonSach(): List<MuonThue>
+
+    @Query("DELETE FROM muonthue WHERE cmndDocGia=:cmnd")
+    suspend fun deleteMuonSach(cmnd: String): Int
+
+    @Query("SELECT * FROM muonthue WHERE cmndDocGia = :cmnd")
+    suspend fun getMuonThueByCmnd(cmnd: String): MuonThue?
 
 
 }

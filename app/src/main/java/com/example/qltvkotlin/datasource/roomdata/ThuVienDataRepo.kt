@@ -2,9 +2,8 @@ package com.example.qltvkotlin.datasource.roomdata
 
 
 import com.example.qltvkotlin.data.model.DocGiaDTO
+import com.example.qltvkotlin.data.model.MuonThue
 import com.example.qltvkotlin.data.model.SachDTO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class ThuVienDataRepo {
@@ -18,7 +17,7 @@ class ThuVienDataRepo {
         return thuVienData.getAllDocGia()
     }
 
-    suspend fun addBook(sachDto: SachDTO): Boolean {
+    suspend fun addSach(sachDto: SachDTO): Boolean {
         val addResult = thuVienData.addSach(sachDto)
         return addResult > 0
     }
@@ -28,12 +27,12 @@ class ThuVienDataRepo {
         return result > 0
     }
 
-    suspend fun deleteBook(id: String): Boolean {
+    suspend fun delSachById(id: String): Boolean {
         val result = thuVienData.deleteSach(id)
         return result > 0
     }
 
-    suspend fun checkSach(maCheck: String): Boolean {
+    suspend fun checkSachExist(maCheck: String): Boolean {
         return thuVienData.checkSachExists(maCheck)
     }
 
@@ -63,6 +62,30 @@ class ThuVienDataRepo {
         val result = thuVienData.updateDocGia(docGia)
         return result > 0
     }
+
+    suspend fun checkDocGiaMuonExistByCmnd(cmnd: String): Boolean {
+        return thuVienData.checkDocGiaMuonExist(cmnd)
+    }
+
+    suspend fun addMuonSach(newMuonThue: MuonThue): Boolean {
+        val addResult = thuVienData.addMuonThue(newMuonThue)
+        return addResult > 0
+    }
+
+    suspend fun getAllMuonSach(): List<MuonThue>{
+       return thuVienData.getAllMuonSach()
+    }
+
+    suspend fun delMuonThuByCmnd(cmnd: String): Boolean {
+        val result = thuVienData.deleteMuonSach(cmnd)
+        return result > 0
+    }
+
+    suspend fun getMuonSachByCmnd(cmnd: String): MuonThue? {
+        return  thuVienData.getMuonThueByCmnd(cmnd)
+    }
+
+
 
     companion object {
         val instance = ThuVienDataRepo()

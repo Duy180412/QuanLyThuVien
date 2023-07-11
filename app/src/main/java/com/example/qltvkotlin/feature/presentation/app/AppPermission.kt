@@ -8,7 +8,7 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.qltvkotlin.widget.view.DialogFactory
+import com.example.qltvkotlin.feature.main.muonthue.add.DialogProvider
 
 interface AppPermissionOwer {
     val appPermission: AppPermission
@@ -23,7 +23,7 @@ interface AppPermissionOwer {
 
 class AppPermission(private val context: Context) {
     private val call = context as ActivityResultCaller
-    private val dialogFactory = DialogFactory(context)
+    private val dialog = DialogProvider.shared
     companion object {
         val PERMISSION_CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     }
@@ -31,7 +31,7 @@ class AppPermission(private val context: Context) {
     fun checkPermissonCamera(onClick: View.OnClickListener): View.OnClickListener {
         val requests = PermissionRequests {
             if (it) onClick.onClick(null)
-            else dialogFactory.notification( "Không có quyền")
+            else dialog.notification( "Không có quyền")
         }
         return View.OnClickListener { requests.checkPermission() }
     }
