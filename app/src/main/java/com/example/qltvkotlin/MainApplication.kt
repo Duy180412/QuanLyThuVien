@@ -1,11 +1,11 @@
 package com.example.qltvkotlin
 
 import android.app.Application
-import com.example.qltvkotlin.datasource.SharedPreferencesExt
-import com.example.qltvkotlin.datasource.roomdata.AppDataBase
-import com.example.qltvkotlin.feature.main.adapter.CustomViewItemList
-import com.example.qltvkotlin.feature.main.muonthue.add.DialogProvider
-import com.example.qltvkotlin.feature.presentation.app.AppFileManager
+import com.example.qltvkotlin.data.datasource.SharedPreferencesExt
+import com.example.qltvkotlin.data.datasource.roomdata.AppDataBase
+import com.example.qltvkotlin.domain.helper.ActivityRetriever
+import com.example.qltvkotlin.presentation.helper.AppFileManager
+import com.example.qltvkotlin.presentation.widget.HorizontalLineDecoration
 
 
 class MainApplication : Application() {
@@ -14,7 +14,7 @@ class MainApplication : Application() {
         AppDataBase.init(this)
         AppFileManager.init(this)
         SharedPreferencesExt.instance.init(this)
-        DialogProvider.shared = DialogProvider(this)
-        CustomViewItemList.item = CustomViewItemList(this)
+        ActivityRetriever.shared = ActivityRetriever(this)
+        HorizontalLineDecoration.item = HorizontalLineDecoration(this)
     }
 }

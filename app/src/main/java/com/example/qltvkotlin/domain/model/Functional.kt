@@ -1,6 +1,5 @@
 package com.example.qltvkotlin.domain.model
 
-import java.util.Date
 
 interface Updatable {
     fun update(value: Any?)
@@ -9,11 +8,11 @@ interface Updatable {
 interface Validable {
     fun validate(): Boolean
 }
-interface GetError {
-    fun getMess():String
+interface HasError {
+    fun getError():String
 }
-interface GetDate {
-    fun getDate(): Date?
+interface Bindable<T> {
+    fun bind(item: T)
 }
 
 

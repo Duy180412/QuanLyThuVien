@@ -1,17 +1,17 @@
 package com.example.qltvkotlin.domain.repo
 
+import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.data.model.DocGiaDTO
-import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
-import com.example.qltvkotlin.domain.model.IDocGia
-import com.example.qltvkotlin.domain.model.IDocGiaGet
+import com.example.qltvkotlin.domain.enumeration.Role
+import com.example.qltvkotlin.domain.enumeration.StringId
 import com.example.qltvkotlin.domain.model.IDocGiaItem
-import com.example.qltvkotlin.domain.model.IDocGiaSet
+import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
-import com.example.qltvkotlin.domain.model.createImagesFromUrl
 import com.example.qltvkotlin.domain.model.getDateNow
-import com.example.qltvkotlin.feature.helper.Role
-import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
-import com.example.qltvkotlin.feature.presentation.extension.dateFromString
+import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.extension.createImagesFromUrl
+import com.example.qltvkotlin.presentation.extension.dateFromString
+import com.example.qltvkotlin.presentation.widget.IItemSpinner
 
 
 class DocGiaRepo {
@@ -19,11 +19,16 @@ class DocGiaRepo {
     private val imagesRepo = ImagesRepo.imagesRepo
     private var backUp: DocGiaDTO? = null
 
+    companion object {
+        val shared = DocGiaRepo()
+    }
+
+
 
     private fun creatDocGiaItem(it: DocGiaDTO): IDocGiaItem {
         return object : IDocGiaItem {
             override val cmnd = it.cmnd
-            override val images = it.avatar.createImagesFromUrl()
+            override val photoField = it.avatar.createImagesFromUrl()
             override val tenDocGia = it.tenDocGia
             override val sdt = it.sdt
             override val ngayHetHan = it.ngayHetHan
@@ -44,7 +49,7 @@ class DocGiaRepo {
         return list
     }
 
-    suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
+     suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
         val docGia = thuVien.getDocGiaByCmnd(cmnd)?: return null
         val muonSach = thuVien.getMuonSachByCmnd(cmnd)
         muonSach?.let {
@@ -77,56 +82,59 @@ class DocGiaRepo {
     }
 
 
-    suspend fun checkDocGia(cmnd: String): Boolean {
+    suspend fun checkDocGia(cmnd: String?): Boolean {
+        cmnd ?: return true
         return thuVien.checkDocGia(cmnd)
     }
 
-    suspend fun save(value: IDocGiaSet) {
-        val image = value.images.getImage()
-        val urlImg = imagesRepo.saveImage(value.cmnd.toString(), image, Role.DocGia)
-        val docGiaDto = createDocGiaDTO(value, urlImg)
+
+    suspend fun save(editable: HashMap<StringId, String>, photo: IImage) {
+        val cmnd = editable[StringId.CMND] ?: return
+        val image = photo.cast<IsImageUri>()?.uriImage
+        val urlImg = imagesRepo.saveImage(cmnd, image, Role.DocGia)
+        val docGiaDto = createDocGiaDTO(editable, urlImg)
         thuVien.addDocGia(docGiaDto)
     }
 
-    private fun createDocGiaDTO(value: IDocGiaSet, urlImg: String): DocGiaDTO {
+    private fun createDocGiaDTO(editable: HashMap<StringId, String>, urlImg: String): DocGiaDTO {
         return DocGiaDTO(
-            value.cmnd.toString(),
+            editable[StringId.CMND].orEmpty(),
             urlImg,
-            value.tenDocGia.toString(),
-            value.ngayHetHan.toString(),
-            value.sdt.toString(),
-            value.soLuongMuon.toString()
-        )
+            editable[StringId.TenDocGia].orEmpty(),
+            editable[StringId.NgayHetHan].orEmpty(),
+            editable[StringId.SDT].orEmpty(),
+            editable[StringId.SoLuongMuon].orEmpty(),
+            )
     }
-
-    suspend fun getDocGiaReadOnly(cmnd: String?): IDocGia {
-        cmnd ?: return object : IDocGiaGet {}
-        val docGia = getInfoFullDocGiaDto(cmnd)?: return object : IDocGiaGet {}
-        return createDocGiaOnly(docGia)
-    }
-
-    private fun createDocGiaOnly(docGia: DocGiaDTO): IDocGia {
-        return object : IDocGiaGet {
-            override val cmnd = docGia.cmnd
-            override val images = docGia.avatar.createImagesFromUrl()
-            override val tenDocGia = docGia.tenDocGia
-            override val ngayHetHan = docGia.ngayHetHan
-            override val sdt = docGia.sdt
-            override val soLuongMuon = docGia.soLuongMuon
-        }
-    }
-
-    suspend fun update(docGiaEdit: IDocGiaSet) {
-        val urlImg = saveImage(docGiaEdit.cmnd.toString(), docGiaEdit.images.getImage())
-        val updateDocGia = createDocGiaDTO(docGiaEdit, urlImg)
-        thuVien.updateDocGia(updateDocGia)
-
-    }
-
-    private fun saveImage(nameImage: String, image: IImage): String {
-        return imagesRepo.saveImage(nameImage, image, Role.DocGia)
-    }
-
+//
+//    suspend fun getDocGiaReadOnly(cmnd: String?): IDocGia {
+//        cmnd ?: return object : IDocGiaGet {}
+//        val docGia = getInfoFullDocGiaDto(cmnd)?: return object : IDocGiaGet {}
+//        return createDocGiaOnly(docGia)
+//    }
+//
+//    private fun createDocGiaOnly(docGia: DocGiaDTO): IDocGia {
+//        return object : IDocGiaGet {
+//            override val cmnd = docGia.cmnd
+//            override val photoField = docGia.avatar.createImagesFromUrl()
+//            override val tenDocGia = docGia.tenDocGia
+//            override val ngayHetHan = docGia.ngayHetHan
+//            override val sdt = docGia.sdt
+//            override val soLuongMuon = docGia.soLuongMuon
+//        }
+//    }
+//
+//    suspend fun update(docGiaEdit: IDocGiaSet) {
+//        val urlImg = saveImage(docGiaEdit.cmnd.toString(), docGiaEdit.photoField.getImage())
+//        val updateDocGia = createDocGiaDTO(docGiaEdit, urlImg)
+//        thuVien.updateDocGia(updateDocGia)
+//
+//    }
+//
+//    private fun saveImage(nameImage: String, image: IImage): String {
+//        return imagesRepo.saveImage(nameImage, image, Role.DocGia)
+//    }
+//
     suspend fun getListItemSpinner(mKey: String): List<IItemSpinner> {
         val keySearch = mKey.lowercase().trim()
         val list =
@@ -157,7 +165,5 @@ class DocGiaRepo {
 
 
 
-    companion object {
-        val shared = DocGiaRepo()
-    }
+
 }

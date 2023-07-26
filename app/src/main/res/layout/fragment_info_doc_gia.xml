@@ -22,7 +22,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp">
 
-                <com.example.qltvkotlin.widget.ImageViewCustom
+                <com.example.qltvkotlin.presentation.widget.ImageViewCustom
                     android:id="@+id/avatar"
                     android:layout_width="120dp"
                     android:layout_height="120dp"

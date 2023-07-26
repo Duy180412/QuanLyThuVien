@@ -1,16 +1,16 @@
 package com.example.qltvkotlin.domain.repo
 
 import com.example.qltvkotlin.data.model.SachDTO
-import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
-import com.example.qltvkotlin.domain.model.IBookGet
-import com.example.qltvkotlin.domain.model.IBookSet
+import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
+import com.example.qltvkotlin.domain.enumeration.Role
+import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
-import com.example.qltvkotlin.domain.model.ISach
 import com.example.qltvkotlin.domain.model.ISachItem
-import com.example.qltvkotlin.domain.model.createImagesFromUrl
-import com.example.qltvkotlin.feature.helper.Role
-import com.example.qltvkotlin.feature.helper.spinner.IItemSpinner
-import com.example.qltvkotlin.feature.presentation.extension.checkIntValue
+import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.extension.checkIntValue
+import com.example.qltvkotlin.presentation.extension.createImagesFromUrl
+import com.example.qltvkotlin.presentation.widget.IItemSpinner
 
 
 class SachRepo {
@@ -18,7 +18,11 @@ class SachRepo {
     private val imagesRepo = ImagesRepo.imagesRepo
     private var backup: SachDTO? = null
 
-    suspend fun searchSach(mKey: String): List<ISachItem> {
+    companion object {
+        val shared = SachRepo()
+    }
+
+        suspend fun searchSach(mKey: String): List<ISachItem> {
         val keySearch = mKey.lowercase().trim()
         val list =
             thuVien.getAllBook().run {
@@ -52,60 +56,59 @@ class SachRepo {
         }
     }
 
-    suspend fun checkSach(maCheck: String): Boolean {
+    suspend fun checkSach(maCheck: String?): Boolean {
+        maCheck ?: return true
         return thuVien.checkSachExist(maCheck)
     }
 
 
-    suspend fun save(value: IBookSet) {
-        val urlImg = saveImage(value.maSach.toString(), value.imageSach.getImage())
-        val sachDto = createSachDTO(value, urlImg)
+    suspend fun save(editable: HashMap<StringId, String>, photo: IImage) {
+        val maSach = editable[StringId.MaSach]?: return
+        val image = photo.cast<IsImageUri>()?.uriImage
+        val urlImg = imagesRepo.saveImage(maSach,image,Role.Sach)
+        val sachDto = createSachDTO(editable, urlImg)
         thuVien.addSach(sachDto)
     }
 
-    private fun saveImage(nameImage: String, iImage: IImage): String {
-        return imagesRepo.saveImage(nameImage, iImage, Role.Sach)
-    }
-
-    private fun createSachDTO(it: IBookSet, urlImg: String): SachDTO {
+    private fun createSachDTO(editable: HashMap<StringId, String>, urlImg: String): SachDTO {
         return SachDTO(
-            it.maSach.toString(),
+            editable[StringId.MaSach].orEmpty(),
             urlImg,
-            it.tenSach.toString(),
-            it.loaiSach.toString(),
-            it.tenTacGia.toString(),
-            it.nhaXuatBan.toString(),
-            it.namXuatBan.toString(),
-            it.tongSach.toString().checkIntValue(),
-            it.choThue.toString().checkIntValue()
+            editable[StringId.TenSach].orEmpty(),
+            editable[StringId.LoaiSach].orEmpty(),
+            editable[StringId.TenTacGia].orEmpty(),
+            editable[StringId.NhaXuatBan].orEmpty(),
+            editable[StringId.NamXuatBan].orEmpty(),
+            editable[StringId.TongSach].orEmpty().checkIntValue(),
+            editable[StringId.ConLaiSach].orEmpty().checkIntValue(),
         )
     }
 
-    suspend fun getBookReadOnly(id: String?): ISach {
-        id ?: return object : IBookGet {}
-        val sach = getSachById(id)
-        sach ?: return object : IBookGet {}
-        val sachFull = getFullInfoSach(sach)
-        return createBookOnly(sachFull)
-    }
+//    suspend fun getBookReadOnly(id: String?): ISach {
+//        id ?: return object : IBookGet {}
+//        val sach = getSachById(id)
+//        sach ?: return object : IBookGet {}
+//        val sachFull = getFullInfoSach(sach)
+//        return createBookOnly(sachFull)
+//    }
 
     private suspend fun getSachById(id: String): SachDTO? {
         return thuVien.getSachById(id)
     }
 
-    private fun createBookOnly(sach: SachDTO): IBookGet {
-        return object : IBookGet {
-            override val maSach = sach.maSach
-            override val imageSach = sach.imageSach.createImagesFromUrl()
-            override val tenSach = sach.tenSach
-            override val loaiSach = sach.loaiSach
-            override val tenTacGia = sach.tenTacGia
-            override val nhaXuatBan = sach.nhaXuatBan
-            override val namXuatBan = sach.namXuatBan
-            override val tongSach = sach.tongSach
-            override val choThue = sach.choThue
-        }
-    }
+//    private fun createBookOnly(sach: SachDTO): IBookGet {
+//        return object : IBookGet {
+//            override val maSach = sach.maSach
+//            override val imageSach = sach.imageSach.createImagesFromUrl()
+//            override val tenSach = sach.tenSach
+//            override val loaiSach = sach.loaiSach
+//            override val tenTacGia = sach.tenTacGia
+//            override val nhaXuatBan = sach.nhaXuatBan
+//            override val namXuatBan = sach.namXuatBan
+//            override val tongSach = sach.tongSach
+//            override val choThue = sach.choThue
+//        }
+//    }
 
     suspend fun delSach(id: String): Boolean {
         return getSachById(id)?.let {
@@ -132,11 +135,11 @@ class SachRepo {
         } ?: false
     }
 
-    suspend fun updateSach(bookEdit: IBookSet) {
-        val urlImg = saveImage(bookEdit.maSach.toString(), bookEdit.imageSach.getImage())
-        val updateBook = createSachDTO(bookEdit, urlImg)
-        thuVien.updateBook(updateBook)
-    }
+//    suspend fun updateSach(bookEdit: IBookSet) {
+//        val urlImg = saveImage(bookEdit.maSach.toString(), bookEdit.imageSach.getImage())
+//        val updateBook = createSachDTO(bookEdit, urlImg)
+//        thuVien.updateBook(updateBook)
+//    }
 
     suspend fun getListItemSpinner(key: String): List<IItemSpinner> {
         val keySearch = key.lowercase().trim()
@@ -160,7 +163,7 @@ class SachRepo {
     }
 
 
-    companion object {
-        val shared = SachRepo()
-    }
+
 }
+
+

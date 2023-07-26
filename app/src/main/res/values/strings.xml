@@ -4,16 +4,6 @@
     <string name="sach">Sách</string>
     <string name="account">Tài Khoản</string>
     <string name="muon_thue">Mượn Thuê</string>
-    <string name="title_sach">Tất Cả Sách</string>
-    <string name="title_account">Tài Khoản</string>
-    <string name="hint_seach_sach">Tìm Sách</string>
-    <string name="title_docgia">Tất Cả Độc Giả</string>
-    <string name="title_them_sach">Thêm Sách Mới</string>
-    <string name="title_info_sach">Thông Tin Sách</string>
-    <string name="title_them_docgia">Thêm Độc Giả Mới</string>
-    <string name="title_info_docgia">Thông Tin Độc Giả</string>
-    <string name="title_them_muon">Thêm Độc Giả Mượn Sách</string>
-    <string name="hint_seach_docgia">Tìm Độc Giả</string>
     <string name="view_ten_sach">Sách: %s</string>
     <string name="view_ten_tacgia">Tác Giả: %s</string>
     <string name="view_tong">Tổng: %s</string>
@@ -24,11 +14,32 @@
     <string name="view_sdt">Sđt: %s</string>
     <string name="view_han_dangki">Hạn: %s</string>
     <string name="view_dangthue">Đang Mượn: %s</string>
-
-
-
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Hint  Feilds -->
+    <string name="hintfeilds_masach">Mã Sách</string>
+    <string name="hintfeilds_tensach">Tên Sách</string>
+    <string name="hintfeilds_loai">Loại Sách</string>
+    <string name="hintfeilds_tentacgia">Tên Tác Giả</string>
+    <string name="hintfeilds_nhaxuatban">Nhà Xuất Bản</string>
+    <string name="hintfeilds_namxuatban">Năm Xuất Bản</string>
+    <string name="hintfeilds_tongsach">Tổng Sách</string>
+    <string name="hintfeilds_conlai">Còn Lại</string>
+    <string name="hintfeilds_dangthue">Đang Thuê</string>
+    <string name="hint_seach_sach">Tìm Sách</string>
+    <string name="hint_seach_docgia">Tìm Độc Giả</string>
+    <string name="hintfeilds_cmnd">CMND</string>
+    <string name="hintfeilds_tendocgia">Tên Độc Giả</string>
+    <string name="hintfeilds_sdt">Số Điện Thoại</string>
+    <string name="hintfeilds_ngayhethan">Hạn Thẻ</string>
+    <string name="hintfeilds_soluongmuon">Số Lượng Sách Đang Thuê</string>
+    <string name="hintfeilds_chondocgia">Độc Giả Mượn</string>
+    <!-- Title -->
+    <string name="title_themanh">Thêm Ảnh Cho Avatar</string>
+    <string name="title_docgia">Tất Cả Độc Giả</string>
+    <string name="title_them_sach">Thêm Sách Mới</string>
+    <string name="title_info_sach">Thông Tin Sách</string>
+    <string name="title_them_docgia">Thêm Độc Giả Mới</string>
+    <string name="title_info_docgia">Thông Tin Độc Giả</string>
+    <string name="title_them_muon">Thêm Độc Giả Mượn Sách</string>
+    <string name="title_sach">Tất Cả Sách</string>
+    <string name="title_account">Tài Khoản</string>
 </resources>

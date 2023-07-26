@@ -3,19 +3,20 @@ package com.example.qltvkotlin.domain.repo
 import com.example.qltvkotlin.data.model.DocGiaDTO
 import com.example.qltvkotlin.data.model.MuonThue
 import com.example.qltvkotlin.data.model.ThongTinThue
-import com.example.qltvkotlin.datasource.roomdata.ThuVienDataRepo
+import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
+import com.example.qltvkotlin.domain.enumeration.Role
 import com.example.qltvkotlin.domain.model.IMuonSachItem
-import com.example.qltvkotlin.domain.model.IMuonSachSet
-import com.example.qltvkotlin.domain.model.ThongTinSachThueSet
 import com.example.qltvkotlin.domain.model.getDateNow
-import com.example.qltvkotlin.feature.helper.Role
-import com.example.qltvkotlin.feature.presentation.extension.dateFromString
+import com.example.qltvkotlin.presentation.extension.dateFromString
 import java.util.Date
 
 class MuonThueRepo {
     private val thuVien = ThuVienDataRepo.instance
     private val docGiaRepo = DocGiaRepo.shared
     private var backup: MuonThue? = null
+    companion object {
+        val shared = MuonThueRepo()
+    }
 
 
     suspend fun search(mKey: String, loaiSearch: Role): List<IMuonSachItem> {
@@ -72,19 +73,11 @@ class MuonThueRepo {
         }
     }
 
-    suspend fun checkMuonSach(cmnd: String): Boolean {
+    suspend fun isExitsMuonSach(cmnd: String): Boolean {
         return thuVien.checkDocGiaMuonExistByCmnd(cmnd)
     }
 
-    suspend fun save(value: IMuonSachSet) {
-        val list = value.list.map { createThongTinThue(it) }
-        val sublist = list.subList(0, list.size - 1)
-        val newMuonThue = MuonThue(value.maDocGia.toString(), sublist)
-        thuVien.addMuonSach(newMuonThue)
-    }
-
-    private fun createThongTinThue(it: ThongTinSachThueSet): ThongTinThue {
-        return ThongTinThue(it.maSach.toString(), it.soLuong.toString().toInt())
+    suspend fun save() {
     }
 
     suspend fun del(cmnd: String): Boolean {
@@ -103,7 +96,5 @@ class MuonThueRepo {
     }
 
 
-    companion object {
-        val shared = MuonThueRepo()
-    }
+
 }

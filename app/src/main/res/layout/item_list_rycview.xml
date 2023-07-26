@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.example.qltvkotlin.widget.ImageViewCustom
+    <com.example.qltvkotlin.presentation.widget.ImageViewCustom
         android:id="@+id/imageview"
         android:layout_width="50dp"
         android:layout_height="50dp"

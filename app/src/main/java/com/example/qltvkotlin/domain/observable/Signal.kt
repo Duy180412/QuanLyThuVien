@@ -1,9 +1,11 @@
 package com.example.qltvkotlin.domain.observable
 
-import android.widget.EditText
+import android.app.Activity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.example.qltvkotlin.feature.presentation.extension.cast
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import javax.security.auth.Subject
 
 interface Signal {
     fun subscribe(subcription: () -> Unit): AutoCloseable
@@ -56,6 +58,6 @@ interface IDestroyObsever : DefaultLifecycleObserver {
     @Throws(Exception::class)
     fun onDestroyed()
 }
-fun EditText.bindOnChang(){
-    this.cast<Signal>()
-}
+fun signal() = Signal.MultipleSubscription()
+
+

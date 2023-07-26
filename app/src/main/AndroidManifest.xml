@@ -18,16 +18,16 @@
         android:theme="@style/Theme.QLTVKotlin"
         tools:targetApi="31">
         <activity
-            android:name=".feature.login.LoginActivity"
+            android:name=".presentation.feature.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".feature.main.mainnavigato.MainNavigationActivity"
+            android:name=".presentation.feature.mainnavigato.MainNavigationActivity"
             android:exported="false" />
         <activity
-            android:name=".feature.main.MainActivity"
+            android:name=".presentation.feature.mainnavigato.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".feature.main.StartActivity"
+            android:name=".presentation.feature.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

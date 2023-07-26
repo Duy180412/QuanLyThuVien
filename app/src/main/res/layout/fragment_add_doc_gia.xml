@@ -1,141 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".feature.main.docgia.add.AddDocGiaFragment">
-
-    <androidx.core.widget.NestedScrollView
+    tools:context=".presentation.feature.adddocgia.AddDocGiaFragment">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rycView"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp">
+        android:layout_height="match_parent"/>
 
-                <com.example.qltvkotlin.widget.ImageViewCustom
-                    android:id="@+id/avatar"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="30dp"
-                    android:textColor="@color/black"
-                    android:text="Camera"
-                    app:layout_constraintStart_toEndOf="@+id/avatar"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/thuvien"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/black"
-                    android:text="Thu Viện"
-                    app:layout_constraintStart_toEndOf="@+id/avatar"
-                    app:layout_constraintTop_toBottomOf="@+id/camera" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cmnd"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cmnd_nhap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxEms="10"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:hint="CMND- CCCD" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tendocgia"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tendocgia_nhap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxEms="20"
-                    android:singleLine="true"
-                    android:hint="Họ Và Tên" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ngayhethan"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ngayhethan_nhap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxEms="10"
-                    android:focusableInTouchMode="false"
-                    android:inputType="date"
-                    android:singleLine="true"
-                    android:hint="Ngày Hết Hạn Thẻ" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/sdt"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/sdt_nhap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxEms="10"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:hint="Số Điện Thoại" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/soluongmuon"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/soluongmuon_nhap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxEms="10"
-                    android:singleLine="true"
-                    android:hint="Só Lượng Mượn" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+</RelativeLayout>

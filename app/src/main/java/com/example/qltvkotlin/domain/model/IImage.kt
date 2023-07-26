@@ -12,11 +12,11 @@ interface IsImageUrl : IImage {
     var urlImage: String
 }
 
-interface GetImage {
+interface HasImage {
     fun getImage(): IImage?
 }
-interface IsImageUrlStart:IImage{
-    var urlImage: String
-}
 
-interface IsImageEmpty : IImage
+object ImageEmpty : IImage
+interface HasIImagse {
+    val iImage: IImage
+}

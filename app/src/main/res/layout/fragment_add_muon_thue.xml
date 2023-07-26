@@ -1,44 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".feature.main.muonthue.add.AddMuonThueFragment">
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/themdocgia"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:startIconDrawable="@drawable/ic_add"
-            android:layout_margin="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/themdocgianhap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxEms="10"
-                android:singleLine="true"
-                android:enabled="false"
-                android:textColor="@color/black"
-                android:hint="Độc Giả Mượn Sách" />
-        </com.google.android.material.textfield.TextInputLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"/>
+    tools:context=".presentation.feature.addmuonthue.AddMuonThueFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rycView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:listitem="@layout/itemlist_addmuonsach"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-</LinearLayout>
+</RelativeLayout>
