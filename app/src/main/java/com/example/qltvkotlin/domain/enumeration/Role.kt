@@ -23,7 +23,12 @@ enum class StringId {
     NgayHetHan,
     SoLuongMuon,
     DocGiaMuon,
-    None
+    SachThue,
+    SoLuongThueCuaSach
+
+}
+enum class StringIds{
+    AddSachMuon
 }
 
 enum class SelectPhotoType {

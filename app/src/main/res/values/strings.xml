@@ -31,6 +31,7 @@
     <string name="hintfeilds_sdt">Số Điện Thoại</string>
     <string name="hintfeilds_ngayhethan">Hạn Thẻ</string>
     <string name="hintfeilds_soluongmuon">Số Lượng Sách Đang Thuê</string>
+    <string name="hintfeilds_slsach">SL</string>
     <string name="hintfeilds_chondocgia">Độc Giả Mượn</string>
     <!-- Title -->
     <string name="title_themanh">Thêm Ảnh Cho Avatar</string>

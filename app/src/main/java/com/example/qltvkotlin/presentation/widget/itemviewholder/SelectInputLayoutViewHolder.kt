@@ -12,11 +12,11 @@ abstract class SelectInputLayoutViewHolder(parent: ViewGroup) : InputLayoutViewH
 
     override fun bind(item: IInputLayoutField) {
         super.bind(item)
-        binding.layoutText.addItemStart(item)
+        binding.layoutText.addIconStart(item)
         binding.edittext.setTextWhenNotify(item)
     }
 
-    private fun TextInputLayout.addItemStart(item: IInputLayoutField) {
+    private fun TextInputLayout.addIconStart(item: IInputLayoutField) {
         val mItem = item.cast<IHasItemStart>() ?: return
         if (mItem.hasItem) {
             this.setStartIconDrawable(mItem.resId)

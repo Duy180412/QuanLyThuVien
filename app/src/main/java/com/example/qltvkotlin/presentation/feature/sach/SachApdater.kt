@@ -34,7 +34,7 @@ class SachApdater(rvList: RecyclerView) : RecyclerView.Adapter<SachApdater.SachV
 
     init {
         rvList.adapter = this
-        rvList.addItemDecoration(HorizontalLineDecoration.item)
+        rvList.addItemDecoration(HorizontalLineDecoration.shared)
     }
 
     @SuppressLint("NotifyDataSetChanged")

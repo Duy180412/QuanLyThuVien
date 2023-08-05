@@ -34,7 +34,7 @@ class MuonSachApdater(rvList: RecyclerView) :
 
     init {
         rvList.adapter = this
-        rvList.addItemDecoration(HorizontalLineDecoration.item)
+        rvList.addItemDecoration(HorizontalLineDecoration.shared)
     }
 
 

@@ -4,7 +4,7 @@ import com.example.qltvkotlin.domain.enumeration.StringId
 import com.example.qltvkotlin.domain.model.HasMaxUpdate
 
 
-class NumberFieldsId(
+class NumberFields(
     stringID: StringId,
     private var textInput: String
 ) : InputLayoutField(stringID, textInput), HasMaxUpdate {
@@ -22,7 +22,7 @@ class NumberFieldsId(
 
     override fun validate(): Boolean {
         if (this.textInput.toIntOrNull() == null) {
-            errorValue = "Sai Kiểu Nhập"
+            errorValue = "Chưa Chọn Sách"
             return false
         }
         if (max == null) {

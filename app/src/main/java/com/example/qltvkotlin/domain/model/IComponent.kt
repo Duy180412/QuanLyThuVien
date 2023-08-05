@@ -1,10 +1,14 @@
 package com.example.qltvkotlin.domain.model
 
 import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.StringIds
+import com.example.qltvkotlin.presentation.widget.fields.IHasNumber
+import com.example.qltvkotlin.presentation.widget.fields.IHasText
 
 interface IComponent
 interface ITextInputLayoutField
 interface IPhoneNumberField
+interface INumberField
 interface IDateField
 interface ISelectTextField
 
@@ -45,6 +49,11 @@ interface HasFieldsId {
     fun getFieldsID(): StringId
 }
 
+interface HasFieldsIds {
+    fun getFieldsIds(): StringIds
+}
+
+interface IFieldsCustom : IComponent,IHasText,IHasNumber
 interface IHasPropertiesField : IHasListener {
     var hint: Int
     var maxEms: Int

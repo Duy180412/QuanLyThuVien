@@ -7,6 +7,7 @@ import com.example.qltvkotlin.domain.model.IAddView
 import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IInputLayoutField
 import com.example.qltvkotlin.domain.model.Updatable
+import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.domain.repo.MuonThueRepo
 import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.widget.IItemSpinner
@@ -23,7 +24,10 @@ class SelecDocGiaMuonSachCase(
         if (daDuocChon(list, docGiaDuocChon)) throw Exception("Đọc Giả Này Đã Được Chọn")
         val isExitsDocGia = muonthueRepo.isExitsMuonSach(docGiaDuocChon.key)
         if (isExitsDocGia) throw Exception("Độc Giả Này Đã Đăng Kí Mượn Sách")
-        if (!isExitsAddView(list)) (list as? ArrayList)?.add(list.size, ClickAddField())
+        if (!isExitsAddView(list)) {
+            (list as? MutableList)?.add(list.size, ClickAddField())
+            list.cast<Signal>()?.emit()
+        }
         it.cast<Updatable>()?.update(docGiaDuocChon.nameKey)
         it.cast<HasValueKey>()?.key = docGiaDuocChon.key
     }

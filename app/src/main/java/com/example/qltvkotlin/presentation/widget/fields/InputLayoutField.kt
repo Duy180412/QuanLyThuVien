@@ -2,7 +2,6 @@ package com.example.qltvkotlin.presentation.widget.fields
 
 import com.example.qltvkotlin.domain.enumeration.StringId
 import com.example.qltvkotlin.domain.model.IInputLayoutField
-import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.domain.observable.signal
 import com.example.qltvkotlin.presentation.helper.AppResources

@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.HasCommandCallback
 import com.example.qltvkotlin.domain.model.Bindable
+import com.example.qltvkotlin.domain.model.IAddView
 import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IDateField
+import com.example.qltvkotlin.domain.model.IFieldsCustom
 import com.example.qltvkotlin.domain.model.IHorizontalLine
 import com.example.qltvkotlin.domain.model.IPhoneNumberField
 import com.example.qltvkotlin.domain.model.IPhotoField
@@ -15,6 +17,8 @@ import com.example.qltvkotlin.domain.model.ISelectTextField
 import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.widget.itemviewholder.AddFeildViewHolder
+import com.example.qltvkotlin.presentation.widget.itemviewholder.CustomFieldsViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.HorizontalLineDecorationViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.PhotoViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.SelectDateInputLayoutViewHolder
@@ -35,6 +39,8 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
         val TYPE_TEXTLAYOUT = index.getAndIncrement()
         val TYPE_TEXTLAYOUTSELECT = index.getAndIncrement()
         val HORIZONTALLINE = index.getAndIncrement()
+        val TYPE_ADDITEMEMYPTY = index.getAndIncrement()
+        val TYPE_SELECTTEXTANDNUMBER = index.getAndIncrement()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -44,6 +50,8 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             TYPE_DATE -> SelectDateInputLayoutViewHolder(parent)
             TYPE_TEXTLAYOUTSELECT -> SelectTextInputLayoutViewHolder(parent)
             HORIZONTALLINE -> HorizontalLineDecorationViewHolder(parent)
+            TYPE_ADDITEMEMYPTY -> AddFeildViewHolder(parent)
+            TYPE_SELECTTEXTANDNUMBER -> CustomFieldsViewHolder(parent)
             else -> error("Sai")
         }
     }
@@ -60,8 +68,11 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
 
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<IComponent>?) {
+        close()
+        list.cast<Signal>()?.bind { notifyDataSetChanged() }
         mList = list
         notifyDataSetChanged()
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -72,6 +83,8 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             is IDateField -> TYPE_DATE
             is IHorizontalLine -> HORIZONTALLINE
             is ISelectTextField -> TYPE_TEXTLAYOUTSELECT
+            is IAddView -> TYPE_ADDITEMEMYPTY
+            is IFieldsCustom -> TYPE_SELECTTEXTANDNUMBER
             else -> error("Not Sp")
         }
     }

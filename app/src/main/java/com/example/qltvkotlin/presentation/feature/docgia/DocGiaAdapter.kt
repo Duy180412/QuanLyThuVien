@@ -33,7 +33,7 @@ class DocGiaApdater(rvList: RecyclerView) : RecyclerView.Adapter<DocGiaApdater.D
 
     init {
         rvList.adapter = this
-        rvList.addItemDecoration(HorizontalLineDecoration.item)
+        rvList.addItemDecoration(HorizontalLineDecoration.shared)
     }
 
     @SuppressLint("NotifyDataSetChanged")

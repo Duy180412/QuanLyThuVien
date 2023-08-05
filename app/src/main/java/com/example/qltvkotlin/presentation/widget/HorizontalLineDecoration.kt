@@ -30,6 +30,6 @@ class HorizontalLineDecoration(application: Application) : RecyclerView.ItemDeco
 
     }
     companion object {
-        lateinit var item: HorizontalLineDecoration
+        lateinit var shared: HorizontalLineDecoration
     }
 }

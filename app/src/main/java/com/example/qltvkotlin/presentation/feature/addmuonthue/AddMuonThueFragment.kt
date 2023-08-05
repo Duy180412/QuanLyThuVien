@@ -6,15 +6,19 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.FragmentAddMuonThueBinding
 import com.example.qltvkotlin.domain.enumeration.AddFeildThemSachDangKi
 import com.example.qltvkotlin.domain.enumeration.Command
-import com.example.qltvkotlin.domain.enumeration.SelecItemStartTextLayout
+import com.example.qltvkotlin.domain.enumeration.SelectDocGiaMuonSach
+import com.example.qltvkotlin.domain.enumeration.StringIds
 import com.example.qltvkotlin.domain.model.IComponent
+import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.domain.usecase.SelecDocGiaMuonSachCase
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
+import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.presentation.extension.viewmodel
 import com.example.qltvkotlin.presentation.helper.FetchAddMuonSachCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
+import com.example.qltvkotlin.presentation.widget.fields.CustomManyFeilds
 
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {
@@ -62,7 +66,7 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
 
         fun execute(it: Command) {
             when (it) {
-                is SelecItemStartTextLayout -> launch(error) {
+                is SelectDocGiaMuonSach -> launch(error) {
                     selectDocGiaMuonSachCase(
                         it.item,
                         component.value.orEmpty()
@@ -82,10 +86,10 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
 }
 
 class ThemFeildAddSachRongCase {
-
-    suspend operator fun invoke(list: List<IComponent>) {
-        val mList = list as? ArrayList ?: return
-
+    operator fun invoke(list: List<IComponent>) {
+        val mList = list as? MutableList ?: return
+        mList.add(mList.size - 1, CustomManyFeilds(StringIds.AddSachMuon))
+        mList.cast<Signal>()?.emit()
     }
 
 }

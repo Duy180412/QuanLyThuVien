@@ -11,7 +11,6 @@ import com.example.qltvkotlin.presentation.extension.post
 import com.example.qltvkotlin.presentation.widget.fields.PhoneNumberFeild
 import com.example.qltvkotlin.presentation.widget.fields.PhotoField
 import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
-import com.example.qltvkotlin.presentation.widget.fields.TextAndNumberFeilds
 import com.example.qltvkotlin.presentation.widget.fields.TextFeild
 import com.example.qltvkotlin.presentation.widget.fields.ViewFeild
 
@@ -28,9 +27,9 @@ class FetchAddSachCaseFields : FetchCaseFields() {
     )
 }
 class FetchAddMuonSachCaseFields: FetchCaseFields(){
-    override val originalFields = arrayListOf (
+    override val originalFields = listOfNotNull (
         SelectTextFeild(StringId.DocGiaMuon),
-        ViewFeild(),
+        ViewFeild()
     )
 
 }
@@ -69,11 +68,3 @@ abstract class FetchCaseFields {
 
 }
 
-class TextInputCusTomFields(
-    override var hint: Int = 0,
-    override var maxEms: Int = -1,
-    override var inputType: Int = InputType.TYPE_CLASS_TEXT,
-    override var singleLine: Boolean = true,
-    override var hasListener: Boolean = false,
-    override var enabled: Boolean = true
-) : IHasPropertiesField

@@ -15,6 +15,6 @@ class MainApplication : Application() {
         AppFileManager.init(this)
         SharedPreferencesExt.instance.init(this)
         ActivityRetriever.shared = ActivityRetriever(this)
-        HorizontalLineDecoration.item = HorizontalLineDecoration(this)
+        HorizontalLineDecoration.shared = HorizontalLineDecoration(this)
     }
 }

@@ -4,11 +4,11 @@ import com.example.qltvkotlin.presentation.extension.cast
 import com.google.android.material.textfield.TextInputLayout
 
 
-fun checkAndShowError(it: CharSequence, editText: TextInputLayout) {
+fun checkAndShowError(it: CharSequence, textLayout: TextInputLayout) {
     val value = it.cast<Validable>()?.validate()!!
-    editText.isErrorEnabled = !value
+    textLayout.isErrorEnabled = !value
     val error = if (!value) it.cast<HasError>()?.getError() else return
-    editText.error = error
+    textLayout.error = error
 }
 enum class MessageId(val value: String) {
     errorSystem(" Lỗi hệ thống"),

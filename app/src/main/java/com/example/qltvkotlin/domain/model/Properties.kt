@@ -1,8 +1,4 @@
 package com.example.qltvkotlin.domain.model
-
-import java.util.Calendar
-import java.util.Date
-
 interface HasIsValid {
     val isValid: Boolean
 }
