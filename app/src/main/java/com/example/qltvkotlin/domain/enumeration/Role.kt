@@ -27,10 +27,6 @@ enum class StringId {
     SoLuongThueCuaSach
 
 }
-enum class StringIds{
-    AddSachMuon
-}
-
 enum class SelectPhotoType {
     Camera,
     Gallery

@@ -41,6 +41,9 @@ class CustomFieldsViewHolder(
         binding.text.edittext.bindPropertiesField(text)
         binding.text.layoutText.addListenerField(text)
         binding.text.layoutText.bindIconStart(text)
+        binding.text.layoutText.setStartIconOnClickListener {
+            onCommand(SelectSachMuon(item))
+        }
         //
         binding.number.edittext.bindPropertiesField(number)
         binding.number.edittext.setTextWithouNotify(number)
@@ -71,9 +74,7 @@ class CustomFieldsViewHolder(
         if (mItem.hasItem) {
             this.setStartIconDrawable(mItem.resId)
         }
-        this.setStartIconOnClickListener {
-            onCommand(SelectSachMuon(text))
-        }
+
     }
 
     private fun TextInputEditText.setTextWithouNotify(item: IInputLayoutField) {

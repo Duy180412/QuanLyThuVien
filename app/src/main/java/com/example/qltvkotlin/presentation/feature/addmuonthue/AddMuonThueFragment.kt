@@ -7,18 +7,28 @@ import com.example.qltvkotlin.databinding.FragmentAddMuonThueBinding
 import com.example.qltvkotlin.domain.enumeration.AddFeildThemSachDangKi
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.SelectDocGiaMuonSach
-import com.example.qltvkotlin.domain.enumeration.StringIds
+import com.example.qltvkotlin.domain.enumeration.SelectSachMuon
+import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.helper.ActivityRetriever
+import com.example.qltvkotlin.domain.helper.DialogProvider
+import com.example.qltvkotlin.domain.model.HasValueKey
 import com.example.qltvkotlin.domain.model.IComponent
-import com.example.qltvkotlin.domain.observable.Signal
-import com.example.qltvkotlin.domain.usecase.SelecDocGiaMuonSachCase
+import com.example.qltvkotlin.domain.model.IFieldsCustom
+import com.example.qltvkotlin.domain.model.IInputLayoutField
+import com.example.qltvkotlin.domain.model.Updatable
+import com.example.qltvkotlin.domain.usecase.SelecThemDocGiaMuonSachCase
+import com.example.qltvkotlin.domain.usecase.ThemFeildAddSachRongCase
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.extension.checkStringNull
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.presentation.extension.viewmodel
 import com.example.qltvkotlin.presentation.helper.FetchAddMuonSachCaseFields
+import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 import com.example.qltvkotlin.presentation.widget.fields.CustomManyFeilds
+import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
 
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {
@@ -52,8 +62,9 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
 
     class VM(
         private val fetchCaseFields: FetchAddMuonSachCaseFields = FetchAddMuonSachCaseFields(),
-        private val selectDocGiaMuonSachCase: SelecDocGiaMuonSachCase = SelecDocGiaMuonSachCase(),
-        private val themFeildAddSachRongCase: ThemFeildAddSachRongCase = ThemFeildAddSachRongCase()
+        private val selectThemDocGiaMuonSachCase: SelecThemDocGiaMuonSachCase = SelecThemDocGiaMuonSachCase(),
+        private val themFeildAddSachRongCase: ThemFeildAddSachRongCase = ThemFeildAddSachRongCase(),
+        private val selctThemSachMuonCase: SelectThemSachMuonCase = SelectThemSachMuonCase()
     ) : BaseViewModel() {
 
 
@@ -67,7 +78,7 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
         fun execute(it: Command) {
             when (it) {
                 is SelectDocGiaMuonSach -> launch(error) {
-                    selectDocGiaMuonSachCase(
+                    selectThemDocGiaMuonSachCase(
                         it.item,
                         component.value.orEmpty()
                     )
@@ -78,6 +89,10 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
                         component.value.orEmpty()
                     )
                 }
+
+                is SelectSachMuon -> launch(error) {
+                    selctThemSachMuonCase(it.item, component.value.orEmpty())
+                }
             }
         }
 
@@ -85,12 +100,33 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
     }
 }
 
-class ThemFeildAddSachRongCase {
-    operator fun invoke(list: List<IComponent>) {
-        val mList = list as? MutableList ?: return
-        mList.add(mList.size - 1, CustomManyFeilds(StringIds.AddSachMuon))
-        mList.cast<Signal>()?.emit()
+class SelectThemSachMuonCase(
+    private val dialogProvider: DialogProvider = DialogProvider.shared,
+    private val activityRetriever: ActivityRetriever = ActivityRetriever.shared
+) {
+    suspend operator fun invoke(item: IFieldsCustom, component: List<IComponent>) {
+        val selectTextFeild = item.getSelectFeild()
+        val numberFeild = item.getNumberFeild()
+        val sachDuocChon = dialogProvider.chonSach() ?: return
+        val isExits = checkExits(sachDuocChon, component)
+        if (isExits) throw Exception("Sách Này Đã Được Thêm")
+        selectTextFeild.cast<Updatable>()?.update(sachDuocChon.nameKey)
+        selectTextFeild.cast<HasValueKey>()?.key = sachDuocChon.key
+        numberFeild.hint = activityRetriever().resources.getString(R.string.hintfeilds_maxint,sachDuocChon.status.checkStringNull())
+
     }
 
+    private fun checkExits(sachDuocChon: IItemSpinner, list: List<IComponent>): Boolean {
+        val listSach = mutableListOf<String>()
+        list.forEach {
+            when (it) {
+                is CustomManyFeilds -> listSach.add(it.getSelectFeild().key.toString())
+            }
+        }
+        listSach.forEach {
+            if (it == sachDuocChon.key) return true
+        }
+        return false
+    }
 }
 

@@ -17,6 +17,7 @@ class AppResources {
                 override var hint = R.string.hintfeilds_slsach
                 override var maxEms = 2
                 override var inputType = InputType.TYPE_CLASS_NUMBER
+                override var enabled: Boolean = false
                 override var hasListener: Boolean = true
             }
 

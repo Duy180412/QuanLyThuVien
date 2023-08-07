@@ -1,9 +1,8 @@
 package com.example.qltvkotlin.domain.model
 
 import com.example.qltvkotlin.domain.enumeration.StringId
-import com.example.qltvkotlin.domain.enumeration.StringIds
-import com.example.qltvkotlin.presentation.widget.fields.IHasNumber
-import com.example.qltvkotlin.presentation.widget.fields.IHasText
+import com.example.qltvkotlin.presentation.widget.fields.NumberFields
+import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
 
 interface IComponent
 interface ITextInputLayoutField
@@ -11,6 +10,15 @@ interface IPhoneNumberField
 interface INumberField
 interface IDateField
 interface ISelectTextField
+interface IHasText {
+    fun getSelectFeild(): SelectTextFeild
+}
+
+interface IHasNumber {
+    fun getNumberFeild(): NumberFields
+}
+
+interface ITextAndNumberFeilds : IComponent
 
 interface IInputLayoutField :
     IComponent, IChar, Updatable,
@@ -49,9 +57,6 @@ interface HasFieldsId {
     fun getFieldsID(): StringId
 }
 
-interface HasFieldsIds {
-    fun getFieldsIds(): StringIds
-}
 
 interface IFieldsCustom : IComponent,IHasText,IHasNumber
 interface IHasPropertiesField : IHasListener {

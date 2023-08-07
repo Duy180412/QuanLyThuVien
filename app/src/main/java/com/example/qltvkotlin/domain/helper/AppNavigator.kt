@@ -23,7 +23,6 @@ class AppNavigator(
     fun openAddSach() {
         with(activityRetriever()){
             Router.open(this, Routes.AddSach())
-            finish()
         }
     }
 

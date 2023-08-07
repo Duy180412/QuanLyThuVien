@@ -25,6 +25,7 @@ abstract class InputLayoutViewHolder(
 
     override fun bind(item: IInputLayoutField) {
         this.itemLayout = item
+        binding.edittext.hint
         binding.edittext.setHint(item.hint)
         binding.edittext.maxEms = item.maxEms
         binding.edittext.inputType = item.inputType

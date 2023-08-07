@@ -14,7 +14,7 @@ import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.fields.ClickAddField
 import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
 
-class SelecDocGiaMuonSachCase(
+class SelecThemDocGiaMuonSachCase(
     private val dialogProvider: DialogProvider = DialogProvider.shared,
     private val muonthueRepo: MuonThueRepo = MuonThueRepo.shared
 ) {

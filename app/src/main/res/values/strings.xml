@@ -33,6 +33,7 @@
     <string name="hintfeilds_soluongmuon">Số Lượng Sách Đang Thuê</string>
     <string name="hintfeilds_slsach">SL</string>
     <string name="hintfeilds_chondocgia">Độc Giả Mượn</string>
+    <string name="hintfeilds_maxint">Max: %s</string>
     <!-- Title -->
     <string name="title_themanh">Thêm Ảnh Cho Avatar</string>
     <string name="title_docgia">Tất Cả Độc Giả</string>
