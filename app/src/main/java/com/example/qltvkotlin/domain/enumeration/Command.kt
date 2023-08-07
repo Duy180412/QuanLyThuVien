@@ -3,7 +3,6 @@ package com.example.qltvkotlin.domain.enumeration
 import com.example.qltvkotlin.domain.model.IFieldsCustom
 import com.example.qltvkotlin.domain.model.IInputLayoutField
 import com.example.qltvkotlin.domain.model.IPhotoField
-import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
 
 interface Command
 
@@ -20,5 +19,6 @@ class OnClickItem(val key:String): Command
 class OnClickDel(val key:String): Command
 class SelecPhoto(val item: IPhotoField):Command
 class SelectDocGiaMuonSach(val item: IInputLayoutField): Command
-class AddFeildThemSachDangKi() :Command
+class AddFieldThemSachDangKi() :Command
 class SelectSachMuon(val item: IFieldsCustom) : Command
+class RemoveField() :Command

@@ -25,6 +25,9 @@ class PairLookup<A, B>(pairs: Array<out Pair<A, B>>) {
     fun requireValueOf(key: A): B {
         return key2Value[key] ?: error("Not found value of ${key.toString()}")
     }
+    fun getSize():Int{
+        return value2Key.size
+    }
 
     inline fun <reified T : Any> getSizeA(): Int {
         return mValueA.filterIsInstance<T>().distinct().size

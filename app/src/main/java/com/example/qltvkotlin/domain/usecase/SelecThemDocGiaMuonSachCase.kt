@@ -1,6 +1,6 @@
 package com.example.qltvkotlin.domain.usecase
 
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.helper.DialogProvider
 import com.example.qltvkotlin.domain.model.HasValueKey
 import com.example.qltvkotlin.domain.model.IAddView
@@ -12,7 +12,7 @@ import com.example.qltvkotlin.domain.repo.MuonThueRepo
 import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.fields.ClickAddField
-import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
+import com.example.qltvkotlin.presentation.widget.fields.SelectTextField
 
 class SelecThemDocGiaMuonSachCase(
     private val dialogProvider: DialogProvider = DialogProvider.shared,
@@ -44,13 +44,13 @@ class SelecThemDocGiaMuonSachCase(
     }
 
     private fun daDuocChon(list: List<IComponent>, docGiaDuocChon: IItemSpinner): Boolean {
-        val editable = hashMapOf<StringId, String>()
+        val editable = hashMapOf<FieldsId, String>()
         list.forEach {
             when (it) {
-                is SelectTextFeild -> editable[it.getFieldsID()] = it.key.toString()
+                is SelectTextField -> editable[it.getFieldsID()] = it.key.toString()
             }
         }
-        val daDuocChon = editable[StringId.DocGiaMuon] ?: return false
+        val daDuocChon = editable[FieldsId.DocGiaMuon] ?: return false
         return docGiaDuocChon.key == daDuocChon
     }
 }

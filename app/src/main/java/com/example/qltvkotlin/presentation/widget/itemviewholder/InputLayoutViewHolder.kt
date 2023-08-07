@@ -7,6 +7,8 @@ import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.HasCommandCallback
 import com.example.qltvkotlin.domain.model.Bindable
 import com.example.qltvkotlin.domain.model.IInputLayoutField
+import com.example.qltvkotlin.domain.model.IIntHint
+import com.example.qltvkotlin.domain.model.ICharsHint
 import com.example.qltvkotlin.domain.model.checkAndShowError
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.bindingOf
@@ -25,8 +27,10 @@ abstract class InputLayoutViewHolder(
 
     override fun bind(item: IInputLayoutField) {
         this.itemLayout = item
-        binding.edittext.hint
-        binding.edittext.setHint(item.hint)
+        when (val valueHint = item.iHint){
+           is IIntHint -> binding.edittext.setHint(valueHint.hint)
+           is ICharsHint -> binding.edittext.hint = valueHint.hint
+       }
         binding.edittext.maxEms = item.maxEms
         binding.edittext.inputType = item.inputType
         binding.edittext.isSingleLine = item.singleLine

@@ -3,7 +3,7 @@ package com.example.qltvkotlin.domain.repo
 import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.data.model.DocGiaDTO
 import com.example.qltvkotlin.domain.enumeration.Role
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
@@ -88,22 +88,22 @@ class DocGiaRepo {
     }
 
 
-    suspend fun save(editable: HashMap<StringId, String>, photo: IImage) {
-        val cmnd = editable[StringId.CMND] ?: return
+    suspend fun save(editable: HashMap<FieldsId, String>, photo: IImage) {
+        val cmnd = editable[FieldsId.CMND] ?: return
         val image = photo.cast<IsImageUri>()?.uriImage
         val urlImg = imagesRepo.saveImage(cmnd, image, Role.DocGia)
         val docGiaDto = createDocGiaDTO(editable, urlImg)
         thuVien.addDocGia(docGiaDto)
     }
 
-    private fun createDocGiaDTO(editable: HashMap<StringId, String>, urlImg: String): DocGiaDTO {
+    private fun createDocGiaDTO(editable: HashMap<FieldsId, String>, urlImg: String): DocGiaDTO {
         return DocGiaDTO(
-            editable[StringId.CMND].orEmpty(),
+            editable[FieldsId.CMND].orEmpty(),
             urlImg,
-            editable[StringId.TenDocGia].orEmpty(),
-            editable[StringId.NgayHetHan].orEmpty(),
-            editable[StringId.SDT].orEmpty(),
-            editable[StringId.SoLuongMuon].orEmpty(),
+            editable[FieldsId.TenDocGia].orEmpty(),
+            editable[FieldsId.NgayHetHan].orEmpty(),
+            editable[FieldsId.SDT].orEmpty(),
+            editable[FieldsId.SoLuongMuon].orEmpty(),
             )
     }
 //

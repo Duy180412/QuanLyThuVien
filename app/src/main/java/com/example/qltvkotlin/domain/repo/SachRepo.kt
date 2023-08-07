@@ -3,7 +3,7 @@ package com.example.qltvkotlin.domain.repo
 import com.example.qltvkotlin.data.model.SachDTO
 import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.enumeration.Role
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.ISachItem
@@ -62,25 +62,25 @@ class SachRepo {
     }
 
 
-    suspend fun save(editable: HashMap<StringId, String>, photo: IImage) {
-        val maSach = editable[StringId.MaSach]?: return
+    suspend fun save(editable: HashMap<FieldsId, String>, photo: IImage) {
+        val maSach = editable[FieldsId.MaSach]?: return
         val image = photo.cast<IsImageUri>()?.uriImage
         val urlImg = imagesRepo.saveImage(maSach,image,Role.Sach)
         val sachDto = createSachDTO(editable, urlImg)
         thuVien.addSach(sachDto)
     }
 
-    private fun createSachDTO(editable: HashMap<StringId, String>, urlImg: String): SachDTO {
+    private fun createSachDTO(editable: HashMap<FieldsId, String>, urlImg: String): SachDTO {
         return SachDTO(
-            editable[StringId.MaSach].orEmpty(),
+            editable[FieldsId.MaSach].orEmpty(),
             urlImg,
-            editable[StringId.TenSach].orEmpty(),
-            editable[StringId.LoaiSach].orEmpty(),
-            editable[StringId.TenTacGia].orEmpty(),
-            editable[StringId.NhaXuatBan].orEmpty(),
-            editable[StringId.NamXuatBan].orEmpty(),
-            editable[StringId.TongSach].orEmpty().checkIntValue(),
-            editable[StringId.ConLaiSach].orEmpty().checkIntValue(),
+            editable[FieldsId.TenSach].orEmpty(),
+            editable[FieldsId.LoaiSach].orEmpty(),
+            editable[FieldsId.TenTacGia].orEmpty(),
+            editable[FieldsId.NhaXuatBan].orEmpty(),
+            editable[FieldsId.NamXuatBan].orEmpty(),
+            editable[FieldsId.TongSach].orEmpty().checkIntValue(),
+            editable[FieldsId.ConLaiSach].orEmpty().checkIntValue(),
         )
     }
 

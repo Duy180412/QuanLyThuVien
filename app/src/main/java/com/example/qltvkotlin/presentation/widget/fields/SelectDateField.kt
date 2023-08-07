@@ -1,7 +1,7 @@
 package com.example.qltvkotlin.presentation.widget.fields
 
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.HasDate
 import com.example.qltvkotlin.domain.model.IDateField
 import com.example.qltvkotlin.domain.model.IHasItemStart
@@ -9,10 +9,10 @@ import com.example.qltvkotlin.domain.model.getDateNow
 import com.example.qltvkotlin.presentation.extension.dateFromString
 import java.util.Date
 
-class SelectDateFeild(
-    stringId: StringId,
+class SelectDateField(
+    fieldsId: FieldsId,
     ngayThang: String = ""
-) : InputLayoutField(stringId, ngayThang), HasDate, IHasItemStart, IDateField {
+) : InputLayoutField(fieldsId, ngayThang), HasDate, IHasItemStart, IDateField {
     private var date: Date? = ngayThang.dateFromString()
     private var isExpired: Boolean? = date?.let { getDateNow() >= it }
     override val hasItem: Boolean = true

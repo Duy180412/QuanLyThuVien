@@ -1,13 +1,14 @@
 package com.example.qltvkotlin.presentation.widget.fields
 
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.HasMaxUpdate
 
 
 class NumberFields(
-    stringID: StringId,
+    fieldsID: FieldsId,
     private var textInput: String
-) : InputLayoutField(stringID, textInput), HasMaxUpdate {
+) : InputLayoutField(fieldsID, textInput), HasMaxUpdate {
+
     private var max: Int? = null
 
     override fun update(value: Any?) {
@@ -21,12 +22,12 @@ class NumberFields(
     }
 
     override fun validate(): Boolean {
-        if (this.textInput.toIntOrNull() == null) {
+        if (this.textInput.toIntOrNull() == null && max == null) {
             errorValue = "Chưa Chọn Sách"
             return false
         }
-        if (max == null) {
-            errorValue = "Không Tìm Thấy Số Lượng Tối Đa"
+        if(this.textInput.toIntOrNull() ==null && max !=null){
+            errorValue = "Not Empty"
             return false
         }
         if (this.textInput.toInt() > max!!) {

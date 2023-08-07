@@ -8,7 +8,7 @@ enum class Role {
     HetHan
 }
 
-enum class StringId {
+enum class FieldsId {
     MaSach,
     TenSach,
     LoaiSach,
@@ -27,6 +27,12 @@ enum class StringId {
     SoLuongThueCuaSach
 
 }
+
+enum class StringId {
+    MaxInt
+
+}
+
 enum class SelectPhotoType {
     Camera,
     Gallery

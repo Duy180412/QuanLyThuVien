@@ -1,13 +1,12 @@
 package com.example.qltvkotlin.presentation.widget.fields
 
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.IPhoneNumberField
-import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 
 class PhoneNumberFeild(
-    stringID: StringId,
+    fieldsID: FieldsId,
     private var textInput: String = ""
-) : InputLayoutField(stringID, textInput),IPhoneNumberField {
+) : InputLayoutField(fieldsID, textInput),IPhoneNumberField {
 
 
     private fun checkConditionPhone(): Boolean {

@@ -1,25 +1,26 @@
 package com.example.qltvkotlin.presentation.widget.fields
 
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
+import com.example.qltvkotlin.domain.model.IHint
 import com.example.qltvkotlin.domain.model.IInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.domain.observable.signal
 import com.example.qltvkotlin.presentation.helper.AppResources
 
 abstract class InputLayoutField(
-    private val stringID: StringId,
+    private val fieldsID: FieldsId,
     private var textInput: String = ""
 ) : IInputLayoutField,
     Signal by signal() {
     private val resources: AppResources = AppResources.shared
     var errorValue: String = ""
     override var key: Any = ""
-    override var hint = resources[stringID].hint
-    override var maxEms = resources[stringID].maxEms
-    override var enabled = resources[stringID].enabled
-    override var inputType = resources[stringID].inputType
-    override var singleLine = resources[stringID].singleLine
-    override var hasListener = resources[stringID].hasListener
+    override var iHint:IHint = resources[fieldsID].iHint
+    override var maxEms = resources[fieldsID].maxEms
+    override var enabled = resources[fieldsID].enabled
+    override var inputType = resources[fieldsID].inputType
+    override var singleLine = resources[fieldsID].singleLine
+    override var hasListener = resources[fieldsID].hasListener
     override val backUp: String = textInput
 
     override val isValid: Boolean
@@ -40,7 +41,7 @@ abstract class InputLayoutField(
         return mValue
     }
     override fun getError() = errorValue
-    override fun getFieldsID(): StringId = stringID
+    override fun getFieldsID(): FieldsId = fieldsID
     override fun getValue(): String = textInput
     override fun toString() = textInput
 }

@@ -17,7 +17,7 @@ import com.example.qltvkotlin.domain.model.ISelectTextField
 import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.cast
-import com.example.qltvkotlin.presentation.widget.itemviewholder.AddFeildViewHolder
+import com.example.qltvkotlin.presentation.widget.itemviewholder.AddFieldViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.CustomFieldsViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.HorizontalLineDecorationViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.PhotoViewHolder
@@ -50,7 +50,7 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             TYPE_DATE -> SelectDateInputLayoutViewHolder(parent)
             TYPE_TEXTLAYOUTSELECT -> SelectTextInputLayoutViewHolder(parent)
             HORIZONTALLINE -> HorizontalLineDecorationViewHolder(parent)
-            TYPE_ADDITEMEMYPTY -> AddFeildViewHolder(parent)
+            TYPE_ADDITEMEMYPTY -> AddFieldViewHolder(parent)
             TYPE_SELECTTEXTANDNUMBER -> CustomFieldsViewHolder(parent)
             else -> error("Sai")
         }

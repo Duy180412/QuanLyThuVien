@@ -1,34 +1,32 @@
 package com.example.qltvkotlin.presentation.helper
 
-import android.text.InputType
 import androidx.lifecycle.MutableLiveData
-import com.example.qltvkotlin.domain.enumeration.StringId
-import com.example.qltvkotlin.presentation.widget.fields.SelectDateFeild
+import com.example.qltvkotlin.domain.enumeration.FieldsId
+import com.example.qltvkotlin.presentation.widget.fields.SelectDateField
 import com.example.qltvkotlin.domain.model.IComponent
-import com.example.qltvkotlin.domain.model.IHasPropertiesField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.post
 import com.example.qltvkotlin.presentation.widget.fields.PhoneNumberFeild
 import com.example.qltvkotlin.presentation.widget.fields.PhotoField
-import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
-import com.example.qltvkotlin.presentation.widget.fields.TextFeild
+import com.example.qltvkotlin.presentation.widget.fields.SelectTextField
+import com.example.qltvkotlin.presentation.widget.fields.TextField
 import com.example.qltvkotlin.presentation.widget.fields.ViewFeild
 
 class FetchAddSachCaseFields : FetchCaseFields() {
     override val originalFields = listOfNotNull<IComponent>(
         PhotoField(),
-        TextFeild(StringId.MaSach),
-        TextFeild(StringId.TenSach),
-        TextFeild(StringId.LoaiSach),
-        TextFeild(StringId.TenTacGia),
-        TextFeild(StringId.NhaXuatBan),
-        TextFeild(StringId.NamXuatBan),
-        TextFeild(StringId.TongSach)
+        TextField(FieldsId.MaSach),
+        TextField(FieldsId.TenSach),
+        TextField(FieldsId.LoaiSach),
+        TextField(FieldsId.TenTacGia),
+        TextField(FieldsId.NhaXuatBan),
+        TextField(FieldsId.NamXuatBan),
+        TextField(FieldsId.TongSach)
     )
 }
 class FetchAddMuonSachCaseFields: FetchCaseFields(){
     override val originalFields = listOfNotNull (
-        SelectTextFeild(StringId.DocGiaMuon),
+        SelectTextField(FieldsId.DocGiaMuon),
         ViewFeild()
     )
 
@@ -37,10 +35,10 @@ class FetchAddMuonSachCaseFields: FetchCaseFields(){
 class FetchAddDocGiaCaseFields : FetchCaseFields() {
     override val originalFields = listOfNotNull<IComponent>(
         PhotoField(),
-        TextFeild(StringId.CMND),
-        TextFeild(StringId.TenDocGia),
-        PhoneNumberFeild(StringId.SDT),
-        SelectDateFeild(StringId.NgayHetHan),
+        TextField(FieldsId.CMND),
+        TextField(FieldsId.TenDocGia),
+        PhoneNumberFeild(FieldsId.SDT),
+        SelectDateField(FieldsId.NgayHetHan),
     )
 
 }

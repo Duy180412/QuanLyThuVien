@@ -44,7 +44,7 @@ class ViewPageAdapter(fragment: Fragment, val viewPage: ViewPager2) :
     }
 
     override fun getItemCount(): Int {
-        return routing.getSizeA<Fragment>()
+        return routing.getSize()
     }
 
     override  fun createFragment(position: Int): Fragment {

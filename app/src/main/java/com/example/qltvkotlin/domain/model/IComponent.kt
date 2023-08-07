@@ -1,8 +1,8 @@
 package com.example.qltvkotlin.domain.model
 
-import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.presentation.widget.fields.NumberFields
-import com.example.qltvkotlin.presentation.widget.fields.SelectTextFeild
+import com.example.qltvkotlin.presentation.widget.fields.SelectTextField
 
 interface IComponent
 interface ITextInputLayoutField
@@ -11,14 +11,14 @@ interface INumberField
 interface IDateField
 interface ISelectTextField
 interface IHasText {
-    fun getSelectFeild(): SelectTextFeild
+    fun getSelectField(): SelectTextField
 }
 
 interface IHasNumber {
-    fun getNumberFeild(): NumberFields
+    fun getNumberField(): NumberFields
 }
 
-interface ITextAndNumberFeilds : IComponent
+interface ITextAndNumberFields : IComponent
 
 interface IInputLayoutField :
     IComponent, IChar, Updatable,
@@ -54,19 +54,26 @@ interface HasValue {
 }
 
 interface HasFieldsId {
-    fun getFieldsID(): StringId
+    fun getFieldsID(): FieldsId
 }
 
 
 interface IFieldsCustom : IComponent,IHasText,IHasNumber
 interface IHasPropertiesField : IHasListener {
-    var hint: Int
+    var iHint: IHint
     var maxEms: Int
     var inputType: Int
     var singleLine: Boolean
     var enabled: Boolean
 
 }
+interface IIntHint:IHint{
+    val hint:Int
+}
+interface ICharsHint:IHint{
+    val hint:CharSequence
+}
+interface IHint
 
 interface IHasItemStart {
     val hasItem: Boolean
