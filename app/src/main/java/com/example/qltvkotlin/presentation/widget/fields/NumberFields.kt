@@ -26,8 +26,12 @@ class NumberFields(
             errorValue = "Chưa Chọn Sách"
             return false
         }
-        if(this.textInput.toIntOrNull() ==null && max !=null){
+        if (this.textInput.toIntOrNull() == null && max != null) {
             errorValue = "Not Empty"
+            return false
+        }
+        if (this.textInput.toInt() < 1) {
+            errorValue = "Min = 1"
             return false
         }
         if (this.textInput.toInt() > max!!) {

@@ -8,7 +8,6 @@ import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.databinding.ActivityMainBinding
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarTitleAndSearchSate
 import com.example.qltvkotlin.presentation.helper.StackNavigator
-import com.example.qltvkotlin.presentation.feature.main.BottomNavigatorMenuMain
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
     lateinit var actionBarExt: com.example.qltvkotlin.presentation.feature.actionbar.ActionBarExt

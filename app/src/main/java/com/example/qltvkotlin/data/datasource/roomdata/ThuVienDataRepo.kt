@@ -55,7 +55,7 @@ class ThuVienDataRepo {
     }
 
     suspend fun checkDocGia(cmnd: String): Boolean {
-        return thuVienData.checkDocGiaExists(cmnd)
+        return thuVienData.checkDocGiaExist(cmnd)
     }
 
     suspend fun updateDocGia(docGia: DocGiaDTO):Boolean {

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.domain.helper.AppNavigator
-import com.example.qltvkotlin.domain.usecase.CheckLoginCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.CheckLoginCase
 import com.example.qltvkotlin.presentation.app.BaseActivity
 import com.example.qltvkotlin.presentation.extension.viewModel
 

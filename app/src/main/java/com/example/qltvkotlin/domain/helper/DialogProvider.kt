@@ -2,6 +2,7 @@ package com.example.qltvkotlin.domain.helper
 
 import android.app.AlertDialog
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.CustomDialogBinding
@@ -48,14 +49,14 @@ class DialogProvider(
         return diaLog.show()
     }
 
-    fun bottomUndo(view: View, it: String, function: () -> Unit) {
+    fun bottomUndo( it: String, function: () -> Unit) {
+        val view = activityRetriever().findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         val snackbar = Snackbar.make(view, it, Snackbar.LENGTH_LONG)
         snackbar.setAction("Undo") {
             function.invoke()
         }
         return snackbar.show()
     }
-
     suspend fun chonSach(): IItemSpinner? {
         val activity = activityRetriever() as? AppCompatActivity ?: return null
         return suspendCoroutine { con ->
@@ -83,14 +84,14 @@ class DialogProvider(
         }
     }
 
-    suspend fun chonAnhTuCameraHoacThuVien(): SelectPhotoType?{
+    suspend fun chonAnhTuCameraHoacThuVien(): SelectPhotoType? {
         return suspendCoroutine { con ->
             val binding = activityRetriever().bindingOf(CustomDialogBinding::inflate)
             val diaLog = AlertDialog.Builder(activityRetriever())
             diaLog.setView(binding.root)
             binding.dialogTitle.setText(R.string.title_themanh)
             binding.dialogMessage.visibility = View.GONE
-            diaLog.setPositiveButton("Camera") { d, _->
+            diaLog.setPositiveButton("Camera") { d, _ ->
                 con.resume(SelectPhotoType.Camera)
                 d.dismiss()
             }

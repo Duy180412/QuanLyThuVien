@@ -9,7 +9,7 @@ inline fun <reified T> Any?.cast(): T? {
     return null
 }
 
-fun String.checkIntValue(): String {
+fun String.toIntOrZero(): String {
     if (this.isEmpty()) return "0"
     try {
         this.toInt()

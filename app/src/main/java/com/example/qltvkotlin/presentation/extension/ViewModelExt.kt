@@ -22,7 +22,7 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModel(): Lazy<T> =
     lazy(LazyThreadSafetyMode.NONE) { getViewModel() }
 
 
-inline fun <reified T : ViewModel> Fragment.viewmodel(): Lazy<T> =
+inline fun <reified T : ViewModel> Fragment.viewModel(): Lazy<T> =
     lazy(LazyThreadSafetyMode.NONE) { getViewModel() }
 
 @Suppress("unchecked_cast")

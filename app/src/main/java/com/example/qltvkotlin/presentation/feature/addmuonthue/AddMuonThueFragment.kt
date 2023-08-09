@@ -6,38 +6,32 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.FragmentAddMuonThueBinding
 import com.example.qltvkotlin.domain.enumeration.AddFieldThemSachDangKi
 import com.example.qltvkotlin.domain.enumeration.Command
+import com.example.qltvkotlin.domain.enumeration.RemoveField
 import com.example.qltvkotlin.domain.enumeration.SelectDocGiaMuonSach
 import com.example.qltvkotlin.domain.enumeration.SelectSachMuon
-import com.example.qltvkotlin.domain.enumeration.StringId
-import com.example.qltvkotlin.domain.helper.DialogProvider
-import com.example.qltvkotlin.domain.model.HasValueKey
-import com.example.qltvkotlin.domain.model.IComponent
-import com.example.qltvkotlin.domain.model.IFieldsCustom
-import com.example.qltvkotlin.domain.model.Updatable
-import com.example.qltvkotlin.domain.observable.Signal
-import com.example.qltvkotlin.domain.usecase.SelecThemDocGiaMuonSachCase
-import com.example.qltvkotlin.domain.usecase.ThemFieldAddSachRongCase
+import com.example.qltvkotlin.domain.usecase.ThemSachChoDocGiaThueCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.HasChangeOnClickBackCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.LuuDocGiaMuonSachMoiCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.ThemDocGiaMuonSachCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.ThemTruongRongDeNhapSachChoThueCase
+import com.example.qltvkotlin.domain.usecase.docgiadangkythue.XoaTruongThemSachThueCuaDocGiaCase
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
-import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.presentation.extension.viewmodel
-import com.example.qltvkotlin.presentation.helper.AppStringResources
-import com.example.qltvkotlin.presentation.helper.CharSequenceHint
+import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.presentation.helper.FetchAddMuonSachCaseFields
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
-import com.example.qltvkotlin.presentation.widget.fields.CustomManyFields
 
 
 class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {
     private val binding by viewBinding { FragmentAddMuonThueBinding.bind(this) }
-    override val viewModel by viewmodel<VM>()
+    override val viewModel by viewModel<VM>()
     override fun editOrSaveCase(it: View) {
+        viewModel.save()
     }
 
     override fun getCheck(): () -> Boolean {
-        return { true }
+        return { viewModel.hasChange() }
     }
 
 
@@ -61,9 +55,12 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
 
     class VM(
         private val fetchCaseFields: FetchAddMuonSachCaseFields = FetchAddMuonSachCaseFields(),
-        private val selectThemDocGiaMuonSachCase: SelecThemDocGiaMuonSachCase = SelecThemDocGiaMuonSachCase(),
-        private val themFieldAddSachRongCase: ThemFieldAddSachRongCase = ThemFieldAddSachRongCase(),
-        private val selctThemSachMuonCase: SelectThemSachMuonCase = SelectThemSachMuonCase()
+        private val themDocGiaMuonSachCase: ThemDocGiaMuonSachCase = ThemDocGiaMuonSachCase(),
+        private val themTruongRongDeNhapSachChoThueCase: ThemTruongRongDeNhapSachChoThueCase = ThemTruongRongDeNhapSachChoThueCase(),
+        private val themSachChoDocGiaThueCase: ThemSachChoDocGiaThueCase = ThemSachChoDocGiaThueCase(),
+        private val xoaTruongThemSachThueCuaDocGiaCase: XoaTruongThemSachThueCuaDocGiaCase = XoaTruongThemSachThueCuaDocGiaCase(),
+        private val luuDocGiaMuonSachMoiCase: LuuDocGiaMuonSachMoiCase = LuuDocGiaMuonSachMoiCase(),
+        private val hasChangeOnClickBackCase: HasChangeOnClickBackCase = HasChangeOnClickBackCase()
     ) : BaseViewModel() {
 
 
@@ -77,58 +74,39 @@ class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_th
         fun execute(it: Command) {
             when (it) {
                 is SelectDocGiaMuonSach -> launch(error) {
-                    selectThemDocGiaMuonSachCase(
+                    themDocGiaMuonSachCase(
                         it.item,
                         component.value.orEmpty()
                     )
                 }
 
                 is AddFieldThemSachDangKi -> launch(error) {
-                    themFieldAddSachRongCase.invoke(
+                    themTruongRongDeNhapSachChoThueCase.invoke(
                         component.value.orEmpty()
                     )
                 }
 
                 is SelectSachMuon -> launch(error) {
-                    selctThemSachMuonCase(it.item, component.value.orEmpty())
+                    themSachChoDocGiaThueCase(it.item, component.value.orEmpty())
+                }
+
+                is RemoveField -> launch(error) {
+                    xoaTruongThemSachThueCuaDocGiaCase(it.item, component.value.orEmpty())
                 }
             }
         }
 
-
-    }
-}
-
-class SelectThemSachMuonCase(
-    private val dialogProvider: DialogProvider = DialogProvider.shared,
-    private val stringResources: AppStringResources = AppStringResources.shared
-) {
-    suspend operator fun invoke(item: IFieldsCustom, component: List<IComponent>) {
-        val selectTextFeild = item.getSelectField()
-        val numberField = item.getNumberField()
-        val sachDuocChon = dialogProvider.chonSach() ?: return
-        val isExits = checkExits(sachDuocChon, component)
-        if (isExits) throw Exception("Sách Này Đã Được Thêm")
-        selectTextFeild.cast<Updatable>()?.update(sachDuocChon.nameKey)
-        selectTextFeild.cast<HasValueKey>()?.key = sachDuocChon.key
-        numberField.iHint = CharSequenceHint(stringResources(StringId.MaxInt, sachDuocChon.status))
-        numberField.setMax(sachDuocChon.status)
-        numberField.enabled = true
-        numberField.cast<Updatable>()?.update("0")
-
-    }
-
-    private fun checkExits(sachDuocChon: IItemSpinner, list: List<IComponent>): Boolean {
-        val listSach = mutableListOf<String>()
-        list.forEach {
-            when (it) {
-                is CustomManyFields -> listSach.add(it.getSelectField().key.toString())
+        fun save() {
+            launch(error) {
+                luuDocGiaMuonSachMoiCase.invoke(component.value.orEmpty())
             }
         }
-        listSach.forEach {
-            if (it == sachDuocChon.key) return true
+
+        fun hasChange(): Boolean {
+            return hasChangeOnClickBackCase(component.value.orEmpty())
         }
-        return false
+
+
     }
 }
 

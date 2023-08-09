@@ -5,7 +5,7 @@ import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.IHasItemStart
 import com.example.qltvkotlin.domain.model.ISelectTextField
 
-class SelectTextField(
+class SelectTextField (
     fieldsId: FieldsId,
     private var textInput:String = ""
 ) : InputLayoutField(fieldsId,textInput), IHasItemStart,ISelectTextField {

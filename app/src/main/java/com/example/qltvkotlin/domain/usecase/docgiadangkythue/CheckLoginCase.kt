@@ -1,4 +1,4 @@
-package com.example.qltvkotlin.domain.usecase
+package com.example.qltvkotlin.domain.usecase.docgiadangkythue
 
 import com.example.qltvkotlin.data.datasource.SharedPreferencesExt
 

@@ -20,7 +20,7 @@ abstract class FragmentRecyclerView(contentLayoutId: Int) : BaseFragmentMain(con
                 is Results.Loading -> result.message?.let { toast.invoke(it) }
                 is Results.Success -> {
                     result.value ?: return@observe
-                    dialog.bottomUndo(requireView(), result.message) {
+                    dialog.bottomUndo( result.message) {
                         viewModel.khoiPhuc(result.value)
                     }
                 }

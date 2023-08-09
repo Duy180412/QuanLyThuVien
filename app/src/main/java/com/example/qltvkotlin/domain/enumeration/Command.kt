@@ -21,4 +21,4 @@ class SelecPhoto(val item: IPhotoField):Command
 class SelectDocGiaMuonSach(val item: IInputLayoutField): Command
 class AddFieldThemSachDangKi() :Command
 class SelectSachMuon(val item: IFieldsCustom) : Command
-class RemoveField() :Command
+class RemoveField(val item:IFieldsCustom) :Command

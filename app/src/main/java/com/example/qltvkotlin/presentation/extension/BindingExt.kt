@@ -27,13 +27,7 @@ inline fun <reified T : ViewBinding> FragmentActivity.bindingOf(crossinline bind
 fun <T : ViewBinding> ViewGroup.bindingOf(function: (LayoutInflater, ViewGroup, Boolean) -> T): T {
     return function(LayoutInflater.from(context), this, false)
 }
-inline fun <reified T : ViewBinding> DialogFragment.viewBinding(
-    crossinline bindingInflater: (LayoutInflater) -> T
-): Lazy<T?> {
-    return lazy(LazyThreadSafetyMode.NONE) {
-        bindingInflater.invoke(layoutInflater)
-    }
-}
+
 inline fun <reified T : Activity> Fragment.getActivtyBase(): Lazy<T> =
     lazy(LazyThreadSafetyMode.NONE) {
         requireActivity().cast<T>()

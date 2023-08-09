@@ -10,12 +10,13 @@ import com.example.qltvkotlin.domain.model.getDateNow
 import com.example.qltvkotlin.presentation.extension.dateFromString
 import java.util.Date
 
-class MuonThueRepo {
+class MuonSachRepo {
     private val thuVien = ThuVienDataRepo.instance
     private val docGiaRepo = DocGiaRepo.shared
     private var backup: MuonThue? = null
+
     companion object {
-        val shared = MuonThueRepo()
+        val shared = MuonSachRepo()
     }
 
 
@@ -73,11 +74,13 @@ class MuonThueRepo {
         }
     }
 
-    suspend fun isExitsMuonSach(cmnd: String): Boolean {
+    suspend fun isExistsMuonSach(cmnd: String): Boolean {
         return thuVien.checkDocGiaMuonExistByCmnd(cmnd)
     }
 
-    suspend fun save() {
+    suspend fun save(cmndDocGiaDangKi: String, listSach: List<ThongTinThue>) {
+        val docGiaMuonSach = MuonThue(cmndDocGiaDangKi, listSach)
+        thuVien.addMuonSach(docGiaMuonSach)
     }
 
     suspend fun del(cmnd: String): Boolean {
@@ -94,7 +97,6 @@ class MuonThueRepo {
             } else false
         } ?: false
     }
-
 
 
 }

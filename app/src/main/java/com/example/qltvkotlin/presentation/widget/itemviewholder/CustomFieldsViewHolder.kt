@@ -57,7 +57,7 @@ class CustomFieldsViewHolder(
         binding.number.edittext.bindWithoutNotify(number)
         //
         binding.removefield.onClick{
-            onCommand(RemoveField())
+            onCommand(RemoveField(item))
         }
     }
 

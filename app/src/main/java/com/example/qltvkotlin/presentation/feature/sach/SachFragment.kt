@@ -7,7 +7,7 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.presentation.extension.viewmodel
+import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.databinding.FragmentSachBinding
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.OnClickDel
@@ -22,7 +22,7 @@ import com.example.qltvkotlin.presentation.extension.show
 
 class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
     private val binding by viewBinding { FragmentSachBinding.bind(this) }
-    override val viewModel by viewmodel<VM>()
+    override val viewModel by viewModel<VM>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = SachApdater(binding.rycView)

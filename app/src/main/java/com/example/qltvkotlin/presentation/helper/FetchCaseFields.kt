@@ -2,8 +2,11 @@ package com.example.qltvkotlin.presentation.helper
 
 import androidx.lifecycle.MutableLiveData
 import com.example.qltvkotlin.domain.enumeration.FieldsId
+import com.example.qltvkotlin.domain.model.IAddView
+import com.example.qltvkotlin.domain.model.IBackUpFieldRemove
 import com.example.qltvkotlin.presentation.widget.fields.SelectDateField
 import com.example.qltvkotlin.domain.model.IComponent
+import com.example.qltvkotlin.domain.model.IFieldsCustom
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.post
 import com.example.qltvkotlin.presentation.widget.fields.PhoneNumberFeild
@@ -24,8 +27,9 @@ class FetchAddSachCaseFields : FetchCaseFields() {
         TextField(FieldsId.TongSach)
     )
 }
-class FetchAddMuonSachCaseFields: FetchCaseFields(){
-    override val originalFields = listOfNotNull (
+
+class FetchAddMuonSachCaseFields : FetchCaseFields() {
+    override val originalFields = listOfNotNull(
         SelectTextField(FieldsId.DocGiaMuon),
         ViewFeild()
     )
@@ -53,8 +57,19 @@ abstract class FetchCaseFields {
     }
 
     private fun createListFields(): List<IComponent> {
-        return object : MutableList<IComponent> by originalFields.toMutableList(),
-            Signal by Signal.MultipleSubscription() {
+        val instance = originalFields.toMutableList()
+        return object : MutableList<IComponent> by instance,
+            Signal by Signal.MultipleSubscription(), IBackUpFieldRemove {
+            override fun removeAt(index: Int): IComponent {
+                return instance.removeAt(index).also { emit() }
+            }
+
+
+            override fun add(index: Int, element: IComponent) {
+               return instance.add(index, element).also { emit() }
+            }
+
+            override val fieldRemove: List<IComponent> = arrayListOf()
         }
     }
 

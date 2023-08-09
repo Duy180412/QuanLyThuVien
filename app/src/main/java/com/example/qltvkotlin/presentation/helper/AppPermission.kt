@@ -61,10 +61,6 @@ class AppPermission(private val context: Context) {
             else onClick(null)
 
         }
-
-
     }
-
-
 }
 

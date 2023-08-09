@@ -13,6 +13,9 @@ interface ISelectTextField
 interface IHasText {
     fun getSelectField(): SelectTextField
 }
+interface IBackUpFieldRemove{
+    val fieldRemove:List<IComponent>
+}
 
 interface IHasNumber {
     fun getNumberField(): NumberFields

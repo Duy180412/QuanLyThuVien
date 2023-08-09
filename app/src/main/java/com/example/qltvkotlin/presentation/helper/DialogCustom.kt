@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.extension.launch
-import com.example.qltvkotlin.presentation.extension.viewmodel
+import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.databinding.DialogCustomBinding
 import com.example.qltvkotlin.domain.datastructure.pairLookupOf
 import com.example.qltvkotlin.domain.enumeration.Role
@@ -33,7 +33,7 @@ abstract class DialogCustom(
     private val role: Role
 ) : DialogFragment() {
     private var binding: DialogCustomBinding? = null
-    private val viewmodel by viewmodel<VM>()
+    private val viewmodel by viewModel<VM>()
     private lateinit var onClickList: (IItemSpinner) -> Unit
     private val routing = pairLookupOf(
         Role.DocGia to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia),

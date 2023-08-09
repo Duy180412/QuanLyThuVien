@@ -42,7 +42,7 @@ interface ThuVienDao {
     suspend fun addDocGia(docGia: DocGiaDTO): Long
 
     @Query("SELECT EXISTS(SELECT 1 FROM docgia WHERE cmnd = :cmnd)")
-    suspend fun checkDocGiaExists(cmnd: String): Boolean
+    suspend fun checkDocGiaExist(cmnd: String): Boolean
 
     @Update
     suspend fun updateDocGia(docGia: DocGiaDTO): Int

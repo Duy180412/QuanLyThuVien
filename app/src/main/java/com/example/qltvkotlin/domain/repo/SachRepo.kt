@@ -8,7 +8,7 @@ import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.presentation.extension.cast
-import com.example.qltvkotlin.presentation.extension.checkIntValue
+import com.example.qltvkotlin.presentation.extension.toIntOrZero
 import com.example.qltvkotlin.presentation.extension.createImagesFromUrl
 import com.example.qltvkotlin.presentation.widget.IItemSpinner
 
@@ -79,8 +79,8 @@ class SachRepo {
             editable[FieldsId.TenTacGia].orEmpty(),
             editable[FieldsId.NhaXuatBan].orEmpty(),
             editable[FieldsId.NamXuatBan].orEmpty(),
-            editable[FieldsId.TongSach].orEmpty().checkIntValue(),
-            editable[FieldsId.ConLaiSach].orEmpty().checkIntValue(),
+            editable[FieldsId.TongSach].orEmpty().toIntOrZero(),
+            editable[FieldsId.ConLaiSach].orEmpty().toIntOrZero(),
         )
     }
 
