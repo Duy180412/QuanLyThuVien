@@ -7,7 +7,6 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.databinding.FragmentInfoSachBinding
-import com.example.qltvkotlin.presentation.feature.sach.SachApdater
 import com.example.qltvkotlin.presentation.helper.lazyArgument
 import com.example.qltvkotlin.presentation.router.Routes
 

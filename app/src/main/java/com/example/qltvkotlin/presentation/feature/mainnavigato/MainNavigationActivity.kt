@@ -5,6 +5,7 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.app.BaseActivity
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.databinding.ActivityNavigationBinding
+import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarExt
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarViewState
 import com.example.qltvkotlin.presentation.router.FragmentRouting
 import com.example.qltvkotlin.presentation.router.Routing
@@ -12,7 +13,7 @@ import com.example.qltvkotlin.presentation.helper.Arguments
 import com.example.qltvkotlin.presentation.helper.StackNavigator
 
 class MainNavigationActivity : BaseActivity(R.layout.activity_navigation) {
-    private lateinit var actionBarExt: com.example.qltvkotlin.presentation.feature.actionbar.ActionBarExt
+    private lateinit var actionBarExt: ActionBarExt
     private lateinit var stackNavigator: StackNavigator
     lateinit var actionBarView: ActionBarViewState
     private val binding by viewBinding { ActivityNavigationBinding.bind(this) }
@@ -20,8 +21,7 @@ class MainNavigationActivity : BaseActivity(R.layout.activity_navigation) {
         super.onCreate(savedInstanceState)
         stackNavigator = StackNavigator(supportFragmentManager, R.id.contentview)
         val arguments = Arguments.getArgumentsFrom(intent?.extras) ?: return
-        actionBarExt =
-            com.example.qltvkotlin.presentation.feature.actionbar.ActionBarExt(binding.containertopbar)
+        actionBarExt = ActionBarExt(binding.containertopbar)
 
 
         if (arguments is Routing && arguments is FragmentRouting) {

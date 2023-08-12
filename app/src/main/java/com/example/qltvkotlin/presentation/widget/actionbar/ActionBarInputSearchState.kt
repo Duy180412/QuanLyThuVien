@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.viewbinding.ViewBinding
 import com.example.qltvkotlin.databinding.TopbarSearchBinding
-import com.example.qltvkotlin.presentation.feature.actionbar.State
 import com.example.qltvkotlin.presentation.extension.onClick
 import com.example.qltvkotlin.presentation.extension.show
 

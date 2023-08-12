@@ -5,70 +5,62 @@ import com.example.qltvkotlin.data.model.MuonThue
 import com.example.qltvkotlin.data.model.ThongTinThue
 import com.example.qltvkotlin.data.datasource.roomdata.ThuVienDataRepo
 import com.example.qltvkotlin.domain.enumeration.Role
+import com.example.qltvkotlin.domain.enumeration.StringId
+import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.domain.model.getDateNow
 import com.example.qltvkotlin.presentation.extension.dateFromString
-import java.util.Date
+import com.example.qltvkotlin.presentation.helper.AppStringResources
 
 class MuonSachRepo {
     private val thuVien = ThuVienDataRepo.instance
     private val docGiaRepo = DocGiaRepo.shared
+    private val appStringResources: AppStringResources = AppStringResources.shared
     private var backup: MuonThue? = null
 
     companion object {
         val shared = MuonSachRepo()
     }
 
+    suspend fun searchDangThue(keySearch: String): List<IMuonSachItem> {
+        val key = keySearch.lowercase().trim()
+        val list =  getAllMuonSachItem(StringId.ConHan).run {
+            if (keySearch.isNotBlank()) filter {
+                it.tenDocGia.lowercase().contains(key)
+            } else this
+        }
+        return list
+    }
 
-    suspend fun search(mKey: String, loaiSearch: Role): List<IMuonSachItem> {
-        val key = mKey.lowercase().trim()
-        val filteredList = getAllMuonSachItem().filter { item ->
-            when {
-                loaiSearch == Role.DangThue && (key.isBlank() || item.tenDocGia.lowercase()
-                    .contains(key)) -> item.tinhTrangThue.contains("Đang Thuê")
 
-                loaiSearch == Role.HetHan && (key.isBlank() || item.tenDocGia.lowercase()
-                    .contains(key)) -> item.tinhTrangThue.contains("Hết Hạn")
-
-                else -> false
+    private suspend fun getAllMuonSachItem(role: StringId): List<IMuonSachItem> {
+        val list = thuVien.getAllMuonSach().mapNotNull { item ->
+            val docGia = docGiaRepo.getInfoFullDocGiaDto(item.cmndDocGia) ?: return@mapNotNull null
+            val trangThai = checkHanMuon(docGia.ngayHetHan)
+            if (trangThai == role) {
+                createItemList(docGia, item.danhSachMuon, trangThai)
+            } else {
+                null
             }
         }
-        return filteredList
+        return list
     }
 
-    private suspend fun getAllMuonSachItem(): MutableList<IMuonSachItem> {
-        val list = thuVien.getAllMuonSach()
-        val filteredList = mutableListOf<IMuonSachItem>()
-        for (item in list) {
-            val docGia = docGiaRepo.getInfoFullDocGiaDto(item.cmndDocGia) ?: continue
-            val hanMuon = docGia.ngayHetHan.dateFromString() ?: continue
-            val listSach = item.danhSachMuon
-            val itemList = createItemListThongTinMuon(docGia, hanMuon, listSach)
-            filteredList.add(itemList)
-        }
-        return filteredList
+    private fun checkHanMuon(ngayHetHan: String): StringId {
+        val date = ngayHetHan.dateFromString()
+        return if (date != null && date > getDateNow()) return StringId.ConHan
+        else StringId.HetHan
     }
 
-    private fun createItemListThongTinMuon(
-        docGia: DocGiaDTO,
-        hanMuon: Date,
-        danhSachMuon: List<ThongTinThue>
-    ): IMuonSachItem {
-        return if (hanMuon > getDateNow())
-            creatItemList(docGia, danhSachMuon, "Đang Thuê")
-        else
-            creatItemList(docGia, danhSachMuon, "Hết Hạn")
-    }
-
-    private fun creatItemList(
+    private fun createItemList(
         docGia: DocGiaDTO,
         danhSachMuon: List<ThongTinThue>,
-        status: String
+        status: StringId
     ): IMuonSachItem {
         return object : IMuonSachItem {
             override val maDocGia: String = docGia.cmnd
             override val tenDocGia: String = docGia.tenDocGia
-            override val tinhTrangThue: String = status
+            override val tinhTrangThue: String = appStringResources(status)
             override val tongLoaiSach: String = danhSachMuon.size.toString()
             override val soLuongThue: String = docGia.soLuongMuon
         }
@@ -96,6 +88,16 @@ class MuonSachRepo {
                 thuVien.addMuonSach(it)
             } else false
         } ?: false
+    }
+
+    suspend fun searchHetHan(keySearch: String): List<IMuonSachItem> {
+        val key = keySearch.lowercase().trim()
+        return getAllMuonSachItem(StringId.HetHan).run {
+            if (keySearch.isNotBlank()) filter {
+                it.tenDocGia.lowercase().contains(key)
+            } else this
+        }
+
     }
 
 

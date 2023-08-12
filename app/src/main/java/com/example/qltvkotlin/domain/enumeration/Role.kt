@@ -4,7 +4,14 @@ enum class Role {
     None,
     Sach,
     DocGia,
-    DangThue,
+    ConHan,
+    HetHan
+
+}
+enum class TypeSearch{
+    Sach,
+    DocGia,
+    ConHan,
     HetHan
 }
 
@@ -29,7 +36,19 @@ enum class FieldsId {
 }
 
 enum class StringId {
-    MaxInt
+    MaxInt,
+    TenSach,
+    TenTacGia,
+    TongSach,
+    ConLai,
+    TenDocGia,
+    Sdt,
+    HanDangKi,
+    ChoThue,
+    HetHan,
+    ConHan,
+    Loai,
+    TongMuon
 
 }
 

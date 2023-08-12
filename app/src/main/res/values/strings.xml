@@ -14,6 +14,8 @@
     <string name="view_sdt">Sđt: %s</string>
     <string name="view_han_dangki">Hạn: %s</string>
     <string name="view_dangthue">Đang Mượn: %s</string>
+    <string name="status_hethan">Hết Hạn</string>
+    <string name="status_conhan">Còn Hạn</string>
     <!-- Hint  Feilds -->
     <string name="hintfeilds_masach">Mã Sách</string>
     <string name="hintfeilds_tensach">Tên Sách</string>

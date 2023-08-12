@@ -9,7 +9,7 @@ inline fun <reified T> Any?.cast(): T? {
     return null
 }
 
-fun String.toIntOrZero(): String {
+fun String.toIntOrZeroString(): String {
     if (this.isEmpty()) return "0"
     try {
         this.toInt()
@@ -17,6 +17,15 @@ fun String.toIntOrZero(): String {
         return "0"
     }
     return this
+}
+fun String.toIntOrZeroInt(): Int {
+    if (this.isEmpty()) return 0
+    try {
+        this.toInt()
+    } catch (_: Exception) {
+        return 0
+    }
+    return this.toInt()
 }
 
 fun String.checkStringNull(): String {

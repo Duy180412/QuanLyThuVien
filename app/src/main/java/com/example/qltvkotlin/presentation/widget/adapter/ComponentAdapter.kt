@@ -9,18 +9,24 @@ import com.example.qltvkotlin.domain.model.Bindable
 import com.example.qltvkotlin.domain.model.IAddView
 import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IDateField
+import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IFieldsCustom
 import com.example.qltvkotlin.domain.model.IHorizontalLine
+import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.domain.model.IPhoneNumberField
 import com.example.qltvkotlin.domain.model.IPhotoField
+import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.domain.model.ISelectTextField
 import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.widget.itemviewholder.DocGiaViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.AddFieldViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.CustomFieldsViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.HorizontalLineDecorationViewHolder
+import com.example.qltvkotlin.presentation.widget.itemviewholder.MuonSachViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.PhotoViewHolder
+import com.example.qltvkotlin.presentation.widget.itemviewholder.SachViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.SelectDateInputLayoutViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.SelectTextInputLayoutViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.TextEnterLayoutViewHolder
@@ -41,6 +47,9 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
         val HORIZONTALLINE = index.getAndIncrement()
         val TYPE_ADDITEMEMYPTY = index.getAndIncrement()
         val TYPE_SELECTTEXTANDNUMBER = index.getAndIncrement()
+        val TYPE_SACHITEM = index.getAndIncrement()
+        val TYPE_DOCGIAITEM = index.getAndIncrement()
+        val TYPE_MUONSACHITEM = index.getAndIncrement()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -52,6 +61,9 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             HORIZONTALLINE -> HorizontalLineDecorationViewHolder(parent)
             TYPE_ADDITEMEMYPTY -> AddFieldViewHolder(parent)
             TYPE_SELECTTEXTANDNUMBER -> CustomFieldsViewHolder(parent)
+            TYPE_SACHITEM -> SachViewHolder(parent)
+            TYPE_DOCGIAITEM -> DocGiaViewHolder(parent)
+            TYPE_MUONSACHITEM -> MuonSachViewHolder(parent)
             else -> error("Sai")
         }
     }
@@ -72,7 +84,6 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
         list.cast<Signal>()?.bind { notifyDataSetChanged() }
         mList = list
         notifyDataSetChanged()
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -85,6 +96,9 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             is ISelectTextField -> TYPE_TEXTLAYOUTSELECT
             is IAddView -> TYPE_ADDITEMEMYPTY
             is IFieldsCustom -> TYPE_SELECTTEXTANDNUMBER
+            is ISachItem -> TYPE_SACHITEM
+            is IDocGiaItem -> TYPE_DOCGIAITEM
+            is IMuonSachItem -> TYPE_MUONSACHITEM
             else -> error("Not Sp")
         }
     }
@@ -95,7 +109,7 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
 
 
     override fun getItemCount(): Int {
-        return mList?.size!!
+        return mList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

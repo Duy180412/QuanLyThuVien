@@ -3,7 +3,7 @@ package com.example.qltvkotlin.domain.model
 import com.example.qltvkotlin.presentation.widget.fields.PhotoField
 
 
-interface IDocGiaItem {
+interface IDocGiaItem : IComponent {
     val cmnd: String
     val photoField: PhotoField
     val tenDocGia: String

@@ -26,6 +26,12 @@ class AppNavigator(
         }
     }
 
+    fun openAddDocGia() {
+        with(activityRetriever()){
+            Router.open(this, Routes.AddDocGia())
+        }
+    }
+
     fun openLogin() {
         with(activityRetriever()){
             Router.open(this, Routes.Login())
@@ -35,6 +41,11 @@ class AppNavigator(
     fun openInfoSach(it:CharSequence){
         with(activityRetriever()){
             Router.open(this,Routes.InfoSach(it))
+        }
+    }
+    fun openInfoDocGia(it:CharSequence){
+        with(activityRetriever()){
+            Router.open(this,Routes.InfoDocGia(it))
         }
     }
 

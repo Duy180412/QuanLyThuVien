@@ -24,6 +24,9 @@ class DocGiaRepo {
     }
 
 
+    suspend fun addDocGia(docGiaDTO: DocGiaDTO) {
+        thuVien.addDocGia(docGiaDTO)
+    }
 
     private fun creatDocGiaItem(it: DocGiaDTO): IDocGiaItem {
         return object : IDocGiaItem {
@@ -49,8 +52,8 @@ class DocGiaRepo {
         return list
     }
 
-     suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
-        val docGia = thuVien.getDocGiaByCmnd(cmnd)?: return null
+    suspend fun getInfoFullDocGiaDto(cmnd: String): DocGiaDTO? {
+        val docGia = thuVien.getDocGiaByCmnd(cmnd) ?: return null
         val muonSach = thuVien.getMuonSachByCmnd(cmnd)
         muonSach?.let {
             docGia.soLuongMuon = muonSach.danhSachMuon.sumOf { it.soLuongMuon }.toString()
@@ -96,6 +99,7 @@ class DocGiaRepo {
         thuVien.addDocGia(docGiaDto)
     }
 
+
     private fun createDocGiaDTO(editable: HashMap<FieldsId, String>, urlImg: String): DocGiaDTO {
         return DocGiaDTO(
             editable[FieldsId.CMND].orEmpty(),
@@ -104,9 +108,10 @@ class DocGiaRepo {
             editable[FieldsId.NgayHetHan].orEmpty(),
             editable[FieldsId.SDT].orEmpty(),
             editable[FieldsId.SoLuongMuon].orEmpty(),
-            )
+        )
     }
-//
+
+    //
 //    suspend fun getDocGiaReadOnly(cmnd: String?): IDocGia {
 //        cmnd ?: return object : IDocGiaGet {}
 //        val docGia = getInfoFullDocGiaDto(cmnd)?: return object : IDocGiaGet {}
@@ -162,8 +167,6 @@ class DocGiaRepo {
         return if (date > getDateNow()) "Đã Đăng Kí"
         else "Hết Hạn"
     }
-
-
 
 
 }

@@ -21,6 +21,7 @@ import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarNavigator
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarTitleAndSearchButtonState
 import com.example.qltvkotlin.presentation.widget.AdapterSpinnerCustom
 import com.example.qltvkotlin.presentation.widget.IItemSpinner
+import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarExt
 
 class DocGiaSelecDialog(activity: AppCompatActivity) :
     DialogCustom(activity, Role.DocGia)
@@ -52,7 +53,7 @@ abstract class DialogCustom(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val actionBarExt =
-            com.example.qltvkotlin.presentation.feature.actionbar.ActionBarExt(binding!!.topbar.containertopbar)
+            ActionBarExt(binding!!.topbar.containertopbar)
         val adapter = AdapterSpinnerCustom(binding!!.rycView)
         val actionBarNavigator = routing.requireValueOf(role)
         val tieuDe = ActionBarTitleAndSearchButtonState(actionBarNavigator.title)
@@ -64,7 +65,7 @@ abstract class DialogCustom(
             onClickList.invoke(it)
             dismiss()
         }
-        tieuDe.clickSearch = { actionBarExt.setState(timKiem) }
+        tieuDe.onSearch = { actionBarExt.setState(timKiem) }
         timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
         timKiem.onSearchListener = {
             viewmodel.role = role

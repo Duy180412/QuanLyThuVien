@@ -2,22 +2,25 @@ package com.example.qltvkotlin.presentation.feature.sach
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
-import com.example.qltvkotlin.presentation.extension.launch
-import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.presentation.extension.viewModel
+import com.example.qltvkotlin.data.model.SachDTO
 import com.example.qltvkotlin.databinding.FragmentSachBinding
 import com.example.qltvkotlin.domain.enumeration.Command
-import com.example.qltvkotlin.domain.enumeration.OnClickDel
-import com.example.qltvkotlin.domain.enumeration.OnClickItem
+import com.example.qltvkotlin.domain.enumeration.KhoiPhucSach
+import com.example.qltvkotlin.domain.enumeration.OpenInfoSach
+import com.example.qltvkotlin.domain.enumeration.TypeSearch
+import com.example.qltvkotlin.domain.enumeration.XoaSach
 import com.example.qltvkotlin.domain.helper.AppNavigator
-import com.example.qltvkotlin.domain.model.ISachItem
-import com.example.qltvkotlin.domain.repo.SachRepo
+import com.example.qltvkotlin.domain.usecase.SearchCase
+import com.example.qltvkotlin.domain.usecase.sach.KhoiPhucSachCase
+import com.example.qltvkotlin.domain.usecase.sach.XoaSachCase
+import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
+import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.onClick
-import com.example.qltvkotlin.presentation.extension.post
 import com.example.qltvkotlin.presentation.extension.show
+import com.example.qltvkotlin.presentation.extension.viewBinding
+import com.example.qltvkotlin.presentation.extension.viewModel
+import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 
 class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
@@ -25,55 +28,51 @@ class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
     override val viewModel by viewModel<VM>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SachApdater(binding.rycView)
+        val adapter = ComponentAdapter(binding.rycView)
         viewModel.search.observe(viewLifecycleOwner) {
             show(binding.rong, it.isEmpty())
             adapter.setList(it)
         }
         binding.btnAdd.onClick {
-           viewModel.open()
+            viewModel.open()
         }
         adapter.onCommand = { viewModel.actionCommand(it) }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.tryFetch()
+    }
 
     class VM(
-//        private val searchSachCase: SearchSachCase = SearchSachCase(),
         private val appNavigator: AppNavigator = AppNavigator.shared,
-        private val sachRepo: SachRepo = SachRepo()
+        private val searchCase: SearchCase = SearchCase(),
+        private val xoaSachCase: XoaSachCase = XoaSachCase(),
+        private val khoiPhucSachCase: KhoiPhucSachCase = KhoiPhucSachCase()
     ) : FragmentViewVM() {
-        var search = MutableLiveData<List<ISachItem>>()
+        val search = searchCase.result
 
         fun actionCommand(it: Command) {
             when (it) {
-                is OnClickItem -> appNavigator.openInfoSach(it.key)
-                is OnClickDel -> xoa(it.key)
+                is OpenInfoSach -> appNavigator.openInfoSach(it.item.maSach)
+                is XoaSach -> launch {
+                    xoaSachCase(it.item, search.value.orEmpty()) {
+                        actionCommand(it)
+                    }
+                }
+
+                is KhoiPhucSach -> launch { khoiPhucSachCase.invoke(it) }
                 else -> return
             }
         }
 
         override fun search(it: String) {
-            keySearch = it
-            launch { search.post(sachRepo.searchSach(it))}
+            launch(error) { searchCase(TypeSearch.Sach, it) }
         }
-
-        override suspend fun repo(id: String): Boolean {
-            return sachRepo.repoSach(id)
-        }
-
-        override suspend fun del(id: String): Boolean {
-            return sachRepo.delSach(id)
-        }
-
         fun open() = appNavigator.openAddSach()
+        fun tryFetch() = launch { searchCase(TypeSearch.Sach) }
     }
 }
-//
-//class SearchSachCase(private val sachRepo: SachRepo = SachRepo()) {
-//    val result = MutableLiveData<List<ISachItem>>()
-//    suspend operator fun invoke(it:String){
-//
-//    }
-//
-//}
-//
+
+
+

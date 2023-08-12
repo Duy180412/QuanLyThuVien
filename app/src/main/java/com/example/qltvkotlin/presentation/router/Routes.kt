@@ -47,7 +47,7 @@ object Routes {
     }
 
     @Parcelize
-    class InfoDocGia(val id: String) : FragmentRouting {
+    class InfoDocGia(val id: CharSequence = "") : FragmentRouting {
         override val clazzFragment: KClass<out Fragment>
             get() = InfoDocGiaFragment::class
     }

@@ -49,14 +49,15 @@ class DialogProvider(
         return diaLog.show()
     }
 
-    fun bottomUndo( it: String, function: () -> Unit) {
+    fun bottomUndo(it: String, function: () -> Unit) {
         val view = activityRetriever().findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-        val snackbar = Snackbar.make(view, it, Snackbar.LENGTH_LONG)
-        snackbar.setAction("Undo") {
+        val snackBar = Snackbar.make(view, it, Snackbar.LENGTH_LONG)
+        snackBar.setAction("Undo") {
             function.invoke()
         }
-        return snackbar.show()
+        return snackBar.show()
     }
+
     suspend fun chonSach(): IItemSpinner? {
         val activity = activityRetriever() as? AppCompatActivity ?: return null
         return suspendCoroutine { con ->

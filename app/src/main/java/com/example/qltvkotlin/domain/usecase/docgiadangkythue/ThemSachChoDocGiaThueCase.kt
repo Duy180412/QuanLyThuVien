@@ -1,4 +1,4 @@
-package com.example.qltvkotlin.domain.usecase
+package com.example.qltvkotlin.domain.usecase.docgiadangkythue
 
 import com.example.qltvkotlin.domain.enumeration.StringId
 import com.example.qltvkotlin.domain.helper.DialogProvider

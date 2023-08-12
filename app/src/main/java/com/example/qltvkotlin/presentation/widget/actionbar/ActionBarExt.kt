@@ -1,10 +1,11 @@
-package com.example.qltvkotlin.presentation.feature.actionbar
+package com.example.qltvkotlin.presentation.widget.actionbar
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.viewbinding.ViewBinding
+import com.example.qltvkotlin.domain.enumeration.Command
+import com.example.qltvkotlin.domain.enumeration.HasCommandCallback
 
 interface State {
     fun onCreate(inflater: LayoutInflater, parent: ViewGroup): ViewBinding
@@ -12,9 +13,10 @@ interface State {
 
 class ActionBarExt(
     private val frameLayout: FrameLayout,
-) {
-
-    fun setState(state: com.example.qltvkotlin.presentation.feature.actionbar.State) {
+):HasCommandCallback {
+    override var onCommand: (Command) -> Unit = {}
+    fun setState(state: State) {
+        if(state is HasCommandCallback) state.onCommand = {this.onCommand(it)}
         if (state is AutoCloseable) {
             try {
                 state.close()
@@ -26,6 +28,7 @@ class ActionBarExt(
         state.onCreate(LayoutInflater.from(frameLayout.context), frameLayout)
             .apply { frameLayout.addView(this.root) }
     }
+
 }
 
 

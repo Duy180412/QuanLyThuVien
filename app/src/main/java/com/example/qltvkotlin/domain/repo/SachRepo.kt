@@ -8,8 +8,9 @@ import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
 import com.example.qltvkotlin.domain.model.ISachItem
 import com.example.qltvkotlin.presentation.extension.cast
-import com.example.qltvkotlin.presentation.extension.toIntOrZero
+import com.example.qltvkotlin.presentation.extension.toIntOrZeroString
 import com.example.qltvkotlin.presentation.extension.createImagesFromUrl
+import com.example.qltvkotlin.presentation.extension.toIntOrZeroInt
 import com.example.qltvkotlin.presentation.widget.IItemSpinner
 
 
@@ -22,7 +23,7 @@ class SachRepo {
         val shared = SachRepo()
     }
 
-        suspend fun searchSach(mKey: String): List<ISachItem> {
+    suspend fun searchSach(mKey: String): List<ISachItem> {
         val keySearch = mKey.lowercase().trim()
         val list =
             thuVien.getAllBook().run {
@@ -63,11 +64,14 @@ class SachRepo {
 
 
     suspend fun save(editable: HashMap<FieldsId, String>, photo: IImage) {
-        val maSach = editable[FieldsId.MaSach]?: return
+        val maSach = editable[FieldsId.MaSach] ?: return
         val image = photo.cast<IsImageUri>()?.uriImage
-        val urlImg = imagesRepo.saveImage(maSach,image,Role.Sach)
+        val urlImg = imagesRepo.saveImage(maSach, image, Role.Sach)
         val sachDto = createSachDTO(editable, urlImg)
         thuVien.addSach(sachDto)
+    }
+    suspend fun addSach(sachDTO: SachDTO){
+        thuVien.addSach(sachDTO)
     }
 
     private fun createSachDTO(editable: HashMap<FieldsId, String>, urlImg: String): SachDTO {
@@ -79,8 +83,8 @@ class SachRepo {
             editable[FieldsId.TenTacGia].orEmpty(),
             editable[FieldsId.NhaXuatBan].orEmpty(),
             editable[FieldsId.NamXuatBan].orEmpty(),
-            editable[FieldsId.TongSach].orEmpty().toIntOrZero(),
-            editable[FieldsId.ConLaiSach].orEmpty().toIntOrZero(),
+            editable[FieldsId.TongSach].orEmpty().toIntOrZeroString(),
+            editable[FieldsId.ConLaiSach].orEmpty().toIntOrZeroString(),
         )
     }
 
@@ -92,7 +96,7 @@ class SachRepo {
 //        return createBookOnly(sachFull)
 //    }
 
-    private suspend fun getSachById(id: String): SachDTO? {
+    suspend fun getSachById(id: String): SachDTO? {
         return thuVien.getSachById(id)
     }
 
@@ -161,7 +165,6 @@ class SachRepo {
             override val status = (it.tongSach.toInt() - it.choThue.toInt()).toString()
         }
     }
-
 
 
 }

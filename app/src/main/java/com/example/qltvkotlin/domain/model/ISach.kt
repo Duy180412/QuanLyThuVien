@@ -2,7 +2,7 @@ package com.example.qltvkotlin.domain.model
 
 import com.example.qltvkotlin.presentation.widget.fields.PhotoField
 
-interface ISachItem {
+interface ISachItem : IComponent {
     val maSach: String
     val imgSach: PhotoField
     val tenSach: String

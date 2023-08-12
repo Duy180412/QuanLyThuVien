@@ -1,6 +1,7 @@
 package com.example.qltvkotlin.domain.model
 
-interface IMuonSachItem {
+
+interface IMuonSachItem : IComponent {
     val maDocGia: String
     val tenDocGia: String
     val tinhTrangThue: String
