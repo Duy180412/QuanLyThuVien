@@ -7,7 +7,7 @@ import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.presentation.extension.viewModel
-import com.example.qltvkotlin.databinding.FragmentMuonthueViewBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.domain.enumeration.TypeSearch
 import com.example.qltvkotlin.domain.usecase.SearchCase
 import com.example.qltvkotlin.presentation.extension.show
@@ -28,8 +28,8 @@ class HetHanFragment : FragmentViewMuonSach() {
 
 }
 
-abstract class FragmentViewMuonSach : FragmentRecyclerView(R.layout.fragment_muonthue_view) {
-    private val binding by viewBinding { FragmentMuonthueViewBinding.bind(this) }
+abstract class FragmentViewMuonSach : FragmentRecyclerView(R.layout.fragment_recycler_view) {
+    private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModel<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +37,6 @@ abstract class FragmentViewMuonSach : FragmentRecyclerView(R.layout.fragment_muo
         val adapter = ComponentAdapter(binding.rycView)
         viewModel.search.observe(viewLifecycleOwner) {
             adapter.setList(it)
-            show(binding.rong, it.isEmpty())
         }
     }
     override fun onResume() {

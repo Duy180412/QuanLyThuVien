@@ -3,7 +3,7 @@ package com.example.qltvkotlin.presentation.feature.docgia
 import android.os.Bundle
 import android.view.View
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.databinding.FragmentDocGiaBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerviewCustomBinding
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.KhoiPhucDocGia
 import com.example.qltvkotlin.domain.enumeration.OpenInfoDocGia
@@ -22,20 +22,20 @@ import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 
-class DocGiaFragment : FragmentRecyclerView(R.layout.fragment_doc_gia) {
-    private val binding by viewBinding { FragmentDocGiaBinding.bind(this) }
+class DocGiaFragment : FragmentRecyclerView(R.layout.fragment_recyclerview_custom) {
+    private val binding by viewBinding { FragmentRecyclerviewCustomBinding.bind(this) }
     override val viewModel by viewModel<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ComponentAdapter(binding.rycView)
+        val adapter = ComponentAdapter(binding.rycView.rycView)
         binding.btnAdd.onClick {
             viewModel.open()
         }
+
         adapter.onCommand = { viewModel.actionCommand(it) }
         viewModel.search.observe(viewLifecycleOwner) {
             adapter.setList(it)
-            show(binding.rong, it.isEmpty())
         }
     }
 

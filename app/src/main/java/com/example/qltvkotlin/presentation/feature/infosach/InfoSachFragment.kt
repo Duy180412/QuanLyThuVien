@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.qltvkotlin.R
+import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.databinding.FragmentInfoSachBinding
 import com.example.qltvkotlin.presentation.helper.lazyArgument
 import com.example.qltvkotlin.presentation.router.Routes
 
 
-class InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
-    private val binding by viewBinding { FragmentInfoSachBinding.bind(this) }
+class  InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
+    private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoSach>()
 

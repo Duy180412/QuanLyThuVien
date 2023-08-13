@@ -3,7 +3,7 @@ package com.example.qltvkotlin.presentation.feature.addmuonthue
 import android.os.Bundle
 import android.view.View
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.databinding.FragmentAddMuonThueBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.domain.enumeration.AddFieldThemSachDangKi
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.RemoveField
@@ -23,8 +23,8 @@ import com.example.qltvkotlin.presentation.helper.FetchAddMuonSachCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 
-class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_add_muon_thue) {
-    private val binding by viewBinding { FragmentAddMuonThueBinding.bind(this) }
+class AddMuonThueFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) {
+    private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModel<VM>()
     override fun editOrSaveCase(it: View) {
         viewModel.save()

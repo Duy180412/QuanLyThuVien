@@ -3,8 +3,7 @@ package com.example.qltvkotlin.presentation.feature.sach
 import android.os.Bundle
 import android.view.View
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.data.model.SachDTO
-import com.example.qltvkotlin.databinding.FragmentSachBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerviewCustomBinding
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.KhoiPhucSach
 import com.example.qltvkotlin.domain.enumeration.OpenInfoSach
@@ -17,20 +16,20 @@ import com.example.qltvkotlin.domain.usecase.sach.XoaSachCase
 import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.onClick
-import com.example.qltvkotlin.presentation.extension.show
 import com.example.qltvkotlin.presentation.extension.viewBinding
+
+sion.viewBinding
 import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 
-class SachFragment : FragmentRecyclerView(R.layout.fragment_sach) {
-    private val binding by viewBinding { FragmentSachBinding.bind(this) }
+class SachFragment : FragmentRecyclerView(R.layout.fragment_recyclerview_custom) {
+    private val binding by viewBinding { FragmentRecyclerviewCustomBinding.bind(this) }
     override val viewModel by viewModel<VM>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ComponentAdapter(binding.rycView)
+        val adapter = ComponentAdapter(binding.rycView.rycView)
         viewModel.search.observe(viewLifecycleOwner) {
-            show(binding.rong, it.isEmpty())
             adapter.setList(it)
         }
         binding.btnAdd.onClick {

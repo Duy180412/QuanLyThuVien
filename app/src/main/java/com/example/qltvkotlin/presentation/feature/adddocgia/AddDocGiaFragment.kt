@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.databinding.FragmentAddDocGiaBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.SelecPhoto
-import com.example.qltvkotlin.domain.model.IInputLayoutField
 import com.example.qltvkotlin.domain.usecase.FieldsChangeCase
 import com.example.qltvkotlin.domain.usecase.LuuDocGiaCase
 import com.example.qltvkotlin.domain.usecase.SelectPhotoCase
@@ -17,9 +16,9 @@ import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.presentation.helper.FetchAddDocGiaCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
-class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) {
+class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) {
 
-    private val binding by viewBinding { FragmentAddDocGiaBinding.bind(this) }
+    private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModels<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,11 +48,11 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
 
     class VM(
         private val fetchCaseFields: FetchAddDocGiaCaseFields = FetchAddDocGiaCaseFields(),
-        private val selecPhoto: SelectPhotoCase = SelectPhotoCase(),
+        private val selectPhotoCase: SelectPhotoCase = SelectPhotoCase(),
         private val luuDocGiaCase: LuuDocGiaCase = LuuDocGiaCase(),
         private val fieldsChangeCase: FieldsChangeCase = FieldsChangeCase(),
 
-    ) : BaseViewModel() {
+        ) : BaseViewModel() {
 
 
         val components = fetchCaseFields.result
@@ -65,7 +64,7 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_add_doc_gia) 
 
         fun execute(it: Command) {
             when (it) {
-                is SelecPhoto -> launch { selecPhoto(it.item) }
+                is SelecPhoto -> launch { selectPhotoCase(it.item) }
             }
         }
         fun save() {

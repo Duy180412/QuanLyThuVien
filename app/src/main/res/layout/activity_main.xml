@@ -16,9 +16,8 @@
         android:id="@+id/contentview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/topbar"
         android:layout_above="@id/container_mainNavigation"
-        tools:ignore="FragmentTagUsage" />
+        android:layout_below="@+id/topbar" />
 
     <LinearLayout
         android:id="@+id/container_mainNavigation"
@@ -28,4 +27,6 @@
         android:background="@color/white"
         android:orientation="horizontal" />
 
+
 </RelativeLayout>
+

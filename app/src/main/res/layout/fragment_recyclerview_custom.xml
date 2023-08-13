@@ -5,29 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".feature.main.sach.SachFragment">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:ignore="UselessParent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <include
             android:id="@+id/rycView"
+            layout="@layout/fragment_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:listitem="@layout/item_list_rycview"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <TextView
-            android:id="@+id/rong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Chưa Có Giá Trị"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAdd"
@@ -40,6 +30,5 @@
             android:tint="@color/white"
             app:srcCompat="@drawable/ic_add"
             tools:ignore="ContentDescription" />
-
     </FrameLayout>
 </LinearLayout>

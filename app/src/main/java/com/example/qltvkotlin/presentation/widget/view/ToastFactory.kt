@@ -18,7 +18,7 @@ interface ToastFactoryOwner {
 }
 
 class ToastFactory(val context: Context)  {
-    fun invoke(text: String) {
+    operator fun invoke(text: String) {
         return Toast.makeText(context, text, Toast.LENGTH_LONG).show()
     }
 }

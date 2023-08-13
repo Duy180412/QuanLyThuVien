@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.qltvkotlin.R
-import com.example.qltvkotlin.databinding.FragmentAddSachBinding
+import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.domain.enumeration.Command
 import com.example.qltvkotlin.domain.enumeration.SelecPhoto
 import com.example.qltvkotlin.domain.usecase.FieldsChangeCase
@@ -18,9 +18,9 @@ import com.example.qltvkotlin.presentation.helper.FetchCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 
-class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_add_sach) {
+class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) {
 
-    private val binding by viewBinding { FragmentAddSachBinding.bind(this) }
+    private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModels<VM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

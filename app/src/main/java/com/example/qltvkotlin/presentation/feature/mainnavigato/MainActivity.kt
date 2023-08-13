@@ -6,6 +6,7 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.app.BaseActivity
 import com.example.qltvkotlin.presentation.extension.viewBinding
 import com.example.qltvkotlin.databinding.ActivityMainBinding
+import com.example.qltvkotlin.presentation.extension.onClick
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarExt
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarTitleAndSearchSate
 import com.example.qltvkotlin.presentation.helper.StackNavigator
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         stackNavigator = StackNavigator(supportFragmentManager, binding.contentview.id)
         stackNavigator.navigateTo(tabAdapter.selectedItemId)
         actionBarMain = ActionBarTitleAndSearchSate(tabAdapter.selectedItemId, actionBarExt)
+
 
 
         tabAdapter.setOnItemSelectedListener { itemId ->
