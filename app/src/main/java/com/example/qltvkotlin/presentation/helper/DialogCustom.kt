@@ -6,39 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.databinding.DialogCustomBinding
 import com.example.qltvkotlin.domain.datastructure.pairLookupOf
-import com.example.qltvkotlin.domain.enumeration.Role
-import com.example.qltvkotlin.domain.repo.DocGiaRepo
-import com.example.qltvkotlin.domain.repo.SachRepo
-import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarInputSearchState
-import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarNavigator
-import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarTitleAndSearchButtonState
-import com.example.qltvkotlin.presentation.widget.AdapterSpinnerCustom
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
+import com.example.qltvkotlin.domain.enumeration.Command
+import com.example.qltvkotlin.domain.enumeration.HasCommandCallback
+import com.example.qltvkotlin.domain.enumeration.TypeSearch
+import com.example.qltvkotlin.domain.model.IItemSpinner
+import com.example.qltvkotlin.domain.usecase.SearchCase
+import com.example.qltvkotlin.presentation.app.BaseFragment
 import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarExt
+import com.example.qltvkotlin.presentation.widget.actionbar.ActionBarTitleAndSearchSate
+import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 class DocGiaSelecDialog(activity: AppCompatActivity) :
-    DialogCustom(activity, Role.DocGia)
+    DialogCustom(activity, R.string.doc_gia_item)
 
 class SachSelecDialog(activity: AppCompatActivity) :
-    DialogCustom(activity, Role.Sach)
+    DialogCustom(activity, R.string.sach_item)
 
 abstract class DialogCustom(
     private val mActivity: AppCompatActivity,
-    private val role: Role
-) : DialogFragment() {
+    private val resId: Int
+) : DialogFragment(), HasCommandCallback {
     private var binding: DialogCustomBinding? = null
-    private val viewmodel by viewModel<VM>()
-    private lateinit var onClickList: (IItemSpinner) -> Unit
+    private val viewModel by viewModel<VM>()
+    override var onCommand: (Command) -> Unit = {}
     private val routing = pairLookupOf(
-        Role.DocGia to ActionBarNavigator(R.string.title_them_docgia, R.string.hint_seach_docgia),
-        Role.Sach to ActionBarNavigator(R.string.title_them_sach, R.string.hint_seach_sach)
+        R.string.sach_item to TypeSearch.SachItemSpinner,
+        R.string.doc_gia_item to TypeSearch.DocGiaItemSpinner
     )
 
     override fun onCreateView(
@@ -46,35 +44,31 @@ abstract class DialogCustom(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.typeSearch = routing.requireValueOf(resId)
         binding = DialogCustomBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val actionBarExt =
-            ActionBarExt(binding!!.topbar.containertopbar)
-        val adapter = AdapterSpinnerCustom(binding!!.rycView)
-        val actionBarNavigator = routing.requireValueOf(role)
-        val tieuDe = ActionBarTitleAndSearchButtonState(actionBarNavigator.title)
-        val timKiem = ActionBarInputSearchState(actionBarNavigator.hint)
-        viewmodel.list.observe(viewLifecycleOwner) {
+        val actionBarExt = ActionBarExt(binding!!.topbar.containertopbar)
+        val actionSearch = ActionBarTitleAndSearchSate(resId, actionBarExt)
+        val adapter = ComponentAdapter(binding!!.rycView)
+        viewModel.list.observe(viewLifecycleOwner) {
             adapter.setList(it)
         }
-        adapter.onClickItem = {
-            onClickList.invoke(it)
+        actionSearch.search.observe(viewLifecycleOwner) {
+            viewModel.search(it)
+        }
+        adapter.onCommand = {
+            this.onCommand(it)
             dismiss()
         }
-        tieuDe.onSearch = { actionBarExt.setState(timKiem) }
-        timKiem.exitSearch = { actionBarExt.setState(tieuDe) }
-        timKiem.onSearchListener = {
-            viewmodel.role = role
-            viewmodel.searh(it)
-        }
-        actionBarExt.setState(tieuDe)
+
     }
-    fun showDialog(function: (IItemSpinner) -> Unit) {
-        onClickList = function
+
+    fun showDialog(function: (Command) -> Unit) {
+        onCommand = function
         this.show(mActivity.supportFragmentManager, "DialogCustom")
     }
 
@@ -86,7 +80,7 @@ abstract class DialogCustom(
 //    }
 
     override fun onResume() {
-        viewmodel.startSearch(role)
+        viewModel.tryFetch()
         super.onResume()
     }
 
@@ -95,26 +89,23 @@ abstract class DialogCustom(
         super.onDestroy()
     }
 
-    class VM : ViewModel() {
-        private val sachRepo = SachRepo.shared
-        private val docGiaRepo = DocGiaRepo.shared
-        var list = MutableLiveData<List<IItemSpinner>>()
-        var role = Role.None
-        private var keySearh = ""
-        fun searh(it: String) {
-            keySearh = it
-            launch {
-                when (role) {
-                    Role.DocGia -> list.postValue(docGiaRepo.getListItemSpinner(it))
-                    Role.Sach -> list.postValue(sachRepo.getListItemSpinner(it))
-                    else -> list.postValue(emptyList())
-                }
+    class VM(
+        private val searchCase: SearchCase = SearchCase()
+    ) : BaseFragment.BaseViewModel() {
+        var list = searchCase.result
+        var typeSearch: TypeSearch = TypeSearch.None
+        fun search(it: String) {
+            launch(error) {
+                searchCase(typeSearch, it)
             }
         }
 
-        fun startSearch(role2: Role) {
-            role = role2
-            searh(keySearh)
+        fun tryFetch() {
+            launch(error) {
+                searchCase(typeSearch)
+            }
         }
     }
+
+
 }

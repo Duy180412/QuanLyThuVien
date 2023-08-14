@@ -2,6 +2,8 @@
     <string name="app_name">QLTVKotlin</string>
     <string name="doc_gia">Độc Giả</string>
     <string name="sach">Sách</string>
+    <string name="doc_gia_item">Độc Giả</string>
+    <string name="sach_item">Sách</string>
     <string name="account">Tài Khoản</string>
     <string name="muon_thue">Mượn Thuê</string>
     <string name="view_ten_sach">Sách: %s</string>

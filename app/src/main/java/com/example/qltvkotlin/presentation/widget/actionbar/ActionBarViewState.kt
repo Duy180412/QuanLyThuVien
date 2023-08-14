@@ -8,6 +8,8 @@ import androidx.viewbinding.ViewBinding
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.TopbarViewBinding
 import com.example.qltvkotlin.domain.datastructure.pairLookupOf
+import com.example.qltvkotlin.domain.enumeration.Command
+import com.example.qltvkotlin.domain.enumeration.HasCommandCallback
 import com.example.qltvkotlin.presentation.feature.addmuonthue.AddMuonThueFragment
 import com.example.qltvkotlin.presentation.feature.addsach.AddSachFragment
 import com.example.qltvkotlin.presentation.feature.adddocgia.AddDocGiaFragment
@@ -19,10 +21,10 @@ import kotlin.reflect.KClass
 class ActionBarViewState(
     clazz: KClass<out Fragment>,
     actionBarExt: ActionBarExt
-) {
+):HasCommandCallback {
+    override var onCommand: (Command) -> Unit= {}
     lateinit var onClickBack: () -> Unit
     lateinit var onClickEditAndSave: (View) -> Unit
-
     private var actionBarSate: ActionBarSate
     private val routing = pairLookupOf<KClass<out Fragment>, ActionBarSate>(
         AddSachFragment::class to ActionBarSate(R.string.title_them_sach, true),
@@ -55,6 +57,8 @@ class ActionBarViewState(
         }
 
     }
+
+
 
 }
 

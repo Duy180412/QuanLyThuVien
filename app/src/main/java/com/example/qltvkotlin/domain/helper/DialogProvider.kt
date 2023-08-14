@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.CustomDialogBinding
+import com.example.qltvkotlin.domain.enumeration.SelectItemSpinner
 import com.example.qltvkotlin.domain.enumeration.SelectPhotoType
+import com.example.qltvkotlin.domain.model.IItemSpinner
 import com.example.qltvkotlin.presentation.extension.bindingOf
+import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.helper.DocGiaSelecDialog
 import com.example.qltvkotlin.presentation.helper.SachSelecDialog
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.google.android.material.snackbar.Snackbar
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -66,7 +68,7 @@ class DialogProvider(
                     con.resume(null)
                 }
             }.showDialog {
-                con.resume(it)
+                con.resume(it.cast<SelectItemSpinner>()?.item)
             }
         }
     }
@@ -80,7 +82,7 @@ class DialogProvider(
                     con.resume(null)
                 }
             }.showDialog {
-                con.resume(it)
+                con.resume(it.cast<SelectItemSpinner>()?.item)
             }
         }
     }

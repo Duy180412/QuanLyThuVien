@@ -13,8 +13,15 @@ interface ISelectTextField
 interface IHasText {
     fun getSelectField(): SelectTextField
 }
-interface IBackUpFieldRemove{
-    val fieldRemove:List<IComponent>
+
+interface IBackUpFieldRemove {
+    val fieldRemove: List<IComponent>
+}
+
+interface IItemSpinner : IComponent {
+    val key: String
+    val nameKey: String
+    val status: String
 }
 
 interface IHasNumber {
@@ -61,7 +68,7 @@ interface HasFieldsId {
 }
 
 
-interface IFieldsCustom : IComponent,IHasText,IHasNumber
+interface IFieldsCustom : IComponent, IHasText, IHasNumber
 interface IHasPropertiesField : IHasListener {
     var iHint: IHint
     var maxEms: Int
@@ -70,12 +77,15 @@ interface IHasPropertiesField : IHasListener {
     var enabled: Boolean
 
 }
-interface IIntHint:IHint{
-    val hint:Int
+
+interface IIntHint : IHint {
+    val hint: Int
 }
-interface ICharsHint:IHint{
-    val hint:CharSequence
+
+interface ICharsHint : IHint {
+    val hint: CharSequence
 }
+
 interface IHint
 
 interface IHasItemStart {

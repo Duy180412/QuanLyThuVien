@@ -26,7 +26,20 @@ class SearchCase(
             TypeSearch.DocGia -> setListDocGia()
             TypeSearch.ConHan -> setListDangThue()
             TypeSearch.HetHan -> setListHetHan()
+            TypeSearch.SachItemSpinner -> setListItemSpinnerSach()
+            TypeSearch.DocGiaItemSpinner -> setListItemSpinnerDocGia()
+            TypeSearch.None -> return
         }
+    }
+
+    private suspend fun setListItemSpinnerDocGia() {
+        val instance = docGiaRepo.getListItemSpinner(keySearch).toMutableList<IComponent>()
+        result.post(toMutableListCustom(instance))
+    }
+
+    private suspend fun setListItemSpinnerSach() {
+        val instance = sachRepo.getListItemSpinner(keySearch).toMutableList<IComponent>()
+        result.post(toMutableListCustom(instance))
     }
 
     private suspend fun setListHetHan() {

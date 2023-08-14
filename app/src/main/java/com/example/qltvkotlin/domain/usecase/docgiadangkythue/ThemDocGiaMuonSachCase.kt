@@ -6,11 +6,11 @@ import com.example.qltvkotlin.domain.model.HasValueKey
 import com.example.qltvkotlin.domain.model.IAddView
 import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IInputLayoutField
+import com.example.qltvkotlin.domain.model.IItemSpinner
 import com.example.qltvkotlin.domain.model.Updatable
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.domain.repo.MuonSachRepo
 import com.example.qltvkotlin.presentation.extension.cast
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.fields.ClickAddField
 import com.example.qltvkotlin.presentation.widget.fields.SelectTextField
 

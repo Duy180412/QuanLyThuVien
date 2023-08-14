@@ -7,11 +7,11 @@ import com.example.qltvkotlin.domain.enumeration.FieldsId
 import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IsImageUri
 import com.example.qltvkotlin.domain.model.IImage
+import com.example.qltvkotlin.domain.model.IItemSpinner
 import com.example.qltvkotlin.domain.model.getDateNow
 import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.extension.createImagesFromUrl
 import com.example.qltvkotlin.presentation.extension.dateFromString
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
 
 
 class DocGiaRepo {

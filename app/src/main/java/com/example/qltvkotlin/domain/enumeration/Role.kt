@@ -12,7 +12,10 @@ enum class TypeSearch{
     Sach,
     DocGia,
     ConHan,
-    HetHan
+    HetHan,
+    SachItemSpinner,
+    DocGiaItemSpinner,
+    None
 }
 
 enum class FieldsId {

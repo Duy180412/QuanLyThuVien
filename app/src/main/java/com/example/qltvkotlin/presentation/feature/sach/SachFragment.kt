@@ -17,8 +17,6 @@ import com.example.qltvkotlin.presentation.app.FragmentRecyclerView
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.onClick
 import com.example.qltvkotlin.presentation.extension.viewBinding
-
-sion.viewBinding
 import com.example.qltvkotlin.presentation.extension.viewModel
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 

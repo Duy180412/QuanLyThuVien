@@ -5,11 +5,11 @@ import com.example.qltvkotlin.domain.helper.DialogProvider
 import com.example.qltvkotlin.domain.model.HasValueKey
 import com.example.qltvkotlin.domain.model.IComponent
 import com.example.qltvkotlin.domain.model.IFieldsCustom
+import com.example.qltvkotlin.domain.model.IItemSpinner
 import com.example.qltvkotlin.domain.model.Updatable
 import com.example.qltvkotlin.presentation.extension.cast
 import com.example.qltvkotlin.presentation.helper.AppStringResources
 import com.example.qltvkotlin.presentation.helper.CharSequenceHint
-import com.example.qltvkotlin.presentation.widget.IItemSpinner
 import com.example.qltvkotlin.presentation.widget.fields.CustomManyFields
 
 class ThemSachChoDocGiaThueCase(

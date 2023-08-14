@@ -12,6 +12,7 @@ import com.example.qltvkotlin.domain.model.IDateField
 import com.example.qltvkotlin.domain.model.IDocGiaItem
 import com.example.qltvkotlin.domain.model.IFieldsCustom
 import com.example.qltvkotlin.domain.model.IHorizontalLine
+import com.example.qltvkotlin.domain.model.IItemSpinner
 import com.example.qltvkotlin.domain.model.IMuonSachItem
 import com.example.qltvkotlin.domain.model.IPhoneNumberField
 import com.example.qltvkotlin.domain.model.IPhotoField
@@ -20,6 +21,7 @@ import com.example.qltvkotlin.domain.model.ISelectTextField
 import com.example.qltvkotlin.domain.model.ITextInputLayoutField
 import com.example.qltvkotlin.domain.observable.Signal
 import com.example.qltvkotlin.presentation.extension.cast
+import com.example.qltvkotlin.presentation.widget.itemviewholder.ItemSpinnerViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.DocGiaViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.AddFieldViewHolder
 import com.example.qltvkotlin.presentation.widget.itemviewholder.CustomFieldsViewHolder
@@ -50,6 +52,7 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
         val TYPE_SACHITEM = index.getAndIncrement()
         val TYPE_DOCGIAITEM = index.getAndIncrement()
         val TYPE_MUONSACHITEM = index.getAndIncrement()
+        val TYPE_ITEMSPINNER = index.getAndIncrement()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -64,6 +67,7 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             TYPE_SACHITEM -> SachViewHolder(parent)
             TYPE_DOCGIAITEM -> DocGiaViewHolder(parent)
             TYPE_MUONSACHITEM -> MuonSachViewHolder(parent)
+            TYPE_ITEMSPINNER -> ItemSpinnerViewHolder(parent)
             else -> error("Sai")
         }
     }
@@ -99,6 +103,7 @@ class ComponentAdapter(rycView: RecyclerView) : RecyclerView.Adapter<RecyclerVie
             is ISachItem -> TYPE_SACHITEM
             is IDocGiaItem -> TYPE_DOCGIAITEM
             is IMuonSachItem -> TYPE_MUONSACHITEM
+            is IItemSpinner -> TYPE_ITEMSPINNER
             else -> error("Not Sp")
         }
     }
