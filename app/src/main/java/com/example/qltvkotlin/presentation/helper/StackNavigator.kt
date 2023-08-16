@@ -33,7 +33,6 @@ class StackNavigator(
 
     private fun createTag(clazz: KClass<out Fragment>): String {
         return "${clazz.java.name}:tag:${System.currentTimeMillis()}"
-
     }
 
     private fun getLastFragment(): Fragment? {

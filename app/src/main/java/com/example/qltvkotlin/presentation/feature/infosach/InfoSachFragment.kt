@@ -7,11 +7,13 @@ import com.example.qltvkotlin.R
 import com.example.qltvkotlin.databinding.FragmentRecyclerViewBinding
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.viewBinding
+import com.example.qltvkotlin.presentation.helper.FetchSachCaseFields
+import com.example.qltvkotlin.presentation.helper.FetchCaseFields
 import com.example.qltvkotlin.presentation.helper.lazyArgument
 import com.example.qltvkotlin.presentation.router.Routes
 
 
-class  InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
+class  InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) {
     private val binding by viewBinding { FragmentRecyclerViewBinding.bind(this) }
     override val viewModel by viewModels<VM>()
     private val args = lazyArgument<Routes.InfoSach>()
@@ -24,6 +26,7 @@ class  InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
 
@@ -37,8 +40,8 @@ class  InfoSachFragment : BaseFragmentNavigation(R.layout.fragment_info_sach) {
     }
 
 
-    class VM : BaseViewModel() {
-
+    class VM(private val fetchCaseFields: FetchCaseFields = FetchSachCaseFields()) : BaseViewModel() {
+        val component = fetchCaseFields.result
         fun setSach(id: CharSequence?) {
 
         }

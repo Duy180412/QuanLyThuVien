@@ -13,7 +13,7 @@ import com.example.qltvkotlin.domain.usecase.SelectPhotoCase
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.presentation.helper.FetchAddSachCaseFields
+import com.example.qltvkotlin.presentation.helper.FetchSachCaseFields
 import com.example.qltvkotlin.presentation.helper.FetchCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
@@ -48,7 +48,7 @@ class AddSachFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) 
     }
 
     class VM(
-        private val fetchCaseFields: FetchCaseFields = FetchAddSachCaseFields(),
+        private val fetchCaseFields: FetchCaseFields = FetchSachCaseFields(),
         private val selecPhoto: SelectPhotoCase = SelectPhotoCase(),
         private val luuSachCase: LuuSachCase = LuuSachCase(),
         private val fieldsChangeCase: FieldsChangeCase = FieldsChangeCase()

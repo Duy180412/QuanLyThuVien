@@ -2,12 +2,9 @@ package com.example.qltvkotlin.presentation.helper
 
 import androidx.lifecycle.MutableLiveData
 import com.example.qltvkotlin.domain.enumeration.FieldsId
-import com.example.qltvkotlin.domain.model.IAddView
-import com.example.qltvkotlin.domain.model.IBackUpFieldRemove
 import com.example.qltvkotlin.presentation.widget.fields.SelectDateField
 import com.example.qltvkotlin.domain.model.IComponent
-import com.example.qltvkotlin.domain.model.IFieldsCustom
-import com.example.qltvkotlin.domain.observable.Signal
+import com.example.qltvkotlin.domain.repo.SachRepo
 import com.example.qltvkotlin.domain.usecase.toMutableListCustom
 import com.example.qltvkotlin.presentation.extension.post
 import com.example.qltvkotlin.presentation.widget.fields.PhoneNumberFeild
@@ -16,7 +13,9 @@ import com.example.qltvkotlin.presentation.widget.fields.SelectTextField
 import com.example.qltvkotlin.presentation.widget.fields.TextField
 import com.example.qltvkotlin.presentation.widget.fields.ViewFeild
 
-class FetchAddSachCaseFields : FetchCaseFields() {
+class FetchSachCaseFields(
+    private val sachRepo: SachRepo = SachRepo()
+) : FetchCaseFields() {
     override val originalFields = listOfNotNull<IComponent>(
         PhotoField(),
         TextField(FieldsId.MaSach),
@@ -27,6 +26,7 @@ class FetchAddSachCaseFields : FetchCaseFields() {
         TextField(FieldsId.NamXuatBan),
         TextField(FieldsId.TongSach)
     )
+
 }
 
 class FetchAddMuonSachCaseFields : FetchCaseFields() {
@@ -37,7 +37,8 @@ class FetchAddMuonSachCaseFields : FetchCaseFields() {
 
 }
 
-class FetchAddDocGiaCaseFields : FetchCaseFields() {
+class FetchDocGiaCaseFields : FetchCaseFields() {
+
     override val originalFields = listOfNotNull<IComponent>(
         PhotoField(),
         TextField(FieldsId.CMND),

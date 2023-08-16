@@ -28,7 +28,7 @@ class DocGiaRepo {
         thuVien.addDocGia(docGiaDTO)
     }
 
-    private fun creatDocGiaItem(it: DocGiaDTO): IDocGiaItem {
+    private fun createDocGiaItem(it: DocGiaDTO): IDocGiaItem {
         return object : IDocGiaItem {
             override val cmnd = it.cmnd
             override val photoField = it.avatar.createImagesFromUrl()
@@ -47,7 +47,7 @@ class DocGiaRepo {
                     it.tenDocGia.lowercase().contains(keySearch)
                 } else this
             }.map {
-                creatDocGiaItem(getInfoFullDocGiaDto(it.cmnd)!!)
+                createDocGiaItem(getInfoFullDocGiaDto(it.cmnd)!!)
             }
         return list
     }

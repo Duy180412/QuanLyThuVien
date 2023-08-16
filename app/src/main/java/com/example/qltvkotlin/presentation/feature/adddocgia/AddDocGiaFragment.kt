@@ -13,7 +13,7 @@ import com.example.qltvkotlin.domain.usecase.SelectPhotoCase
 import com.example.qltvkotlin.presentation.app.BaseFragmentNavigation
 import com.example.qltvkotlin.presentation.extension.launch
 import com.example.qltvkotlin.presentation.extension.viewBinding
-import com.example.qltvkotlin.presentation.helper.FetchAddDocGiaCaseFields
+import com.example.qltvkotlin.presentation.helper.FetchDocGiaCaseFields
 import com.example.qltvkotlin.presentation.widget.adapter.ComponentAdapter
 
 class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view) {
@@ -47,7 +47,7 @@ class AddDocGiaFragment : BaseFragmentNavigation(R.layout.fragment_recycler_view
 
 
     class VM(
-        private val fetchCaseFields: FetchAddDocGiaCaseFields = FetchAddDocGiaCaseFields(),
+        private val fetchCaseFields: FetchDocGiaCaseFields = FetchDocGiaCaseFields(),
         private val selectPhotoCase: SelectPhotoCase = SelectPhotoCase(),
         private val luuDocGiaCase: LuuDocGiaCase = LuuDocGiaCase(),
         private val fieldsChangeCase: FieldsChangeCase = FieldsChangeCase(),
